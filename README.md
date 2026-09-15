@@ -40,3 +40,9 @@ npm run dev -- --port 4173
 - `tests/`：画布行为检查。
 - `docs/`：设计与实现来源。
 - `artifacts/`：历史视觉检查截图和记录。
+
+## 在线演示
+
+[打开 GitHub Pages 演示](https://emeiiixxx.github.io/lightchain-saas-v5.4/)
+
+推送到 main 后，GitHub Actions 自动构建和部署。`node scripts/build-pages.mjs` 使用项目子路径构建，并处理演示素材的静态资源路径；本地开发地址不变。
