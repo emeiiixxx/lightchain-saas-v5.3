@@ -1,6 +1,6 @@
-# Lightchain SaaS v5.4 · 万能穿搭融合
+# Lightchain SaaS v5.3 · 万能穿搭融合
 
-独立的交互评审项目，使用 React 19、TypeScript、Vite 7 和 Tailwind CSS 4，按 Lightchain v5.4 Figma 设计与 v5.1 Beta 组件库实现。
+独立的交互评审项目，使用 React 19、TypeScript、Vite 7 和 Tailwind CSS 4，按 Lightchain v5.3 Figma 设计与 v5.1 Beta 组件库实现。
 
 ## 本地运行
 
@@ -28,7 +28,7 @@ npm run dev -- --port 4173
 
 ## 设计来源
 
-- [Lightchain SaaS v5.4](https://www.figma.com/design/lDDzsXpslev95eZ1ZpAHVt/Lightchain-SaaS-v5.4.0)
+- [Lightchain SaaS v5.3](https://www.figma.com/design/lDDzsXpslev95eZ1ZpAHVt)
 - [Lightchain v5.1 libraries Beta](https://www.figma.com/design/FO7bCfBv6NPle8egsVaDvG)
 
 `docs/` 保留各次设计来源和组件记录；`AGENTS.md` 记录最新交互约定。图片与图标资源位于 `public/assets/`。
@@ -43,6 +43,12 @@ npm run dev -- --port 4173
 
 ## 在线演示
 
-[打开 GitHub Pages 演示](https://emeiiixxx.github.io/lightchain-saas-v5.4/)
+[打开 GitHub Pages 演示](https://emeiiixxx.github.io/lightchain-saas-v5.3/)
 
 推送到 main 后，GitHub Actions 自动构建和部署。`node scripts/build-pages.mjs` 使用项目子路径构建，并处理演示素材的静态资源路径；本地开发地址不变。
+
+## 产品文档
+
+- [SaaS v5.3 产品需求文档](https://lightchain.feishu.cn/wiki/WpiswINzhiJLCxkrmZncdhRenxb)
+- [本地 Markdown 版本](docs/SaaS-v5.3-产品需求文档.md)
+- [画布与提示词功能规则总结](docs/画布与提示词功能规则总结.md)

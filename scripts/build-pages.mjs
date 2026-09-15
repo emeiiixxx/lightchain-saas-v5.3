@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const base = '/lightchain-saas-v5.4/';
+const base = '/lightchain-saas-v5.3/';
 execFileSync('npm', ['run', 'build', '--', '--base', base], { stdio: 'inherit' });
 // Public asset URLs in demo fixtures are root-relative for local development.
 // Scope only these literals in the published output to the GitHub project path.

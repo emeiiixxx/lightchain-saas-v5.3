@@ -1,5 +1,7 @@
 # 项目交互规则
 
+- 产品版本统一为 SaaS v5.3，包版本为 5.3.0；仓库名及 GitHub Pages 路径统一为 `lightchain-saas-v5.3`。Lightchain SaaS v5.1 libraries Beta 是组件库依赖版本，保持原标识。
+
 - UI 组件与图标以 Lightchain SaaS v5.1 libraries Beta 为准；不得引入旧版组件或用文字字符代替已有图标。
 - 普通交互动效统一为 `200ms ease-out`，集中维护在 `src/motion.css`。新交互必须沿用此规则，菜单、弹层与提示的退出需保留完整动画后再卸载。
 - 直接拖拽实时跟随指针；系统 `prefers-reduced-motion` 优先。画布镜头平移、缩放与适应视图立即同步，状态切换沿用统一曲线。
