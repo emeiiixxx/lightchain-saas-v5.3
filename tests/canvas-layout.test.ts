@@ -14,20 +14,19 @@ for (const viewport of [{width:1816,height:1180},{width:1280,height:752},{width:
       assert.equal(JSON.stringify(input), original);
       assert.deepEqual(arranged.map(n=>n.id),input.map(n=>n.id));
       assert.deepEqual(arrangeImages(arranged,0,viewport),arranged);
-      const rows = [...new Set(arranged.map(n=>n.y))];
       for(const n of arranged) if(n.fusion) {
         assert.equal(n.fusion.position!.x - n.x - n.width,80);
         assert.equal(n.fusion.position!.y,n.y);
         assert.equal(n.fusion.prompt,'keep me');
       }
-      rows.forEach((y,index)=>{
-        const row=arranged.filter(n=>n.y===y);
-        row.slice(1).forEach((n,i)=>{
-          const previous=boundsOf(canvasNodes([row[i]]))!;
-          assert.equal(n.x-previous.x-previous.width,120);
+      for (const zone of [arranged.filter(n=>n.fusion), arranged.filter(n=>!n.fusion)]) {
+        const zoneRows=[...new Set(zone.map(n=>n.y))].sort((a,b)=>a-b);
+        zoneRows.forEach((y,index)=>{
+          const row=zone.filter(n=>n.y===y).sort((a,b)=>a.x-b.x);
+          row.slice(1).forEach((n,i)=>{ const previous=boundsOf(canvasNodes([row[i]]))!; assert.equal(n.x-previous.x-previous.width,120); });
+          if(index+1<zoneRows.length){const b=boundsOf(canvasNodes(row))!;assert.equal(zoneRows[index+1]-b.y-b.height,120);}
         });
-        if(index+1<rows.length){const b=boundsOf(canvasNodes(row))!;assert.equal(rows[index+1]-b.y-b.height,120);}
-      });
+      }
       const nodes=canvasNodes(arranged),b=boundsOf(nodes)!,a=canvasSafeArea(viewport.width,viewport.height),v=fitImages(nodes,viewport.width,viewport.height);
       assert(v.zoom<=1&&v.zoom>=.03);
       assert(b.x*v.zoom+v.x>=a.x-1e-6);
@@ -47,4 +46,18 @@ test('empty and minimum zoom are defined',()=>{
   assert.deepEqual(arrangeImages([]),[]);
   assert.deepEqual(fitImages([],100,100),{x:0,y:0,zoom:1});
   assert.equal(fitImages([{...fixtures(1)[0],width:1e6,height:1e6}],1000,800).zoom,.03);
+});
+
+test('source chains stay together and standalone images occupy the right zone',()=>{
+ const image=(id:string,sourceImageId?:string):CanvasImage=>({id,name:id,url:'',x:20,y:90,width:100,height:150,sourceImageId});
+ const input=[image('solo'),image('child','root'),{...image('root'),fusion:{prompt:'keep',ratio:'auto',resolution:'2K'}},image('grandchild','child'),image('orphan','deleted')];
+ const arranged=arrangeImages(input,50);
+ const get=(id:string)=>arranged.find(n=>n.id===id)!;
+ assert.equal(get('root').x,50);
+ assert.equal(get('child').x,boundsOf(canvasNodes([get('root')]))!.x+boundsOf(canvasNodes([get('root')]))!.width+80);
+ assert.equal(get('grandchild').x,get('child').x+180);
+ assert.equal(get('child').y,get('root').y);
+ const group=boundsOf(canvasNodes(arranged.filter(n=>['root','child','grandchild'].includes(n.id))))!;
+ for(const id of ['solo','orphan']) assert(get(id).x>=group.x+group.width+240);
+ assert.deepEqual(arrangeImages(arranged,50),arranged);
 });

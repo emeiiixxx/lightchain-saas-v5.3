@@ -59,29 +59,71 @@ export function boundsOf(images: CanvasImage[]): Bounds | null {
 export function arrangeImages(items: CanvasImage[], startX = 0, viewport = { width: 1440, height: 852 }): CanvasImage[] {
   if (!items.length) return [];
   const area = canvasSafeArea(viewport.width, viewport.height);
-  function layout(columns: number) {
+  // Connected source/result records form one layout block; the attached editor
+  // belongs to its image. Missing/deleted sources never create phantom groups.
+  const byId = new Map(items.map(n => [n.id, n]));
+  const neighbors = new Map(items.map(n => [n.id, new Set<string>()]));
+  for (const n of items) {
+    if (n.sourceImageId && byId.has(n.sourceImageId) && !byId.get(n.sourceImageId)!.nodeOnly && !n.nodeOnly) {
+      neighbors.get(n.id)!.add(n.sourceImageId);
+      neighbors.get(n.sourceImageId)!.add(n.id);
+    }
+  }
+  const visited = new Set<string>();
+  const related: CanvasImage[][] = [], independent: CanvasImage[][] = [];
+  for (const n of items) {
+    if (visited.has(n.id)) continue;
+    const ids = new Set<string>(), queue = [n.id];
+    while (queue.length) {
+      const id = queue.pop()!;
+      if (ids.has(id)) continue;
+      ids.add(id); visited.add(id);
+      queue.push(...neighbors.get(id)!);
+    }
+    const members = items.filter(item => ids.has(item.id));
+    // Source first, then its descendants. The fallback also handles malformed cycles.
+    const ordered: CanvasImage[] = [], emitted = new Set<string>();
+    const emit = (item: CanvasImage) => {
+      if (emitted.has(item.id)) return;
+      emitted.add(item.id); ordered.push(item);
+      for (const child of members) if (child.sourceImageId === item.id) emit(child);
+    };
+    members.filter(item => !item.sourceImageId || !ids.has(item.sourceImageId)).forEach(emit);
+    members.forEach(emit);
+    (members.length > 1 || members.some(item => item.fusion) ? related : independent).push(ordered);
+  }
+  function layout(groups: CanvasImage[][], columns: number) {
     const result: CanvasImage[] = [];
     let y = 0;
-    for (let row = 0; row < items.length; row += columns) {
-      let x = startX, rowHeight = 0;
-      for (const n of items.slice(row, row + columns)) {
-        result.push({ ...n, x, y, fusion: n.fusion ? { ...n.fusion, position: { x: n.nodeOnly ? x : x + n.width + FUSION_GAP, y } } : undefined });
-        x += (n.nodeOnly ? FUSION_WIDTH : n.width + (n.fusion ? FUSION_GAP + FUSION_WIDTH : 0)) + GROUP_GAP;
-        rowHeight = Math.max(rowHeight, n.nodeOnly ? 0 : n.height, n.fusion ? FUSION_HEIGHT : 0);
+    for (let row = 0; row < groups.length; row += columns) {
+      let x = 0, rowHeight = 0;
+      for (const group of groups.slice(row, row + columns)) {
+        for (const n of group) {
+          result.push({ ...n, x, y, fusion: n.fusion ? { ...n.fusion, position: { x: n.nodeOnly ? x : x + n.width + FUSION_GAP, y } } : undefined });
+          x += (n.nodeOnly ? FUSION_WIDTH : n.width + (n.fusion ? FUSION_GAP + FUSION_WIDTH : 0)) + FUSION_GAP;
+          rowHeight = Math.max(rowHeight, n.nodeOnly ? 0 : n.height, n.fusion ? FUSION_HEIGHT : 0);
+        }
+        x += GROUP_GAP - FUSION_GAP;
       }
       y += rowHeight + GROUP_GAP;
     }
     return result;
   }
-  let best = layout(1), bestScore = -Infinity;
-  // Compare the uncapped fit ratio; this also avoids arbitrary choices when
-  // several layouts fit at 100%. Stable ties retain the smaller column count.
-  for (let columns = 1; columns <= items.length; columns++) {
-    const candidate = layout(columns), bounds = boundsOf(canvasNodes(candidate))!;
+  const shift = (nodes: CanvasImage[], dx: number) => nodes.map(n => ({...n, x: n.x + dx,
+    fusion: n.fusion ? {...n.fusion, position: {...fusionPosition(n), x: fusionPosition(n).x + dx}} : undefined}));
+  let best: CanvasImage[] = [], bestScore = -Infinity;
+  const relatedLayouts = Array.from({length: Math.max(1, related.length)}, (_, i) => layout(related, i + 1));
+  const independentLayouts = Array.from({length: Math.max(1, independent.length)}, (_, i) => layout(independent, i + 1));
+  for (const left of relatedLayouts) for (const right of independentLayouts) {
+    const leftBounds = boundsOf(canvasNodes(left));
+    const candidate = [...left, ...shift(right, leftBounds ? leftBounds.width + GROUP_GAP * 2 : 0)];
+    const bounds = boundsOf(canvasNodes(candidate));
+    if (!bounds) continue;
     const score = Math.min(area.width / bounds.width, area.height / bounds.height);
     if (score > bestScore + 1e-9) { best = candidate; bestScore = score; }
   }
-  return best;
+  const positioned = new Map(shift(best, startX).map(n => [n.id, n]));
+  return items.map(n => positioned.get(n.id) ?? n);
 }
 
 export function fusionPosition(image: CanvasImage) {

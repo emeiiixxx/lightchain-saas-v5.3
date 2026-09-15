@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import { Button, Divider, Icon, type IconName } from './ui';
 import type { CanvasImage } from '../canvas';
 import './cutout-editor.css';
@@ -112,7 +112,7 @@ export function CutoutEditor({ image, phase, onClose, onApply }: Props) {
           <button aria-pressed={!subtract} onClick={() => setSubtract(false)}><Icon name="cutoutAdd" size={16}/>加选</button>
           <button aria-pressed={subtract} onClick={() => setSubtract(true)}><Icon name="cutoutSubtract" size={16}/>减选</button><Divider vertical />
           <div className="cutout-slider"><Button aria-label="减小笔刷" onClick={() => setSize(v => Math.max(1,v-5))}><Icon name="cutoutMinus"/></Button>
-            <input type="range" min="1" max="100" value={size} aria-label="笔刷大小" onChange={e => setSize(Number(e.target.value))}/>
+            <input type="range" min="1" max="100" value={size} style={{ '--slider-progress': `${(size - 1) / 99 * 100}%` } as CSSProperties} aria-label="笔刷大小" onChange={e => setSize(Number(e.target.value))}/>
             <Button aria-label="增大笔刷" onClick={() => setSize(v => Math.min(100,v+5))}><Icon name="cutoutPlus"/></Button></div>
         </div>
       </div>
