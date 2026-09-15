@@ -4,7 +4,7 @@ import { fusionReferences, MAX_FUSION_REFERENCES, type FusionReference } from '.
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { assets } from './assets';
 import { Button, Dialog, Divider, Icon, type IconName } from './components/ui';
-import { DEFAULT_VIEW, deleteCanvasSelection, CANVAS_GRID_SIZE, gridDragDelta, canvasSafeArea, GROUP_GAP, canvasNodes, defaultFusion, fusionPosition, arrangeImages, boundsOf, fitImages, readImage, zoomAt, type CanvasImage, type FusionSettings, type Viewport } from './canvas';
+import { DEFAULT_VIEW, relatedCanvasIds, deleteCanvasSelection, CANVAS_GRID_SIZE, gridDragDelta, canvasSafeArea, GROUP_GAP, canvasNodes, defaultFusion, fusionPosition, arrangeImages, boundsOf, fitImages, readImage, zoomAt, type CanvasImage, type FusionSettings, type Viewport } from './canvas';
 import { locales, messages, type Locale } from './i18n';
 import { usePresence } from './usePresence';
 import { AssetPicker } from './components/AssetPicker';
@@ -60,6 +60,7 @@ export default function App() {
   const canvasReferenceCount = canvasReference ? fusionReferences(images.find(n => n.id === canvasReference.target)?.fusion).length + canvasReference.ids.length : 0;
   const [uploads, setUploads] = useState<LibraryImage[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const raisedIds = useMemo(() => relatedCanvasIds(images, canvasReference ? canvasReference.ids : selectedIds), [images, selectedIds, canvasReference]);
   const [snapToGrid, setSnapToGrid] = useState(() => localStorage.getItem('lc-flow-grid-snap') !== 'off');
   const [canvasMode, setCanvasMode] = useState<'select' | 'hand'>('select');
   const [snapGuide, setSnapGuide] = useState<{ x: number; y: number } | null>(null);
@@ -474,7 +475,7 @@ export default function App() {
           const source = images.find(item => !item.nodeOnly && item.id === result.sourceImageId);
           return source ? <ImageConnection key={`cutout:${result.id}`} image={source} target={result} active={selectedIds.includes(source.id) || selectedIds.includes(result.id)} /> : null;
         })}
-        {images.filter(n => !n.nodeOnly).map(n => <div key={n.id} data-image className={`canvas-image ${(canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)) ? 'selected' : ''}`} style={{ left: n.x, top: n.y, width: n.width, height: n.height } as React.CSSProperties}
+        {images.filter(n => !n.nodeOnly).map(n => <div key={n.id} data-image className={`canvas-image ${(canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)) ? 'selected' : ''}`} style={{ left: n.x, top: n.y, width: n.width, height: n.height, zIndex: raisedIds.has(n.id) ? (selectedIds.includes(n.id) ? 3 : 2) : undefined } as React.CSSProperties}
           tabIndex={0} role="button" aria-label={`${t.image}: ${n.name}`} aria-pressed={canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)}
           onFocus={e => { if (!canvasReference && e.target === e.currentTarget && !selectedRef.current.includes(n.id)) setSelectedIds([n.id]); }} onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || (e.key === ' ' && document.documentElement.dataset.focusNavigation === 'keyboard'))) { e.preventDefault(); if (canvasReference) { toggleCanvasReference(n.id); return; } setSelectedIds(e.shiftKey ? selectedIds.includes(n.id) ? selectedIds.filter(id => id !== n.id) : [...selectedIds, n.id] : [n.id]); } }}
           onPointerDown={e => beginPointer(e, n.id)}>
@@ -484,7 +485,7 @@ export default function App() {
         {images.filter(n => n.fusion).map(n => <div key={`${n.id}:fusion`}>
           {!n.nodeOnly && <FusionConnection image={n} active={selectedIds.includes(n.id) || selectedIds.includes(`${n.id}:fusion`)} />}
           <div className="fusion-position" data-fusion-id={n.id} data-selected={selectedIds.includes(`${n.id}:fusion`)} tabIndex={0} role="group" aria-label={`${t.fusion} · ${n.name}`}
-            style={{ left: fusionPosition(n).x, top: fusionPosition(n).y } as React.CSSProperties}
+            style={{ left: fusionPosition(n).x, top: fusionPosition(n).y, zIndex: raisedIds.has(n.id) ? (selectedIds.includes(`${n.id}:fusion`) ? 3 : 2) : undefined } as React.CSSProperties}
             onFocus={() => { if (!canvasReference && !selectedRef.current.includes(`${n.id}:fusion`)) setSelectedIds([`${n.id}:fusion`]); }}
             onPointerDownCapture={e => {
               if (canvasReference) { e.preventDefault(); e.stopPropagation(); return; }

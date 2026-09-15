@@ -149,3 +149,19 @@ export function deleteCanvasSelection(items: CanvasImage[], selected: string[]):
     return [deleteNode ? {...item, fusion: undefined} : item];
   });
 }
+
+// Selection raises the connected workflow visually without reordering saved data.
+export function relatedCanvasIds(items: CanvasImage[], selected: string[]): Set<string> {
+  const ids = new Set(items.filter(n => selected.includes(n.id) || selected.includes(`${n.id}:fusion`)).map(n => n.id));
+  const visible = new Set(items.filter(n => !n.nodeOnly).map(n => n.id));
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const n of items) {
+      if (!n.sourceImageId || !visible.has(n.id) || !visible.has(n.sourceImageId)) continue;
+      if (ids.has(n.id) === ids.has(n.sourceImageId)) continue;
+      ids.add(n.id); ids.add(n.sourceImageId); changed = true;
+    }
+  }
+  return ids;
+}
