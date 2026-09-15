@@ -4,7 +4,7 @@ import { fusionReferences, MAX_FUSION_REFERENCES, type FusionReference } from '.
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { assets } from './assets';
 import { Button, Dialog, Divider, Icon, type IconName } from './components/ui';
-import { DEFAULT_VIEW, relatedCanvasIds, deleteCanvasSelection, CANVAS_GRID_SIZE, gridDragDelta, canvasSafeArea, GROUP_GAP, canvasNodes, defaultFusion, fusionPosition, arrangeImages, boundsOf, fitImages, readImage, zoomAt, type CanvasImage, type FusionSettings, type Viewport } from './canvas';
+import { DEFAULT_VIEW, createFusionEditor, relatedCanvasIds, deleteCanvasSelection, CANVAS_GRID_SIZE, gridDragDelta, canvasSafeArea, GROUP_GAP, canvasNodes, defaultFusion, fusionPosition, arrangeImages, boundsOf, fitImages, readImage, zoomAt, type CanvasImage, type FusionSettings, type Viewport } from './canvas';
 import { locales, messages, type Locale } from './i18n';
 import { usePresence } from './usePresence';
 import { AssetPicker } from './components/AssetPicker';
@@ -13,7 +13,7 @@ import { SelectionToolbar } from './components/SelectionToolbar';
 import { CanvasChrome } from './components/CanvasChrome';
 import { FullImageViewer } from './components/FullImageViewer';
 import { FusionNode } from './components/FusionNode';
-import { FusionConnection, ImageConnection } from './components/FusionConnection';
+import { ImageConnection } from './components/FusionConnection';
 
 type Theme = 'dark' | 'light' | 'system';
 type Tool = 'cutout' | 'fusion' | 'directed' | 'flat';
@@ -364,9 +364,11 @@ export default function App() {
   function openFusion() {
     const image = imageRef.current.find(n => selectedRef.current.includes(n.id));
     if (!image) return;
-    const next = { ...image, fusion: image.fusion ?? defaultFusion() };
-    if (!image.fusion) { remember(imageRef.current); setImages(items => items.map(n => n.id === image.id ? next : n)); }
-    setSelectedIds([image.id]); revealFusion(next);
+    const next = createFusionEditor(imageRef.current, image.id, crypto.randomUUID());
+    if (!next) return;
+    remember(imageRef.current);
+    setImages(items => [...items, next]);
+    setSelectedIds([image.id]); revealFusion({...image, fusion: next.fusion});
   }
   function updateFusion(id: string, patch: Partial<FusionSettings>) {
     if ('references' in patch) remember(imageRef.current);
@@ -482,8 +484,11 @@ export default function App() {
           <Button hidden={!!canvasReference} variant="tonal" className="image-preview-button" aria-label={`${t.viewFull} · ${n.name}`} title={t.viewFull} data-overlay onClick={() => setPreviewImage(n)}><Icon name="viewFull" size={20} /></Button>
           <img src={n.url} alt={n.name} draggable={false} width={n.width} height={n.height} />
         </div>)}
-        {images.filter(n => n.fusion).map(n => <div key={`${n.id}:fusion`}>
-          {!n.nodeOnly && <FusionConnection image={n} active={selectedIds.includes(n.id) || selectedIds.includes(`${n.id}:fusion`)} />}
+        {images.filter(n => n.fusion).map(n => {
+          const source = n.editorSourceId ? images.find(item => item.id === n.editorSourceId && !item.nodeOnly) : !n.nodeOnly ? n : undefined;
+          const editorImage = source ? {...source, id: n.id, fusion: n.fusion, nodeOnly: false} : n;
+          return <div key={`${n.id}:fusion`}>
+          {source && <ImageConnection image={source} target={{...fusionPosition(n),id:`${n.id}:fusion`,width:280,height:579}} active={selectedIds.includes(source.id) || selectedIds.includes(`${n.id}:fusion`)} />}
           <div className="fusion-position" data-fusion-id={n.id} data-selected={selectedIds.includes(`${n.id}:fusion`)} tabIndex={0} role="group" aria-label={`${t.fusion} · ${n.name}`}
             style={{ left: fusionPosition(n).x, top: fusionPosition(n).y, zIndex: raisedIds.has(n.id) ? (selectedIds.includes(`${n.id}:fusion`) ? 3 : 2) : undefined } as React.CSSProperties}
             onFocus={() => { if (!canvasReference && !selectedRef.current.includes(`${n.id}:fusion`)) setSelectedIds([`${n.id}:fusion`]); }}
@@ -497,9 +502,9 @@ export default function App() {
               }
               beginPointer(e, `${n.id}:fusion`, true);
             }}>
-            <FusionNode image={n} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onNotify={announce} />
+            <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onNotify={announce} />
           </div>
-        </div>)}
+        </div>;})}
       </div>
 
       {shownSelection.value && !marquee && !canvasReference && <div className="selection-overlay" data-phase={shownSelection.phase} aria-label={t.groupSelection} style={{
