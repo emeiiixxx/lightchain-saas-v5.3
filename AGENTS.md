@@ -112,3 +112,8 @@
 ### New prompt card (2026-09-15)
 - Figma 43:19100: New creates a temporary top-of-list card and selects it immediately, clears search and scrolls to top. Empty card uses Untitled / 请输入提示词内容... placeholders, not stored text. Draft edits update card preview. Name/content are required, counters 50/2000, title Input L height40 and textarea radius16.
 - Cancel/Delete of unsaved card removes it and restores prior selection. Save persists the same new ID without duplication or associations. Verified browser new/selected/validation/cancel/live preview/save paths.
+
+
+### 连接分层整理与演示生成（本轮用户确认，覆盖旧横排规则）
+- 以 docs/canvas-layout-and-fit.md 为准：图片和编辑器是独立顶点，同源编辑器同列上下排，结果及后续步骤按实际边逐层向右。每层宽度取最大节点宽，列边界间隔80，分支间距120，父节点垂直居中；不再把同源分支按视窗横向分列。不同关联组及独立图区仍按视窗选择外部排列。
+- 用户授权本地演示生成：主图与非空指令齐全后，每次生成追加固定360×360示例图，用 generatedByEditorId 关联实际编辑器，支持后续编辑、整理及撤销。无AI请求、真实任务、扣费或提示词生成历史写入；此条覆盖旧的生成仅提示未接后端规则。

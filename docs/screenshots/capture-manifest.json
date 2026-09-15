@@ -14,16 +14,20 @@
     {
       "feature": 2,
       "file": "02-arrange-before.png",
-      "caption": "整理前：新增编辑节点分布",
-      "feishu_block_id": "doxcnposS8xjiG0lVUAI0skd8SJ",
-      "feishu_file_token": "UhqXbEkhNoD9WexFZ4AcyqXQn2F"
+      "caption": "整理前：同源编辑器、结果与后续分支",
+      "feishu_block_id": "doxcn8YkTMFAiK0GorhgCcqUKBc",
+      "feishu_file_token": "Ryo9bTwyvorDWFx3uFPcu9Z5nXf",
+      "source_url": "http://127.0.0.1:4173/",
+      "scenario": "三条同源编辑器分支、对应结果及一级继续编辑；实际UI操作截图"
     },
     {
       "feature": 2,
       "file": "02-arrange-after.png",
-      "caption": "整理后：关联内容顶部对齐并适应屏幕",
-      "feishu_block_id": "doxcn38gzFnRHMKaxIPzYidtZFb",
-      "feishu_file_token": "TWzjb1TdaokRi4xIP3dcAuyZngd"
+      "caption": "整理后：同源编辑器同列，结果与后续步骤按层向右",
+      "feishu_block_id": "doxcnFJtSq48TplGgws3TfarVDz",
+      "feishu_file_token": "Ooavb6ssmoKWBgx8GbYchjxDn8b",
+      "source_url": "http://127.0.0.1:4173/",
+      "scenario": "三条同源编辑器分支、对应结果及一级继续编辑；实际UI操作截图"
     },
     {
       "feature": 3,

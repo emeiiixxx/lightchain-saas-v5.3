@@ -8,7 +8,7 @@ export const FUSION_GAP = 80;
 export const GROUP_GAP = 120;
 export const FUSION_WIDTH = 280;
 export const FUSION_HEIGHT = 579;
-export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; nodeOnly?: boolean; editorSourceId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'flat' };
+export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; nodeOnly?: boolean; editorSourceId?: string; generatedByEditorId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'flat' };
 export const CANVAS_GRID_SIZE = 32;
 
 // Snap one shared drag delta so multi-selection spacing never changes.
@@ -59,72 +59,103 @@ export function boundsOf(images: CanvasImage[]): Bounds | null {
 export function arrangeImages(items: CanvasImage[], startX = 0, viewport = { width: 1440, height: 852 }): CanvasImage[] {
   if (!items.length) return [];
   const area = canvasSafeArea(viewport.width, viewport.height);
-  // Connected source/result records form one layout block; the attached editor
-  // belongs to its image. Missing/deleted sources never create phantom groups.
-  const byId = new Map(items.map(n => [n.id, n]));
-  const neighbors = new Map(items.map(n => [n.id, new Set<string>()]));
-  for (const n of items) {
-    const sourceId = n.editorSourceId ?? (!n.nodeOnly ? n.sourceImageId : undefined);
-    if (sourceId && byId.has(sourceId) && !byId.get(sourceId)!.nodeOnly) {
-      neighbors.get(n.id)!.add(sourceId);
-      neighbors.get(sourceId)!.add(n.id);
-    }
+  // Layout the visible graph: an image and its editor are separate vertices.
+  type Vertex = { id: string; width: number; height: number; editor: boolean; children: string[] };
+  type Placement = { id: string; x: number; y: number };
+  type Block = { width: number; height: number; nodes: Placement[] };
+  const vertices = new Map<string, Vertex>();
+  for (const item of items) {
+    if (!item.nodeOnly) vertices.set(item.id, {id:item.id, width:item.width, height:item.height, editor:false, children:[]});
+    if (item.fusion) vertices.set(`${item.id}:fusion`, {id:`${item.id}:fusion`, width:FUSION_WIDTH, height:FUSION_HEIGHT, editor:true, children:[]});
   }
-  const visited = new Set<string>();
-  const related: CanvasImage[][] = [], independent: CanvasImage[][] = [];
-  for (const n of items) {
-    if (visited.has(n.id)) continue;
-    const ids = new Set<string>(), queue = [n.id];
-    while (queue.length) {
-      const id = queue.pop()!;
-      if (ids.has(id)) continue;
-      ids.add(id); visited.add(id);
-      queue.push(...neighbors.get(id)!);
-    }
-    const members = items.filter(item => ids.has(item.id));
-    // Source first, then its descendants. The fallback also handles malformed cycles.
-    const ordered: CanvasImage[] = [], emitted = new Set<string>();
-    const emit = (item: CanvasImage) => {
-      if (emitted.has(item.id)) return;
-      emitted.add(item.id); ordered.push(item);
-      for (const child of members) if ((child.editorSourceId ?? child.sourceImageId) === item.id) emit(child);
-    };
-    members.filter(item => !(item.editorSourceId ?? item.sourceImageId) || !ids.has((item.editorSourceId ?? item.sourceImageId)!)).forEach(emit);
-    members.forEach(emit);
-    (members.length > 1 || members.some(item => item.fusion) ? related : independent).push(ordered);
+  const parents = new Map<string, string>();
+  const connect = (parent: string | undefined, child: string) => {
+    if (!parent || !vertices.has(parent) || !vertices.has(child) || parent === child) return;
+    vertices.get(parent)!.children.push(child); parents.set(child, parent);
+  };
+  for (const item of items) {
+    if (!item.nodeOnly) connect(item.generatedByEditorId ? `${item.generatedByEditorId}:fusion` : item.sourceImageId, item.id);
+    if (item.fusion) connect(item.editorSourceId ?? (!item.nodeOnly ? item.id : undefined), `${item.id}:fusion`);
   }
-  function layout(groups: CanvasImage[][], columns: number) {
-    const result: CanvasImage[] = [];
-    let y = 0;
-    for (let row = 0; row < groups.length; row += columns) {
-      let x = 0, rowHeight = 0;
-      for (const group of groups.slice(row, row + columns)) {
-        for (const n of group) {
-          result.push({ ...n, x, y, fusion: n.fusion ? { ...n.fusion, position: { x: n.nodeOnly ? x : x + n.width + FUSION_GAP, y } } : undefined });
-          x += (n.nodeOnly ? FUSION_WIDTH : n.width + (n.fusion ? FUSION_GAP + FUSION_WIDTH : 0)) + FUSION_GAP;
-          rowHeight = Math.max(rowHeight, n.nodeOnly ? 0 : n.height, n.fusion ? FUSION_HEIGHT : 0);
-        }
-        x += GROUP_GAP - FUSION_GAP;
+  const moved = (block: Block, x: number, y: number) => block.nodes.map(node => ({...node, x:node.x+x, y:node.y+y}));
+  const emitted = new Set<string>();
+  function branch(id: string): Block {
+    const vertex = vertices.get(id)!;
+    emitted.add(id);
+    const rows: Block[] = [];
+    for (const childId of vertex.children) {
+      if (emitted.has(childId)) continue;
+      // Images, editors and continuing workflows all participate individually;
+      // no pre-grouping into fixed two-column result rows.
+      rows.push(branch(childId));
+    }
+    // Siblings share a semantic column. Only a real downstream edge advances
+    // the workflow; fitting the viewport must never turn siblings into stages.
+    const children = pack(rows,1);
+    const height = Math.max(vertex.height,children.height);
+    const nodes: Placement[] = [{id, x:0, y:(height-vertex.height)/2},
+      ...moved(children,vertex.width+FUSION_GAP,(height-children.height)/2)];
+    return {nodes, height, width:vertex.width+(rows.length ? FUSION_GAP+children.width : 0)};
+
+  }
+  const related: Block[] = [], independent: Block[] = [];
+  const roots = [...vertices.keys()].filter(id=>!parents.has(id));
+  // The second pass also keeps malformed cyclic legacy records visible.
+  for (const id of [...roots,...vertices.keys()]) {
+    if (emitted.has(id)) continue;
+    const block = branch(id);
+    const members = new Set(block.nodes.map(node=>node.id));
+    const depths = new Map<string,number>([[id,0]]);
+    const queue = [id];
+    for (let index=0;index<queue.length;index++) {
+      const parent = queue[index];
+      for (const child of vertices.get(parent)!.children) {
+        if (!members.has(child) || depths.has(child)) continue;
+        depths.set(child,depths.get(parent)!+1); queue.push(child);
       }
-      y += rowHeight + GROUP_GAP;
     }
-    return result;
+    const widths: number[] = [];
+    for (const node of block.nodes) {
+      const depth = depths.get(node.id) ?? 0;
+      widths[depth] = Math.max(widths[depth] ?? 0, vertices.get(node.id)!.width);
+    }
+    const columns: number[] = [];
+    let offset = 0;
+    for (let depth=0;depth<widths.length;depth++) {
+      columns[depth] = offset; offset += widths[depth]+FUSION_GAP;
+    }
+    // Different image aspect ratios still share the same next-stage column.
+    block.nodes = block.nodes.map(node=>({...node,x:columns[depths.get(node.id) ?? 0]}));
+    block.width = Math.max(0,offset-FUSION_GAP);
+    (block.nodes.length>1 || vertices.get(id)!.editor ? related : independent).push(block);
   }
-  const shift = (nodes: CanvasImage[], dx: number) => nodes.map(n => ({...n, x: n.x + dx,
-    fusion: n.fusion ? {...n.fusion, position: {...fusionPosition(n), x: fusionPosition(n).x + dx}} : undefined}));
-  let best: CanvasImage[] = [], bestScore = -Infinity;
-  const relatedLayouts = Array.from({length: Math.max(1, related.length)}, (_, i) => layout(related, i + 1));
-  const independentLayouts = Array.from({length: Math.max(1, independent.length)}, (_, i) => layout(independent, i + 1));
+  function pack(blocks: Block[], columns: number): Block {
+    const nodes: Placement[] = [];
+    let width = 0, y = 0;
+    for (let row=0;row<blocks.length;row+=columns) {
+      let x=0, rowHeight=0;
+      for (const block of blocks.slice(row,row+columns)) {
+        nodes.push(...moved(block,x,y)); x += block.width+GROUP_GAP; rowHeight=Math.max(rowHeight,block.height);
+      }
+      width=Math.max(width,x-GROUP_GAP); y+=rowHeight+GROUP_GAP;
+    }
+    return {nodes, width, height:Math.max(0,y-GROUP_GAP)};
+  }
+  const relatedLayouts = Array.from({length:Math.max(1,related.length)},(_,i)=>pack(related,i+1));
+  const independentLayouts = Array.from({length:Math.max(1,independent.length)},(_,i)=>pack(independent,i+1));
+  let best: Placement[] = [], bestScore = -Infinity;
   for (const left of relatedLayouts) for (const right of independentLayouts) {
-    const leftBounds = boundsOf(canvasNodes(left));
-    const candidate = [...left, ...shift(right, leftBounds ? leftBounds.width + GROUP_GAP * 2 : 0)];
-    const bounds = boundsOf(canvasNodes(candidate));
-    if (!bounds) continue;
-    const score = Math.min(area.width / bounds.width, area.height / bounds.height);
-    if (score > bestScore + 1e-9) { best = candidate; bestScore = score; }
+    const offset = left.nodes.length && right.nodes.length ? left.width+GROUP_GAP*2 : 0;
+    const width = Math.max(left.width,offset+right.width), height = Math.max(left.height,right.height);
+    const score = Math.min(area.width/Math.max(1,width),area.height/Math.max(1,height));
+    if (score>bestScore+1e-9) { bestScore=score; best=[...left.nodes,...moved(right,offset,0)]; }
   }
-  const positioned = new Map(shift(best, startX).map(n => [n.id, n]));
-  return items.map(n => positioned.get(n.id) ?? n);
+  const positions = new Map(best.map(node=>[node.id,{x:node.x+startX,y:node.y}]));
+  return items.map(item=>{
+    const image = positions.get(item.id), editor = positions.get(`${item.id}:fusion`);
+    return {...item, ...(image ?? (item.nodeOnly ? editor : undefined)),
+      fusion:item.fusion && editor ? {...item.fusion,position:editor} : item.fusion};
+  });
 }
 
 export function fusionPosition(image: CanvasImage) {
@@ -162,8 +193,8 @@ export function relatedCanvasIds(items: CanvasImage[], selected: string[]): Set<
   while (changed) {
     changed = false;
     for (const n of items) {
-      const sourceId = n.editorSourceId ?? (visible.has(n.id) ? n.sourceImageId : undefined);
-      if (!sourceId || !visible.has(sourceId)) continue;
+      const sourceId = n.generatedByEditorId ?? n.editorSourceId ?? (visible.has(n.id) ? n.sourceImageId : undefined);
+      if (!sourceId || (n.generatedByEditorId ? !items.some(item => item.id === sourceId && item.fusion) : !visible.has(sourceId))) continue;
       if (ids.has(n.id) === ids.has(sourceId)) continue;
       ids.add(n.id); ids.add(sourceId); changed = true;
     }

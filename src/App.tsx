@@ -370,6 +370,24 @@ export default function App() {
     setImages(items => [...items, next]);
     setSelectedIds([image.id]); revealFusion({...image, fusion: next.fusion});
   }
+  function generateDemo(editorId: string) {
+    const current = imageRef.current;
+    const editor = current.find(item => item.id === editorId && item.fusion);
+    if (!editor) return;
+    const source = editor.editorSourceId ? current.find(item => item.id === editor.editorSourceId && !item.nodeOnly) : !editor.nodeOnly ? editor : undefined;
+    if (!source) return;
+    const position = fusionPosition(editor);
+    const width = 360, height = 360, x = position.x + 280 + 80;
+    let y = position.y;
+    const occupied = canvasNodes(current);
+    while (occupied.some(item => x < item.x + item.width + 16 && x + width + 16 > item.x && y < item.y + item.height + 16 && y + height + 16 > item.y)) y += height + 80;
+    const result: CanvasImage = {id: crypto.randomUUID(), name: '融合结果 · 演示', url: '/assets/prompts/result.png', x, y, width, height, generatedByEditorId: editorId};
+    remember(current);
+    setImages([...current, result]);
+    setSelectedIds([result.id]);
+    announce('已添加示例图，可点击整理查看连接布局');
+  }
+
   function updateFusion(id: string, patch: Partial<FusionSettings>) {
     if ('references' in patch) remember(imageRef.current);
     setImages(items => items.map(n => n.id === id && n.fusion ? { ...n, fusion: { ...n.fusion, ...patch } } : n));
@@ -473,6 +491,12 @@ export default function App() {
       </section>}
 
       <div className="canvas-world" style={{ transform: canvasTransform, '--canvas-inverse-scale': 1 / view.zoom } as React.CSSProperties}>
+        {images.filter(result => !result.nodeOnly && result.generatedByEditorId).map(result => {
+          const editor = images.find(item => item.id === result.generatedByEditorId && item.fusion);
+          if (!editor) return null;
+          const sourceId = editor.editorSourceId ?? (!editor.nodeOnly ? editor.id : undefined);
+          return <ImageConnection key={`generation:${result.id}`} image={{...editor, ...fusionPosition(editor), id:`${editor.id}:fusion`, width:280, height:579}} target={result} active={selectedIds.includes(result.id) || selectedIds.includes(`${editor.id}:fusion`) || (!!sourceId && selectedIds.includes(sourceId))} />;
+        })}
         {images.filter(result => !result.nodeOnly && result.sourceImageId).map(result => {
           const source = images.find(item => !item.nodeOnly && item.id === result.sourceImageId);
           return source ? <ImageConnection key={`cutout:${result.id}`} image={source} target={result} active={selectedIds.includes(source.id) || selectedIds.includes(result.id)} /> : null;
@@ -502,7 +526,7 @@ export default function App() {
               }
               beginPointer(e, `${n.id}:fusion`, true);
             }}>
-            <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onNotify={announce} />
+            <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => generateDemo(n.id)} onNotify={announce} />
           </div>
         </div>;})}
       </div>
