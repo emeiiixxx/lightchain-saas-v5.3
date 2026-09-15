@@ -469,7 +469,7 @@ export default function App() {
         </button>
       </section>}
 
-      <div className="canvas-world" style={{ transform: canvasTransform }}>
+      <div className="canvas-world" style={{ transform: canvasTransform, '--canvas-inverse-scale': 1 / view.zoom } as React.CSSProperties}>
         {images.filter(result => !result.nodeOnly && result.sourceImageId).map(result => {
           const source = images.find(item => !item.nodeOnly && item.id === result.sourceImageId);
           return source ? <ImageConnection key={`cutout:${result.id}`} image={source} target={result} active={selectedIds.includes(source.id) || selectedIds.includes(result.id)} /> : null;

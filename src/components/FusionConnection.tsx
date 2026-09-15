@@ -15,6 +15,6 @@ export function ImageConnection({ image, target: node, active }: { image: Canvas
   const handle = Math.max(48, Math.abs(end.x - start.x) * .45);
   const d = `M ${start.x} ${start.y} C ${start.x + handle * direction} ${start.y}, ${end.x - handle * direction} ${end.y}, ${end.x} ${end.y}`;
   return <svg className="fusion-connection" aria-hidden="true" data-active={active} data-source={image.id} data-target={node.id}>
-    <path d={d} fill="none" vectorEffect="non-scaling-stroke" />
+    <path d={d} fill="none" />
   </svg>;
 }

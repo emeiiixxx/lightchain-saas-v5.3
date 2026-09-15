@@ -4,7 +4,7 @@
 .canvas-image { position: absolute; isolation: isolate; pointer-events: auto; cursor: move; user-select: none; border-radius: var(--radius-xl); outline: none; }
 .is-panning .canvas-image { cursor: grab; }
 .canvas-image > img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: inherit; background: var(--surface-default); }
-.canvas-image::after { content: ''; position: absolute; inset: 0; border: 2px solid var(--border-brand); border-radius: inherit; opacity: 0; pointer-events: none; }
+.canvas-image::after { content: ''; position: absolute; inset: 0; border: calc(2px * var(--canvas-inverse-scale, 1)) solid var(--border-brand); border-radius: inherit; opacity: 0; pointer-events: none; }
 .canvas-image.selected::after { opacity: 1; }
 .canvas-image:focus-visible { outline: none; }
 .canvas-image .image-preview-button { position: absolute; top: 8px; right: 8px; width: 32px; min-width: 32px; height: 32px; padding: 0; }

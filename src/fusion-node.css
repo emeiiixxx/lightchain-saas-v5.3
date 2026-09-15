@@ -58,7 +58,7 @@
 /* Independent graph nodes. Interactive form controls never start a drag. */
 .fusion-position { border-radius: 16px; }
 .fusion-position:focus-visible { outline: none; }
-.fusion-position::after { content: ''; position: absolute; inset: 0; border: 2px solid var(--border-brand); border-radius: inherit; opacity: 0; pointer-events: none; }
+.fusion-position::after { content: ''; position: absolute; inset: 0; border: calc(2px * var(--canvas-inverse-scale, 1)) solid var(--border-brand); border-radius: inherit; opacity: 0; pointer-events: none; }
 .fusion-position[data-selected='true']::after { opacity: 1; }
 .fusion-position[data-selected='true'] .fusion-node { border-color: transparent; }
 .fusion-node, .fusion-header { cursor: grab; }
@@ -67,11 +67,11 @@
 .fusion-connection { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; pointer-events: none; z-index: -1; }
 /* Raise active edges above media and nodes, within the canvas world only. */
 .fusion-connection[data-active='true'] { z-index: 1; }
-.fusion-connection path { stroke: var(--border-medium); stroke-width: 1.5px; transition-property: d, stroke; }
-.fusion-connection[data-active='true'] path { stroke: var(--border-brand); stroke-width: 2px; stroke-dasharray: 8 6; animation: fusion-ants 800ms linear infinite; }
+.fusion-connection path { stroke: var(--border-medium); stroke-width: calc(1.5px * var(--canvas-inverse-scale, 1)); transition-property: d, stroke; }
+.fusion-connection[data-active='true'] path { stroke: var(--border-brand); stroke-width: calc(2px * var(--canvas-inverse-scale, 1)); stroke-dasharray: calc(8px * var(--canvas-inverse-scale, 1)) calc(6px * var(--canvas-inverse-scale, 1)); animation: fusion-ants 800ms linear infinite; }
 .is-dragging .fusion-connection path { transition-duration: 0ms; }
 /* Continuous flow is linear; selection color transitions retain 200ms ease-out. */
-@keyframes fusion-ants { to { stroke-dashoffset: -28; } }
+@keyframes fusion-ants { to { stroke-dashoffset: calc(-28px * var(--canvas-inverse-scale, 1)); } }
 
 .fusion-main-empty { display: flex; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-placeholder); }
 
