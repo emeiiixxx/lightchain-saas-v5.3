@@ -1,3 +1,4 @@
+import { notify } from './Toast';
 import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { Button, Icon } from './ui';
@@ -11,14 +12,13 @@ export function PromptTools({value,onChange,labels}:{value:string;onChange:(v:st
  const [editorOpen,setEditorOpen]=useState(false), editorShown=usePresence(editorOpen?true:null);
  const [libraryOpen,setLibraryOpen]=useState(false), libraryShown=usePresence(libraryOpen?true:null);
  const [anchor,setAnchor]=useState<HTMLElement|null>(null), saveShown=usePresence(anchor);
- const [entries,setEntries]=useState<Entry[]>(read); const [message,setMessage]=useState('');
- const store=(next:Entry[])=>{try{localStorage.setItem(KEY,JSON.stringify({version:2,entries:next}));setEntries(next);window.dispatchEvent(new Event('lc-prompts-changed'));return true;}catch{setMessage('保存失败，请检查浏览器存储空间');return false;}};
+ const [entries,setEntries]=useState<Entry[]>(read);
+ const store=(next:Entry[])=>{try{localStorage.setItem(KEY,JSON.stringify({version:2,entries:next}));setEntries(next);window.dispatchEvent(new Event('lc-prompts-changed'));return true;}catch{notify('保存失败，请检查浏览器存储空间');return false;}};
  useEffect(()=>{const refresh=()=>setEntries(read());window.addEventListener('storage',refresh);window.addEventListener('lc-prompts-changed',refresh);return()=>{window.removeEventListener('storage',refresh);window.removeEventListener('lc-prompts-changed',refresh);};},[]);
- const save=(el:HTMLElement)=>{setMessage('');if(!value.trim()){setMessage('请输入提示词后再保存');return;}setAnchor(el);};
+ const save=(el:HTMLElement)=>{if(!value.trim()){notify('请输入提示词后再保存');return;}setAnchor(el);};
  const openLibrary=()=>{setEntries(read());setLibraryOpen(true);};
  const actions=(large=false)=><><Button className={large?'':'fusion-xs-icon'} aria-label={labels.save} onClick={e=>save(e.currentTarget)}><Icon name="fusionSave" size={large?20:16}/></Button><Button className={large?'':'fusion-xs-icon'} aria-label={labels.library} onClick={openLibrary}><Icon name="fusionPrompts" size={large?20:16}/></Button></>;
  return <><Button className="fusion-xs-icon" aria-label={labels.expand} onClick={()=>setEditorOpen(true)}><Icon name="fusionExpand" size={16}/></Button>{actions()}
- {message&&<span role="alert" className="prompt-inline-error">{message}</span>}
  {editorShown.value&&createPortal(<ExpandedPrompt phase={editorShown.phase} title={labels.prompt} value={value} onChange={onChange} onClose={()=>setEditorOpen(false)} actions={actions(true)} clear={labels.clear}/>,document.body)}
  {libraryShown.value&&createPortal(<PromptLibrary phase={libraryShown.phase} entries={entries} onStore={store} onClose={()=>setLibraryOpen(false)} onApply={text=>{onChange(text);setLibraryOpen(false);}}/>,document.body)}
  {saveShown.value&&createPortal(<SavePrompt anchor={saveShown.value} phase={saveShown.phase} onClose={()=>setAnchor(null)} onSave={name=>{if(store([{id:crypto.randomUUID(),name,content:value},...entries]))setAnchor(null);}}/>, saveShown.value.closest('dialog')??document.body)}

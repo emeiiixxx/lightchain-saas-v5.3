@@ -1,3 +1,4 @@
+import { notify, ToastHost } from './components/Toast';
 import { CutoutEditor } from './components/CutoutEditor';
 import { fusionReferences, MAX_FUSION_REFERENCES, type FusionReference } from './canvas';
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
@@ -86,7 +87,6 @@ export default function App() {
   const [initialDropActive, setInitialDropActive] = useState(false);
   const [spaceDown, setSpaceDown] = useState(false);
   const [dragging, setDragging] = useState(false);
-  const [toast, setToast] = useState('');
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const t = messages[locale];
@@ -129,10 +129,8 @@ export default function App() {
   }, [setView]);
   const imageRef = useRef(images); imageRef.current = images;
   const uploadEpoch = useRef(0);
-  const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const shownMenu = usePresence(menu);
   const shownModal = usePresence(modal);
-  const shownToast = usePresence(toast || null);
   const shownPreview = usePresence(previewImage);
   const selection = useMemo(() => {
     const items = canvasNodes(images).filter(n => selectedIds.includes(n.id));
@@ -186,7 +184,7 @@ export default function App() {
     document.addEventListener('pointerdown', blurProjectName, true);
     return () => document.removeEventListener('pointerdown', blurProjectName, true);
   }, []);
-  useEffect(() => () => { for (const url of ownedUrls.current) URL.revokeObjectURL(url); clearTimeout(toastTimer.current); }, []);
+  useEffect(() => () => { for (const url of ownedUrls.current) URL.revokeObjectURL(url); }, []);
   useEffect(() => {
     if (!menu) return;
     const dismiss = (e: PointerEvent) => { if (!(e.target instanceof Element) || !e.target.closest('[data-menu]')) setMenu(null); };
@@ -195,7 +193,7 @@ export default function App() {
     return () => document.removeEventListener('pointerdown', dismiss, true);
   }, [menu]);
 
-  const announce = useCallback((message: string) => { setToast(message); clearTimeout(toastTimer.current); toastTimer.current = setTimeout(() => setToast(''), 3500); }, []);
+  const announce = notify;
   const remember = useCallback((previous: CanvasImage[], selection = selectedRef.current) => { history.current = [...history.current.slice(-39), {images: previous, selectedIds: selection}]; future.current = []; setCanUndo(true); setCanRedo(false); }, []);
   const undo = useCallback(() => { const previous = history.current.pop(); if (previous) { future.current.push({ images: imageRef.current, selectedIds: selectedRef.current }); setImages(previous.images); setSelectedIds(previous.selectedIds); } setCanUndo(history.current.length > 0); setCanRedo(future.current.length > 0); }, []);
   const redo = useCallback(() => { const next = future.current.pop(); if (next) { history.current.push({ images: imageRef.current, selectedIds: selectedRef.current }); setImages(next.images); setSelectedIds(next.selectedIds); } setCanUndo(history.current.length > 0); setCanRedo(future.current.length > 0); }, []);
@@ -536,7 +534,7 @@ export default function App() {
       {reading && !modal && <div className="canvas-message" role="status">{t.reading}</div>}
     </main>
 
-    {shownToast.value && <div className={`toast${shownReturnToNodes.value ? ' toast-above-return-hint' : ''}`} role="status" data-phase={shownToast.phase}>{shownToast.value}</div>}
+    <ToastHost />
 
     {shownCutout.value && <CutoutEditor key={shownCutout.value.id} image={shownCutout.value} phase={shownCutout.phase} onClose={() => setCutoutImage(null)} onApply={url => {
       const source = shownCutout.value!;

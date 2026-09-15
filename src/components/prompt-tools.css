@@ -52,7 +52,7 @@
 .prompt-library-body textarea:hover,.prompt-expanded-field:hover {background:var(--control-fill-hover);}
 .prompt-library-body input:focus,.prompt-library-body textarea:focus,.prompt-name-input:focus-within,.prompt-library-search:focus-within,.prompt-expanded-field:focus-within {background:var(--control-fill-focus);border-color:var(--brand-primary);outline:none;}
 .prompt-library-body input::placeholder,.prompt-library-body textarea::placeholder,.prompt-name-input input::placeholder,.prompt-library-search input::placeholder {color:var(--text-placeholder);opacity:1;}
-.prompt-empty {color:var(--text-tertiary);font-size:14px;padding:12px;}.prompt-inline-error {position:absolute;bottom:100%;font-size:12px;color:var(--text-primary);background:var(--surface-floating);padding:8px;border-radius:8px;}
+.prompt-empty {color:var(--text-tertiary);font-size:14px;padding:12px;}
 @media(max-width:680px){.prompt-library aside{width:38%;}.prompt-library h2{font-size:16px;}.prompt-library nav{padding:8px;}.prompt-library-search .icon{display:none;}}
 /* Figma 107:5136: prompt content 280px; 160px image grid with 8px gaps. */
 .prompt-library-body.has-related {overflow:hidden;}
