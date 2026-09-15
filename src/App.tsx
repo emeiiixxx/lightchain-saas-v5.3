@@ -234,7 +234,7 @@ export default function App() {
     const wheel = (event: WheelEvent) => {
       if (event.target instanceof Element && event.target.closest('[data-overlay]')) return;
       event.preventDefault(); const rect = element.getBoundingClientRect();
-      setView(v => event.ctrlKey || event.metaKey
+      setView(v => event.ctrlKey || event.metaKey || event.altKey
         ? zoomAt(v, Math.exp(-event.deltaY * 0.005), event.clientX - rect.left, event.clientY - rect.top)
         : { ...v, x: v.x - event.deltaX, y: v.y - event.deltaY });
     };
