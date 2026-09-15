@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1100" viewBox="0 0 1000 1100">
+<rect x="0" y="0" width="1000" height="1100" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="Noto Sans SC, sans-serif" font-size="26" font-weight="600" fill="#19344B" text-anchor="start">SaaS v5.3 · 提示词编辑与复用</text>
+<ellipse cx="500" cy="94" rx="126" ry="27" fill="#EAF7F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="500" y="101" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">编辑节点提示词</text>
+<polyline points="500,121 500,154" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="500,154 495,145 505,145" fill="#7D91A1"/>
+<rect x="300" y="154" width="400" height="72" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="500.0" y="183.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">可按需放大输入框</text>
+<text x="500.0" y="211.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">同一文本实时同步</text>
+<polyline points="500,226 500,260" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="500,260 225,260 225,316" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="225,316 220,307 230,307" fill="#7D91A1"/>
+<polyline points="500,260 700,260 700,316" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="700,316 695,307 705,307" fill="#7D91A1"/>
+<text x="225" y="298" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="600" fill="#367DC4" text-anchor="middle">保存为独立条目</text>
+<text x="700" y="298" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="600" fill="#238A85" text-anchor="middle">从提示词库复用</text>
+<rect x="45" y="316" width="360" height="64" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="225.0" y="355.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">内容非空，点击保存</text>
+<polyline points="225,380 225,412" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="225,412 220,403 230,403" fill="#7D91A1"/>
+<rect x="45" y="412" width="360" height="64" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="225.0" y="451.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">输入名称（最多 50 字）</text>
+<polyline points="225,476 225,508" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="225,508 220,499 230,499" fill="#7D91A1"/>
+<rect x="45" y="508" width="360" height="76" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="225.0" y="539.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">保存独立条目到提示词库</text>
+<text x="225.0" y="567.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">不继承其他条目的关联图片</text>
+<polyline points="225,584 225,619" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="225,619 220,610 230,610" fill="#7D91A1"/>
+<ellipse cx="225" cy="646" rx="90" ry="27" fill="#EAF7F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="225" y="653" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">保存完成</text>
+<rect x="465" y="316" width="470" height="64" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="700.0" y="355.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">从节点或放大编辑器打开提示词库</text>
+<polyline points="700,380 700,412" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="700,412 695,403 705,403" fill="#238A85"/>
+<rect x="465" y="412" width="470" height="64" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="700.0" y="451.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">搜索并选择提示词条目</text>
+<polyline points="700,476 700,508" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="700,508 695,499 705,499" fill="#238A85"/>
+<rect x="465" y="508" width="470" height="76" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="700.0" y="539.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">查看详情与匹配的关联图片</text>
+<text x="700.0" y="567.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">无记录时隐藏图片区域</text>
+<polyline points="700,584 700,602" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="700,602 695,593 705,593" fill="#238A85"/>
+<polygon points="700,602.0 820.0,648 700,694.0 580.0,648" fill="#FFF8E9" stroke="#BD924B" stroke-width="1.6"/>
+<text x="700" y="655" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">选择使用方式</text>
+<polyline points="580,648 565,648 565,720" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="565,720 560,711 570,711" fill="#7D91A1"/>
+<polyline points="820,648 835,648 835,720" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="835,720 830,711 840,711" fill="#7D91A1"/>
+<rect x="450" y="720" width="230" height="64" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="565.0" y="745.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">插入</text>
+<text x="565.0" y="773.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">追加到已有输入后</text>
+<rect x="720" y="720" width="230" height="64" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="835.0" y="745.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">应用</text>
+<text x="835.0" y="773.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">覆盖原输入内容</text>
+<polyline points="565,784 565,811 700,811" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="835,784 835,811 700,811" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="700,811 700,842" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="700,842 695,833 705,833" fill="#7D91A1"/>
+<rect x="465" y="842" width="470" height="60" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="700.0" y="879.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">校验使用后总字数不超过 2000 字</text>
+<polyline points="700,902 700,930" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="700,930 695,921 705,921" fill="#7D91A1"/>
+<rect x="465" y="930" width="470" height="60" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="700.0" y="967.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">更新原输入，并关闭提示词库</text>
+<polyline points="700,990 700,1020" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="700,1020 695,1011 705,1011" fill="#7D91A1"/>
+<rect x="465" y="1020" width="470" height="64" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="700.0" y="1045.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">返回节点或原放大编辑器</text>
+<text x="700.0" y="1073.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">放大编辑器保持原尺寸与位置</text>
+<text x="45" y="724" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="600" fill="#19344B" text-anchor="start">异常与退出规则</text>
+<text x="45" y="760" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">空内容不能保存；保存失败保留输入。</text>
+<text x="45" y="788" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">使用后超限：留在库内，提示精简</text>
+<text x="45" y="816" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">或改用覆盖；不能写入超长文本。</text>
+<text x="45" y="874" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">取消 / 关闭库不应用内容，</text>
+<text x="45" y="902" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">并返回原入口。</text>
+<text x="45" y="960" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">保存或应用均不触发生成。</text>
+<text x="45" y="988" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">当前关联图片为演示记录。</text>
+</svg>

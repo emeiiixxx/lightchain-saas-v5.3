@@ -1,0 +1,4 @@
+<h2>（一）画布浏览与整理</h2>
+<whiteboard type="svg" path="@docs/diagrams/canvas-product-flow.svg"></whiteboard>
+<h2>（二）提示词编辑与复用</h2>
+<whiteboard type="svg" path="@docs/diagrams/prompt-product-flow.svg"></whiteboard>
