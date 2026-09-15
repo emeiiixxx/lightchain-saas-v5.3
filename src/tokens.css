@@ -134,3 +134,7 @@
 [data-theme] { --surface-floating: var(--surface-default); }
 [data-theme='dark'] { --surface-secondary: rgb(48.45,52.53,53.55); --background-default: rgb(23.4324325,26.8783783,27.5675682); }
 [data-theme='light'] { --surface-secondary: rgb(249.441005,250.359005,250.359005); --background-default: rgb(244.314289,245.285715,245.285715); }
+
+/* Beta Status/warning, VariableID:31:4; prompt badge 107:5146. */
+[data-theme="dark"] { --status-warning: rgb(252, 167, 59); }
+[data-theme="light"] { --status-warning: rgb(250, 140, 22); }

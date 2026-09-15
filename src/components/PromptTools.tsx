@@ -6,7 +6,7 @@ import { usePresence } from '../usePresence';
 import './prompt-tools.css';
 import { associatedImages, demoPrompts, type PromptEntry as Entry } from '../prompt-associations';
 const KEY='lc-flow-fusion-prompts';
-function readSaved(): Entry[] {try {const raw=JSON.parse(localStorage.getItem(KEY)||'[]');const data: unknown=raw?.version===2?raw.entries:raw;return Array.isArray(data)?data.flatMap((v,i)=>typeof v==='string'?[{id:`legacy-${i}`,name:v.slice(0,50),content:v}]:v && typeof v.name==='string' && typeof v.content==='string'?[{id:v.id||`legacy-${i}`,name:v.name,content:v.content}]:[]):[];}catch{return [];}}
+function readSaved(): Entry[] {try {const raw=JSON.parse(localStorage.getItem(KEY)||'[]');const data: unknown=raw?.version===2?raw.entries:raw;return Array.isArray(data)?data.flatMap((v,i)=>typeof v==='string'?[{id:`legacy-${i}`,name:v.slice(0,50),content:v}]:v && typeof v.name==='string' && typeof v.content==='string'?[{id:v.id||`legacy-${i}`,name:v.name,content:v.content,pinned:v.pinned===true}]:[]):[];}catch{return [];}}
 function read(): Entry[] {const saved=readSaved();try{if(JSON.parse(localStorage.getItem(KEY)||'null')?.version===2)return saved;}catch{}return [...saved,...demoPrompts.filter(d=>!saved.some(e=>e.id===d.id))];}
 export function PromptTools({value,onChange,labels}:{value:string;onChange:(v:string)=>void;labels:{expand:string;save:string;library:string;prompt:string;clear:string;close:string}}){
  const [editorOpen,setEditorOpen]=useState(false), editorShown=usePresence(editorOpen?true:null);
@@ -48,18 +48,56 @@ function ExpandedPrompt({phase,title,value,onChange,onClose,actions,clear}:{phas
 }
 function PromptLibrary({phase,entries,onStore,onApply,onClose}:{phase:'enter'|'exit';entries:Entry[];onStore:(e:Entry[])=>boolean;onApply:(text:string)=>void;onClose:()=>void}){
  const ref=useRef<HTMLDialogElement>(null);useModal(ref);const [selected,setSelected]=useState(entries[0]?.id??'');const [query,setQuery]=useState('');const [draft,setDraft]=useState<Entry|null>(null);
+ const [menu,setMenu]=useState<{entry:Entry;anchor:HTMLElement}|null>(null);
  const previousSelection=useRef(selected);
  const isNew=!!draft&&!entries.some(e=>e.id===draft.id);
  const cancelDraft=()=>{if(isNew)setSelected(entries.some(e=>e.id===previousSelection.current)?previousSelection.current:(entries[0]?.id??''));setDraft(null);};
  const addPrompt=()=>{setQuery('');if(isNew)return;previousSelection.current=selected;const entry={id:crypto.randomUUID(),name:'',content:''};setDraft(entry);setSelected(entry.id);};
  useEffect(()=>{if(isNew){ref.current?.querySelector('nav')?.scrollTo({top:0});ref.current?.querySelector<HTMLInputElement>('[aria-label="编辑提示词名称"]')?.focus({preventScroll:true});}},[isNew]);
  const related=associatedImages(entries.find(e=>e.id===selected));
- const listed=isNew?[draft!,...entries]:entries;
+ const sorted=[...entries].sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned));
+ const listed=isNew?[draft!,...sorted]:sorted;
+ const removeEntry=(id:string)=>{const next=entries.filter(e=>e.id!==id);if(onStore(next)){if(selected===id){setSelected([...next].sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned))[0]?.id??'');setDraft(null);}setMenu(null);}};
+ const togglePin=()=>{
+   if(!menu)return;
+   const entry=entries.find(e=>e.id===menu.entry.id);if(!entry)return;
+   const pinned=!entry.pinned;
+   const updated={...entry,pinned};
+   // Most recently pinned goes first, including ahead of older pinned entries.
+   const rest=entries.filter(e=>e.id!==entry.id);
+   const next=pinned?[updated,...rest]:[...rest.filter(e=>e.pinned),updated,...rest.filter(e=>!e.pinned)];
+   if(onStore(next)){
+     if(draft?.id===entry.id)setDraft({...draft,pinned});
+     setMenu(null);
+     requestAnimationFrame(()=>ref.current?.querySelector('nav')?.scrollTo({top:0}));
+     notify(pinned?'已置顶':'已取消置顶');
+   }
+ };
  const visible=listed.filter(e=>(e.name+' '+e.content).toLowerCase().includes(query.toLowerCase()));const current=entries.find(e=>e.id===selected);
  return <dialog ref={ref} data-overlay data-select-popup className="prompt-library" data-phase={phase} inert={phase==='exit'} aria-label="提示词库" onCancel={e=>{e.preventDefault();onClose();}}>
  <aside><header><div><h2>提示词库</h2><Button aria-label="新增提示词" onClick={addPrompt}><Icon name="cutoutPlus"/></Button></div><label className="prompt-library-search"><Icon name="search"/><input aria-label="搜索提示词" placeholder="请输入关键词搜索" value={query} onChange={e=>setQuery(e.target.value)}/></label></header>
- <nav>{visible.map(entry=><button key={entry.id} aria-pressed={selected===entry.id} onClick={()=>{setSelected(entry.id);if(entry.id!==draft?.id)setDraft(null);}}><strong>{entry.name||'Untitled'}</strong><p>{entry.content||'请输入提示词内容...'}</p></button>)}{!visible.length&&<p className="prompt-empty">{entries.length?'没有匹配的提示词':'暂无保存的提示词'}</p>}</nav></aside>
+ <nav>{visible.map(entry=><div className="prompt-list-card" key={entry.id} data-selected={selected===entry.id}>
+ <button className="prompt-card-select" aria-pressed={selected===entry.id} onClick={()=>{setSelected(entry.id);if(entry.id!==draft?.id)setDraft(null);}}><strong>{entry.pinned&&<span className="prompt-pinned-tag">置顶</span>}<span className="prompt-card-title">{entry.name||'Untitled'}</span></strong><p>{entry.content||'请输入提示词内容...'}</p></button>
+ {entries.some(e=>e.id===entry.id)&&<Button className="prompt-card-more" aria-label={`更多 · ${entry.name||'Untitled'}`} aria-haspopup="menu" aria-expanded={menu?.entry.id===entry.id} onClick={e=>setMenu(menu?.entry.id===entry.id?null:{entry,anchor:e.currentTarget})}><Icon name="promptMore" size={20}/></Button>}
+ </div>)}{!visible.length&&<p className="prompt-empty">{entries.length?'没有匹配的提示词':'暂无保存的提示词'}</p>}</nav></aside>
+ {menu&&<PromptCardMenu anchor={menu.anchor} pinned={!!menu.entry.pinned} onClose={()=>setMenu(null)} onPin={togglePin} onDelete={()=>removeEntry(menu.entry.id)}/>}
+
  <section><header><h2>{isNew?'新增提示词':'提示词详情'}</h2><Button aria-label="关闭" onClick={onClose}><Icon name="close"/></Button></header>
  <div className={`prompt-library-body ${!draft&&related.length?'has-related':''}`}>{draft?<><label><span>提示词标题 <em className="prompt-required">*</em></span><div className="prompt-edit-title"><input aria-label="编辑提示词名称" placeholder="请输入名称" required maxLength={50} value={draft.name} onChange={e=>setDraft({...draft,name:e.target.value})}/><span>{draft.name.length}/50</span></div></label><label className="prompt-content-edit"><span>提示词内容 <em className="prompt-required">*</em></span><div className="prompt-edit-content"><textarea aria-label="编辑提示词内容" placeholder="请输入提示词内容..." required maxLength={2000} value={draft.content} onChange={e=>setDraft({...draft,content:e.target.value})}/><span>{draft.content.length}/2000</span></div></label></>:current?<><div className="prompt-detail-card" data-node-id="111:5494"><h3>{current.name}</h3><p className="prompt-detail-content">{current.content}</p></div>{related.length>0&&<div className="prompt-related" data-node-id="107:5226"><h3>关联图片</h3><div className="prompt-related-scroll"><div className="prompt-related-grid">{related.map(image=><figure key={image.id}><img src={image.url} alt={image.name}/><figcaption>{image.role}</figcaption></figure>)}</div></div></div>}</>:<p className="prompt-empty">选择或新增一条提示词</p>}</div>
  <footer>{draft?<>{<Button variant="outline" className="prompt-delete" size="m" onClick={()=>{if(isNew){cancelDraft();return;}const next=entries.filter(entry=>entry.id!==draft.id);if(onStore(next)){setSelected(next[0]?.id??'');setDraft(null);}}}><Icon name="promptTrash" size={20}/>删除</Button>}<Button variant="outline" size="m" onClick={cancelDraft}>取消</Button><Button variant="primary" size="m" disabled={!draft.name.trim()||!draft.content.trim()} onClick={()=>{const entry={...draft,name:draft.name.trim()};if(onStore([entry,...entries.filter(e=>e.id!==entry.id)])){setSelected(entry.id);setDraft(null);}}}>保存</Button></>:<><Button variant="outline" size="m" disabled={!current} onClick={()=>setDraft(current??null)}>编辑</Button><Button variant="primary" size="m" disabled={!current} onClick={()=>{if(current)onApply(current.content);}}>应用</Button></>}</footer></section></dialog>;
+}
+
+function PromptCardMenu({anchor,pinned,onClose,onPin,onDelete}:{anchor:HTMLElement;pinned:boolean;onClose:()=>void;onPin:()=>void;onDelete:()=>void}){
+ const ref=useRef<HTMLDivElement>(null);
+ useLayoutEffect(()=>{
+   const el=ref.current!;el.showPopover();
+   const place=()=>{const r=anchor.getBoundingClientRect();el.style.left=`${Math.max(8,Math.min(r.right-el.offsetWidth,innerWidth-el.offsetWidth-8))}px`;el.style.top=`${r.bottom+4+el.offsetHeight>innerHeight-8?Math.max(8,r.top-el.offsetHeight-4):r.bottom+4}px`;};
+   place();el.querySelector<HTMLElement>('[role="menuitem"]')?.focus({preventScroll:true});
+   window.addEventListener('resize',place);document.addEventListener('scroll',place,true);
+   return()=>{window.removeEventListener('resize',place);document.removeEventListener('scroll',place,true);};
+ },[anchor]);
+ return <div ref={ref} popover="auto" role="menu" aria-label="提示词操作" className="prompt-card-menu" onToggle={e=>{if(e.newState==='closed')onClose();}} onKeyDown={e=>{const buttons=Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="menuitem"]'));if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();const i=buttons.indexOf(document.activeElement as HTMLButtonElement);buttons[e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length]?.focus();}if(e.key==='Escape'){e.preventDefault();e.stopPropagation();onClose();anchor.focus({preventScroll:true});}}}>
+ <button role="menuitem" onClick={()=>{onPin();anchor.focus({preventScroll:true});}}><Icon name="promptPin"/>{pinned?'取消置顶':'置顶'}</button>
+ <button role="menuitem" onClick={onDelete}><Icon name="promptTrash"/>删除</button>
+ </div>;
 }

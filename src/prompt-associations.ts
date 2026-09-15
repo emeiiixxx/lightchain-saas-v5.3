@@ -1,4 +1,4 @@
-export type PromptEntry = { id: string; name: string; content: string };
+export type PromptEntry = { id: string; name: string; content: string; pinned?: boolean };
 export type PromptGeneration = {
   id: string;
   promptId: string;
