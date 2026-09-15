@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Checkbox">
+<circle id="Circle box" cx="12" cy="12" r="12" fill="#0BC1B8"/>
+<g id="Check mark">
+<path id="Vector (Stroke)" d="M16.082 7.80371C16.4664 7.40734 17.0996 7.39792 17.4961 7.78223C17.8924 8.1666 17.9028 8.79978 17.5186 9.19629L11.2178 15.6963C10.8337 16.0922 10.2013 16.1021 9.80469 15.7188L6.80469 12.8193C6.40761 12.4355 6.39743 11.8024 6.78125 11.4053C7.1651 11.0082 7.79823 10.997 8.19531 11.3809L10.4766 13.5859L16.082 7.80371Z" fill="#171B1C"/>
+</g>
+</g>
+</svg>

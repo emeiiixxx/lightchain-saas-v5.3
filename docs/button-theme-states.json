@@ -1,0 +1,78 @@
+{
+  "source": {
+    "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+    "nodeId": "12:3127",
+    "libraryFileKey": "FO7bCfBv6NPle8egsVaDvG",
+    "captured": "2026-09-14"
+  },
+  "tokens": [
+    {
+      "name": "Control/fill/hover",
+      "key": "0427773612dab346b8335a17bab0559dc490e255",
+      "values": {
+        "Dark": {
+          "r": 0.1899999976158142,
+          "g": 0.20599998533725739,
+          "b": 0.20999999344348907,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.9580952525138855,
+          "g": 0.961904764175415,
+          "b": 0.961904764175415,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Brand/primary-hover",
+      "key": "e12038f00fe953e2d2a9196ad0ed25543eaeaebe",
+      "values": {
+        "Dark": {
+          "r": 0.125490203499794,
+          "g": 0.8156862854957581,
+          "b": 0.7686274647712708,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.125490203499794,
+          "g": 0.8156862854957581,
+          "b": 0.7686274647712708,
+          "a": 1
+        }
+      }
+    }
+  ],
+  "states": {
+    "outline": {
+      "nodeId": "141:1824",
+      "fill": "Control/fill/hover",
+      "foreground": "Text/primary",
+      "border": "Border/weak"
+    },
+    "ghost": {
+      "nodeId": "141:1838",
+      "fill": "State/hover",
+      "foreground": "Text/primary"
+    },
+    "primary": {
+      "nodeId": "141:1784",
+      "fill": "Brand/primary-hover",
+      "foreground": "Text/on-brand-black"
+    },
+    "purchaseLight": {
+      "default": {
+        "nodeId": "160:1028",
+        "fill": "#effefb",
+        "foreground": "Text/secondary"
+      },
+      "hover": {
+        "nodeId": "160:1046",
+        "fill": "#c9fef6",
+        "foreground": "Text/primary"
+      },
+      "gradients": "Existing exact exported gradient assets match the current design context in both states."
+    }
+  },
+  "motion": "200ms ease-out; no additional brightness filter on pointer press"
+}

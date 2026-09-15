@@ -1,0 +1,61 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodeId": "68:28134",
+  "icons": [
+    {
+      "action": "cutout",
+      "source": "https://www.figma.com/api/mcp/asset/a52e548d-b540-4c90-8a0e-3f6a6162aad3.svg",
+      "asset": "toolbarCutout",
+      "size": 16
+    },
+    {
+      "action": "fusion",
+      "source": "https://www.figma.com/api/mcp/asset/77d249eb-3a4a-4279-9a95-8c6cfd14400e.svg",
+      "asset": "toolbarFusion",
+      "size": 16
+    },
+    {
+      "action": "directed",
+      "source": "https://www.figma.com/api/mcp/asset/150a16a0-3819-479b-91b9-c30709bba852.svg",
+      "asset": "toolbarDirected",
+      "size": 16
+    },
+    {
+      "action": "flat",
+      "source": "https://www.figma.com/api/mcp/asset/fd7983c7-52f6-45cf-a66e-00b1776362fe.svg",
+      "asset": "singleFlat",
+      "size": 16
+    },
+    {
+      "action": "editImage",
+      "source": "https://www.figma.com/api/mcp/asset/7fe85002-8594-4e43-9d62-0e849e078aa0.svg",
+      "asset": "editImage",
+      "size": 16
+    },
+    {
+      "action": "imageSearch",
+      "source": "https://www.figma.com/api/mcp/asset/c455bb3b-b8c8-4409-bbb7-d71f7e5738a2.svg",
+      "asset": "imageSearch",
+      "size": 20
+    },
+    {
+      "action": "saveAsset",
+      "source": "https://www.figma.com/api/mcp/asset/069cb700-90c9-4d90-8298-2ad869e65c99.svg",
+      "asset": "saveAsset",
+      "size": 20
+    },
+    {
+      "action": "download",
+      "source": "https://www.figma.com/api/mcp/asset/efe79452-0661-4637-8f45-06667eda2264.svg",
+      "asset": "downloadIcon",
+      "size": 20
+    },
+    {
+      "action": "sendImage",
+      "source": "https://www.figma.com/api/mcp/asset/d1458d8b-281f-4ad8-b1e6-afac836ff060.svg",
+      "asset": "sendIcon",
+      "size": 20
+    }
+  ],
+  "note": "Original Figma SVGs. Text action icons updated from this node; four icon-only actions match existing geometry. Shared initialization and multi-image toolbar icons are unchanged."
+}

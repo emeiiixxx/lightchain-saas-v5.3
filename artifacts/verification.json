@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "checks": [
+    "1920\u00d71080 initial frame: panel position, button size, four entries",
+    "Light theme and project rename survive refresh",
+    "All four tools open an accessible dialog; empty submission disabled; Escape dismisses",
+    "Invalid file error and successful local image upload",
+    "Image dragging and undo restore coordinates",
+    "Zoom, fit and background panning",
+    "Delete and undo restore the image",
+    "Double-click canvas opens native file picker and inserts an image",
+    "English language switch and 390px responsive layout without horizontal overflow",
+    "No browser runtime errors",
+    "Light theme control backgrounds and purchase text match their source tokens",
+    "Initial dark theme paints correct colors without a theme flash"
+  ],
+  "errors": []
+}

@@ -1,0 +1,16 @@
+/* Figma 68:27657. Full-viewport image interaction, independent of canvas view. */
+.full-image-viewer { position: fixed; inset: 0; margin: 0; padding: 0; width: 100dvw; height: 100dvh; max-width: none; max-height: none; border: 0; border-radius: 0; overflow: hidden; background: transparent; color: var(--text-on-brand-white); outline: none; }
+.full-image-viewer::backdrop { background: var(--overlay-scrim); backdrop-filter: blur(50px); }
+.full-image-viewer[data-phase='enter']::backdrop { animation: ui-enter var(--motion-duration) var(--motion-easing) both; }
+.full-image-viewer[data-phase='exit']::backdrop { animation: ui-exit var(--motion-duration) var(--motion-easing) both; }
+.full-image-stage { position: absolute; inset: 0; touch-action: none; user-select: none; cursor: grab; }
+.full-image-stage.is-panning { cursor: grabbing; }
+.full-image-center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.full-image-content { display: block; width: 100%; height: 100%; object-fit: contain; transform-origin: center; }
+.full-image-stage.is-panning .full-image-content { transition-duration: 0ms; }
+.full-image-instructions { position: absolute; top: 48px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 192px); padding: 8px 16px; border: 1px solid var(--border-weak); border-radius: 8px; background: var(--overlay-toast); backdrop-filter: blur(10px); color: var(--text-on-brand-white); font-size: 14px; line-height: 20px; font-weight: 400; text-align: center; pointer-events: none; }
+.full-image-viewer .full-image-close { position: absolute; top: 24px; right: 24px; width: 32px; min-width: 32px; height: 32px; padding: 0; color: var(--text-on-brand-white); }
+.full-image-viewer .full-image-close:hover:not(:disabled) { background: rgba(255, 255, 255, .1); color: var(--text-on-brand-white); }
+@media (max-width: 680px) {
+  .full-image-instructions { top: 60px; max-width: calc(100% - 32px); width: max-content; font-size: 12px; line-height: 18px; padding: 8px 12px; }
+}

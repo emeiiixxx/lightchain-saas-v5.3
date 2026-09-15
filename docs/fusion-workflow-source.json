@@ -1,0 +1,116 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodeId": "35:6234",
+  "workflowNode": "35:6422",
+  "contentSlot": "I35:6422;2575:3889",
+  "width": 280,
+  "sourceHeight": 577,
+  "sourcePanelOffset": {
+    "x": "image right + 164",
+    "y": "image top - 7"
+  },
+  "assets": [
+    {
+      "name": "fusionBrush",
+      "url": "https://www.figma.com/api/mcp/asset/4003b869-d34d-4b84-8d80-972082147a08.svg"
+    },
+    {
+      "name": "fusionAddImage",
+      "url": "https://www.figma.com/api/mcp/asset/1e4f15f6-108e-4863-ba27-22821a5599ce.svg"
+    },
+    {
+      "name": "fusionExpand",
+      "url": "https://www.figma.com/api/mcp/asset/9a6af0f7-ab06-43b4-bd7d-95560d8b7f41.svg"
+    },
+    {
+      "name": "fusionSave",
+      "url": "https://www.figma.com/api/mcp/asset/2086466c-a58c-4e73-a66c-b4dc472f582d.svg"
+    },
+    {
+      "name": "fusionPrompts",
+      "url": "https://www.figma.com/api/mcp/asset/6f40694b-ae97-4925-b693-0df5066de987.svg"
+    },
+    {
+      "name": "fusionRatio",
+      "url": "https://www.figma.com/api/mcp/asset/4233495f-8369-4560-b9c2-b1f874e3ab40.svg"
+    },
+    {
+      "name": "fusionHd",
+      "url": "https://www.figma.com/api/mcp/asset/da3e6d78-fcd1-42e9-850e-170ae4e49423.svg"
+    },
+    {
+      "name": "fusionStar",
+      "url": "https://www.figma.com/api/mcp/asset/a244e9ab-aff4-4b2b-9497-bd7a2cb35c1f.svg"
+    },
+    {
+      "name": "fusionTip",
+      "url": "https://www.figma.com/api/mcp/asset/1e65555a-3bd8-43d3-bf97-38f4b4b11c6c.svg"
+    },
+    {
+      "name": "fusionConnector",
+      "url": "https://www.figma.com/api/mcp/asset/0aebcc6a-46d6-4211-bde2-b77dc55e7817.svg"
+    }
+  ],
+  "behavior": [
+    "Initialization fusion picker creates a main image with a fusion workflow.",
+    "Image toolbar creates or reopens one fusion workflow on the selected image without duplicating it.",
+    "Reference entry opens an action menu: Add reference opens a multi-select AssetPicker with remaining capacity; Choose from canvas starts direct image selection with Confirm/Cancel and Escape. Both routes share a 4-reference limit and deduplicate existing URLs. Add/remove is undoable; cancelling keeps references unchanged.",
+    "Prompt is capped at 2000 characters; supports clear, expanded editing and local saved prompts.",
+    "Default settings are Auto and 2K. Additional ratio/resolution menu choices are demo implementation choices; the supplied frame only specifies the defaults.",
+    "Workflow uses an independent world-space position. Drag the header or non-interactive node surface to move it; input fields and buttons keep their normal behavior. Image and workflow can be selected and moved independently; Shift and marquee can select both. Both participate in minimap and view fitting.",
+    "Delete/undo restores the source image with its workflow configuration.",
+    "Generation and mask editing use the existing no-backend message; cost 999 is the design placeholder.",
+    "Select either connected endpoint to show a brand-colored animated dashed connection. Deselect both to show an idle solid gray connection. Path endpoints update during either drag. Continuous dash travel uses 800ms linear cycles, while selection color transitions use 200ms ease-out. Reduced motion disables dash travel.",
+    "Node moves are undoable; deleting only the workflow keeps the source image. Arrange canvas explicitly lays out image/workflow pairs again.",
+    "SettingSelect uses a viewport-anchored native top-layer popover, outside the transformed canvas. Dedicated styles prevent generic popover and Ghost overrides. Menu width is 228px, padding 8px, option height 32px, gap 8px; flips above when needed. Outside click clears focus; Escape restores trigger focus; keyboard arrows select options. Portal events do not start node dragging."
+  ],
+  "verification": [
+    "TypeScript noEmit passed",
+    "Browser tests: both entry routes, actual main image binding, reference selection/cancel, required prompt, save/restore/clear/expanded editing, menus, dark/light, zoom, repeated entry, delete/undo",
+    "1280x800: fit avoids fixed chrome, focused form controls do not invoke canvas deletion, minimap includes workflow",
+    "Independent image/node dragging, input focus selection, animated/idle line states, zoom-correct dragging, undo/redo, dark/light and reduced-motion browser checks passed.",
+    "SettingSelect: TypeScript passed; browser checks passed for top-layer hit testing against a maximum-z-index overlay, both settings, checked state, keyboard, Escape, outside blur, dark/light, stable menu sizing at canvas zoom, viewport anchoring, unchanged node position and no runtime errors. Dark/light screenshots inspected.",
+    "2026-09-15: TypeScript and isolated Chrome passed: both theme hover tokens, unchanged reference border, GenerateTask gradient/exit, upload limit 4 and remaining capacity 1, four thumbnails at node height 579, removal undo/redo, direct canvas selection cancel/confirm, no runtime errors."
+  ],
+  "settingsComponents": {
+    "fileKey": "FO7bCfBv6NPle8egsVaDvG",
+    "select": "66:194",
+    "filledDefault": "66:71",
+    "filledHover": "66:74",
+    "filledFocus": "66:77",
+    "menuContent": "891:4592",
+    "optionDefault": "380:2696",
+    "optionSelected": "380:2704",
+    "optionGap": "8px per project interaction rule"
+  },
+  "layoutOverride": {
+    "source": "User spacing revision 2026-09-15",
+    "imageToEditorGap": 80,
+    "groupGap": 120,
+    "arrangedAlignment": "top",
+    "contract": "canvas-layout-and-fit.md"
+  },
+  "generateButton": {
+    "component": "Button/GenerateTask",
+    "default": "88:32168",
+    "hover": "88:32171",
+    "source": "Live product component set 88:32167 referenced by 35:6422",
+    "defaultFill": "Brand/primary",
+    "hoverFill": "linear-gradient(90deg, #71f4d3 0%, #52dde0 50%, #ccb2ff 100%)",
+    "foreground": "Text/on-brand-black",
+    "height": 32,
+    "label": "12px / 16px, 500",
+    "cost": "14px / 20px, 500",
+    "motion": "200ms ease-out gradient layer opacity; reduced motion respected",
+    "implementation": "GenerateTaskButton is separate from the primitive Primary button."
+  },
+  "referenceUpdate": {
+    "source": "User browser comment 2026-09-15",
+    "maxCount": 4,
+    "hoverBackground": "State/hover",
+    "hoverBorder": "Unchanged Border/weak",
+    "menu": "Shared DropdownMenuContent styling, native top-layer popover with viewport anchoring",
+    "thumbnails": "Four equal square columns with 8px gaps; each tile and the add entry use aspect-ratio 1. At the 280px node width each tile is 57.5px square. The row reserves 64px to preserve node geometry.",
+    "selection": "Canvas image positions and normal selection are preserved; pending reference selection is committed only on Confirm."
+  }
+}

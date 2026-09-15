@@ -1,0 +1,21 @@
+{
+  "result": "passed",
+  "preview": "http://127.0.0.1:4173/",
+  "checks": [
+    "All four initial tools open the asset picker",
+    "File chooser does not allow multiple files",
+    "No selection disables Confirm; counter is 0 / 1",
+    "Selecting another asset replaces the previous selection",
+    "Keyword search and category empty states",
+    "Cancel leaves canvas unchanged",
+    "Confirm creates or replaces exactly one main image",
+    "Multi-file drop rejected with explicit limit message",
+    "Invalid image rejected with read error",
+    "Local file upload selected and retained in session history",
+    "Dark and light themes; mobile dialog within viewport",
+    "No browser page errors",
+    "TypeScript noEmit passed"
+  ],
+  "desktop1920": { "columns": 6, "gap": 8.015625, "tileWidth": 291.65625, "tileHeight": 291.65625 },
+  "dataBoundary": "Figma fixture gallery and local session uploads; external asset sources not connected"
+}

@@ -1,0 +1,96 @@
+{
+  "dark": {
+    "normal": {
+      "background": "rgba(255, 255, 255, 0.05)",
+      "border": "rgba(255, 255, 255, 0.1)",
+      "color": "rgb(170, 184, 182)",
+      "hint": "rgb(170, 184, 182)",
+      "radius": "16px",
+      "style": "dashed",
+      "duration": "0.2s",
+      "easing": "ease-out"
+    },
+    "hover": {
+      "background": "rgba(255, 255, 255, 0.1)",
+      "border": "rgba(255, 255, 255, 0.2)",
+      "color": "rgb(255, 255, 255)",
+      "hint": "rgb(170, 184, 182)",
+      "radius": "16px",
+      "style": "dashed",
+      "duration": "0.2s",
+      "easing": "ease-out"
+    },
+    "dragging": {
+      "background": "rgba(32, 208, 196, 0.2)",
+      "border": "rgb(11, 193, 184)",
+      "color": "rgb(255, 255, 255)",
+      "hint": "rgb(170, 184, 182)",
+      "radius": "16px",
+      "style": "dashed",
+      "duration": "0.2s",
+      "easing": "ease-out"
+    },
+    "disabled": {
+      "background": "rgba(255, 255, 255, 0.05)",
+      "border": "rgba(255, 255, 255, 0.1)",
+      "color": "rgba(255, 255, 255, 0.3)",
+      "hint": "rgba(255, 255, 255, 0.3)",
+      "radius": "16px",
+      "style": "dashed",
+      "duration": "0.2s",
+      "easing": "ease-out"
+    }
+  },
+  "light": {
+    "normal": {
+      "background": "rgba(0, 0, 0, 0.03)",
+      "border": "rgba(0, 0, 0, 0.05)",
+      "color": "rgb(82, 97, 95)",
+      "hint": "rgb(82, 97, 95)",
+      "radius": "16px",
+      "style": "dashed",
+      "duration": "0.2s",
+      "easing": "ease-out"
+    },
+    "hover": {
+      "background": "rgba(0, 0, 0, 0.08)",
+      "border": "rgba(0, 0, 0, 0.08)",
+      "color": "rgb(17, 24, 23)",
+      "hint": "rgb(82, 97, 95)",
+      "radius": "16px",
+      "style": "dashed",
+      "duration": "0.2s",
+      "easing": "ease-out"
+    },
+    "dragging": {
+      "background": "rgba(32, 208, 196, 0.2)",
+      "border": "rgb(32, 208, 196)",
+      "color": "rgb(17, 24, 23)",
+      "hint": "rgb(82, 97, 95)",
+      "radius": "16px",
+      "style": "dashed",
+      "duration": "0.2s",
+      "easing": "ease-out"
+    },
+    "disabled": {
+      "background": "rgba(0, 0, 0, 0.03)",
+      "border": "rgba(0, 0, 0, 0.05)",
+      "color": "rgba(0, 0, 0, 0.2)",
+      "hint": "rgba(0, 0, 0, 0.2)",
+      "radius": "16px",
+      "style": "dashed",
+      "duration": "0.2s",
+      "easing": "ease-out"
+    }
+  },
+  "pickerHover": {
+    "background": "rgba(0, 0, 0, 0.08)",
+    "border": "rgba(0, 0, 0, 0.08)",
+    "color": "rgb(17, 24, 23)",
+    "hint": "rgb(82, 97, 95)",
+    "radius": "16px",
+    "style": "dashed",
+    "duration": "0.2s",
+    "easing": "ease-out"
+  }
+}

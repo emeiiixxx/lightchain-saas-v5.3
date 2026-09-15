@@ -1,0 +1,1341 @@
+{
+  "source": "https://www.figma.com/design/FO7bCfBv6NPle8egsVaDvG/Lightchain-SaaS-v5.1-libraries-Beta",
+  "readAt": "2026-09-15",
+  "collections": [
+    {
+      "id": "VariableCollectionId:3:8",
+      "name": "Semantic Tokens",
+      "modes": [
+        {
+          "name": "Dark",
+          "modeId": "3:0"
+        },
+        {
+          "name": "Light",
+          "modeId": "54:0"
+        }
+      ],
+      "count": 111
+    },
+    {
+      "id": "VariableCollectionId:30:2",
+      "name": "Primitive Colors",
+      "modes": [
+        {
+          "name": "Value",
+          "modeId": "30:0"
+        }
+      ],
+      "count": 175
+    }
+  ],
+  "tokens": [
+    {
+      "id": "VariableID:3:9",
+      "name": "Brand/primary",
+      "type": "COLOR",
+      "dark": [
+        11,
+        193.000004,
+        184.000004,
+        1
+      ],
+      "light": [
+        112.199999,
+        234.600004,
+        222.046192,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:10",
+      "name": "Brand/primary-hover",
+      "type": "COLOR",
+      "dark": [
+        32.000002,
+        208.000003,
+        196.000004,
+        1
+      ],
+      "light": [
+        32.000002,
+        208.000003,
+        196.000004,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:11",
+      "name": "Brand/primary-disabled",
+      "type": "COLOR",
+      "dark": [
+        13,
+        98.000002,
+        97.000002,
+        1
+      ],
+      "light": [
+        166.508114,
+        251.691898,
+        240.113508,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:14",
+      "name": "Text/secondary",
+      "type": "COLOR",
+      "dark": [
+        226.949981,
+        232.050007,
+        232.050007,
+        1
+      ],
+      "light": [
+        47.000001,
+        59,
+        58,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:15",
+      "name": "Text/tertiary",
+      "type": "COLOR",
+      "dark": [
+        170.000005,
+        184.000004,
+        182.000004,
+        1
+      ],
+      "light": [
+        82.000003,
+        97.000002,
+        95.000002,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:16",
+      "name": "Text/disabled",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        0.3
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.2
+      ]
+    },
+    {
+      "id": "VariableID:3:17",
+      "name": "Background/default",
+      "type": "COLOR",
+      "dark": [
+        23.432433,
+        26.878378,
+        27.567568,
+        1
+      ],
+      "light": [
+        244.314289,
+        245.285715,
+        245.285715,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:18",
+      "name": "Background/secondary",
+      "type": "COLOR",
+      "dark": [
+        38.000002,
+        42.000001,
+        43.000001,
+        1
+      ],
+      "light": [
+        255,
+        255,
+        255,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:19",
+      "name": "Background/canvas",
+      "type": "COLOR",
+      "dark": [
+        9.5,
+        10.5,
+        10.5,
+        1
+      ],
+      "light": [
+        241.64285,
+        242.857144,
+        242.857144,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:20",
+      "name": "Surface/default",
+      "type": "COLOR",
+      "dark": [
+        38.000002,
+        42.000001,
+        43.000001,
+        1
+      ],
+      "light": [
+        255,
+        255,
+        255,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:21",
+      "name": "Surface/secondary",
+      "type": "COLOR",
+      "dark": [
+        48.449999,
+        52.529996,
+        53.549998,
+        1
+      ],
+      "light": [
+        249.441005,
+        250.359005,
+        250.359005,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:22",
+      "name": "Border/medium",
+      "type": "COLOR",
+      "dark": [
+        121,
+        128.000008,
+        128.000008,
+        1
+      ],
+      "light": [
+        162.000006,
+        169.000005,
+        169.000005,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:23",
+      "name": "Border/weak",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        0.1
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.05
+      ]
+    },
+    {
+      "id": "VariableID:3:24",
+      "name": "State/hover",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        0.1
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.08
+      ]
+    },
+    {
+      "id": "VariableID:3:26",
+      "name": "Overlay/scrim",
+      "type": "COLOR",
+      "dark": [
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.75
+      ]
+    },
+    {
+      "id": "VariableID:3:30",
+      "name": "Text/on-brand-black",
+      "type": "COLOR",
+      "dark": [
+        17.000001,
+        24,
+        23.000001,
+        1
+      ],
+      "light": [
+        17.000001,
+        24,
+        23.000001,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:50",
+      "name": "State/selected-brand",
+      "type": "COLOR",
+      "dark": [
+        32.000002,
+        208.000003,
+        196.000004,
+        1
+      ],
+      "light": [
+        112.199999,
+        234.600004,
+        222.046192,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3:54",
+      "name": "Radius/S",
+      "type": "FLOAT",
+      "dark": 4,
+      "light": 4
+    },
+    {
+      "id": "VariableID:3:55",
+      "name": "Radius/Base",
+      "type": "FLOAT",
+      "dark": 8,
+      "light": 8
+    },
+    {
+      "id": "VariableID:3:56",
+      "name": "Radius/L",
+      "type": "FLOAT",
+      "dark": 12,
+      "light": 12
+    },
+    {
+      "id": "VariableID:3:57",
+      "name": "Radius/XL",
+      "type": "FLOAT",
+      "dark": 16,
+      "light": 16
+    },
+    {
+      "id": "VariableID:3:58",
+      "name": "Radius/Max",
+      "type": "FLOAT",
+      "dark": 999,
+      "light": 999
+    },
+    {
+      "id": "VariableID:3:59",
+      "name": "Spacing/2XS",
+      "type": "FLOAT",
+      "dark": 2,
+      "light": 2
+    },
+    {
+      "id": "VariableID:3:60",
+      "name": "Spacing/XS",
+      "type": "FLOAT",
+      "dark": 4,
+      "light": 4
+    },
+    {
+      "id": "VariableID:3:61",
+      "name": "Spacing/Base",
+      "type": "FLOAT",
+      "dark": 8,
+      "light": 8
+    },
+    {
+      "id": "VariableID:3:62",
+      "name": "Spacing/2XL",
+      "type": "FLOAT",
+      "dark": 16,
+      "light": 16
+    },
+    {
+      "id": "VariableID:3:63",
+      "name": "Spacing/3XL",
+      "type": "FLOAT",
+      "dark": 24,
+      "light": 24
+    },
+    {
+      "id": "VariableID:3:64",
+      "name": "Height/Base",
+      "type": "FLOAT",
+      "dark": 16,
+      "light": 16
+    },
+    {
+      "id": "VariableID:3:65",
+      "name": "Height/L",
+      "type": "FLOAT",
+      "dark": 20,
+      "light": 20
+    },
+    {
+      "id": "VariableID:3:66",
+      "name": "Height/XL",
+      "type": "FLOAT",
+      "dark": 24,
+      "light": 24
+    },
+    {
+      "id": "VariableID:30:78",
+      "name": "Text/primary",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "light": [
+        17.000001,
+        24,
+        23.000001,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:30:79",
+      "name": "Text/placeholder",
+      "type": "COLOR",
+      "dark": [
+        123,
+        138.000007,
+        136.000007,
+        1
+      ],
+      "light": [
+        123,
+        138.000007,
+        136.000007,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:31:2",
+      "name": "Brand/secondary",
+      "type": "COLOR",
+      "dark": [
+        80.000003,
+        92.000002,
+        94.000002,
+        1
+      ],
+      "light": [
+        230.000001,
+        233.000001,
+        234.000001,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:31:3",
+      "name": "Status/danger",
+      "type": "COLOR",
+      "dark": [
+        255,
+        76.499995,
+        76.499995,
+        1
+      ],
+      "light": [
+        255,
+        76.499995,
+        76.499995,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:31:4",
+      "name": "Status/warning",
+      "type": "COLOR",
+      "dark": [
+        252,
+        167.000005,
+        59,
+        1
+      ],
+      "light": [
+        250,
+        140.000007,
+        22.000001,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:31:5",
+      "name": "Status/success",
+      "type": "COLOR",
+      "dark": [
+        54.000001,
+        209.000003,
+        131.000007,
+        1
+      ],
+      "light": [
+        54.000001,
+        209.000003,
+        131.000007,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:34:2",
+      "name": "Border/brand",
+      "type": "COLOR",
+      "dark": [
+        11,
+        193.000004,
+        184.000004,
+        1
+      ],
+      "light": [
+        32.000002,
+        208.000003,
+        196.000004,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:43:2",
+      "name": "Radius/2XL",
+      "type": "FLOAT",
+      "dark": 24,
+      "light": 24
+    },
+    {
+      "id": "VariableID:43:3",
+      "name": "Radius/3XL",
+      "type": "FLOAT",
+      "dark": 32,
+      "light": 32
+    },
+    {
+      "id": "VariableID:51:2",
+      "name": "Surface/media-overlay",
+      "type": "COLOR",
+      "dark": [
+        0,
+        0,
+        0,
+        0.6
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.6
+      ]
+    },
+    {
+      "id": "VariableID:51:3",
+      "name": "Surface/media-overlay-strong",
+      "type": "COLOR",
+      "dark": [
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.75
+      ]
+    },
+    {
+      "id": "VariableID:52:2",
+      "name": "Height/2XL",
+      "type": "FLOAT",
+      "dark": 32,
+      "light": 32
+    },
+    {
+      "id": "VariableID:52:3",
+      "name": "Height/3XL",
+      "type": "FLOAT",
+      "dark": 40,
+      "light": 40
+    },
+    {
+      "id": "VariableID:52:78",
+      "name": "Height/4XL",
+      "type": "FLOAT",
+      "dark": 48,
+      "light": 48
+    },
+    {
+      "id": "VariableID:52:127",
+      "name": "Brand/secondary-hover",
+      "type": "COLOR",
+      "dark": [
+        121,
+        131.000007,
+        134.000007,
+        1
+      ],
+      "light": [
+        211.000003,
+        216.000002,
+        217.000002,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:52:128",
+      "name": "Brand/secondary-disabled",
+      "type": "COLOR",
+      "dark": [
+        61,
+        72.000003,
+        75.000003,
+        1
+      ],
+      "light": [
+        160.000006,
+        169.000005,
+        171.000005,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:86:2",
+      "name": "Status/danger-hover",
+      "type": "COLOR",
+      "dark": [
+        255,
+        100.000002,
+        100.000002,
+        1
+      ],
+      "light": [
+        255,
+        100.000002,
+        100.000002,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:86:3",
+      "name": "Status/danger-disabled",
+      "type": "COLOR",
+      "dark": [
+        255,
+        76.499995,
+        76.499995,
+        1
+      ],
+      "light": [
+        255,
+        197.000003,
+        197.000003,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:52:567",
+      "name": "Spacing/4XL",
+      "type": "FLOAT",
+      "dark": 32,
+      "light": 32
+    },
+    {
+      "id": "VariableID:111:735",
+      "name": "Radius/M",
+      "type": "FLOAT",
+      "dark": 6,
+      "light": 6
+    },
+    {
+      "id": "VariableID:131:1661",
+      "name": "Spacing/XL",
+      "type": "FLOAT",
+      "dark": 12,
+      "light": 12
+    },
+    {
+      "id": "VariableID:131:1662",
+      "name": "Height/S",
+      "type": "FLOAT",
+      "dark": 8,
+      "light": 8
+    },
+    {
+      "id": "VariableID:131:1663",
+      "name": "Height/XS",
+      "type": "FLOAT",
+      "dark": 4,
+      "light": 4
+    },
+    {
+      "id": "VariableID:131:1664",
+      "name": "Height/M",
+      "type": "FLOAT",
+      "dark": 12,
+      "light": 12
+    },
+    {
+      "id": "VariableID:131:1956",
+      "name": "Text/on-brand-white",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "light": [
+        255,
+        255,
+        255,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:325:2425",
+      "name": "Height/TextArea/S",
+      "type": "FLOAT",
+      "dark": 80,
+      "light": 80
+    },
+    {
+      "id": "VariableID:325:2426",
+      "name": "Height/TextArea/M",
+      "type": "FLOAT",
+      "dark": 120,
+      "light": 120
+    },
+    {
+      "id": "VariableID:325:2427",
+      "name": "Height/TextArea/L",
+      "type": "FLOAT",
+      "dark": 160,
+      "light": 160
+    },
+    {
+      "id": "VariableID:347:3186",
+      "name": "Control/fill/default",
+      "type": "COLOR",
+      "dark": [
+        38.000002,
+        42.000001,
+        43.000001,
+        1
+      ],
+      "light": [
+        255,
+        255,
+        255,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:347:3803",
+      "name": "Spacing/S",
+      "type": "FLOAT",
+      "dark": 6,
+      "light": 6
+    },
+    {
+      "id": "VariableID:472:4185",
+      "name": "Fill/on-brand",
+      "type": "COLOR",
+      "dark": [
+        0,
+        0,
+        0,
+        0.75
+      ],
+      "light": [
+        250,
+        250,
+        250,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:475:2",
+      "name": "Control/fill/hover",
+      "type": "COLOR",
+      "dark": [
+        48.449999,
+        52.529996,
+        53.549998,
+        1
+      ],
+      "light": [
+        244.314289,
+        245.285715,
+        245.285715,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:475:3",
+      "name": "Control/fill/disabled",
+      "type": "COLOR",
+      "dark": [
+        67.115996,
+        74.113199,
+        75.684004,
+        1
+      ],
+      "light": [
+        228.000002,
+        231.000001,
+        229.000002,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:476:3762",
+      "name": "Control/fill/focus",
+      "type": "COLOR",
+      "dark": [
+        23.432433,
+        26.878378,
+        27.567568,
+        1
+      ],
+      "light": [
+        249.441005,
+        250.359005,
+        250.359005,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:476:3764",
+      "name": "Control/fill/black",
+      "type": "COLOR",
+      "dark": [
+        23.432433,
+        26.878378,
+        27.567568,
+        1
+      ],
+      "light": [
+        23.432433,
+        26.878378,
+        27.567568,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:621:4904",
+      "name": "Width/2XS",
+      "type": "FLOAT",
+      "dark": 16,
+      "light": 16
+    },
+    {
+      "id": "VariableID:621:4905",
+      "name": "Width/XS",
+      "type": "FLOAT",
+      "dark": 20,
+      "light": 20
+    },
+    {
+      "id": "VariableID:621:4906",
+      "name": "Width/S",
+      "type": "FLOAT",
+      "dark": 24,
+      "light": 24
+    },
+    {
+      "id": "VariableID:621:4907",
+      "name": "Width/M",
+      "type": "FLOAT",
+      "dark": 32,
+      "light": 32
+    },
+    {
+      "id": "VariableID:621:4908",
+      "name": "Width/L",
+      "type": "FLOAT",
+      "dark": 40,
+      "light": 40
+    },
+    {
+      "id": "VariableID:621:4909",
+      "name": "Width/XL",
+      "type": "FLOAT",
+      "dark": 48,
+      "light": 48
+    },
+    {
+      "id": "VariableID:621:4910",
+      "name": "Width/2XL",
+      "type": "FLOAT",
+      "dark": 56,
+      "light": 56
+    },
+    {
+      "id": "VariableID:621:4911",
+      "name": "Width/Container/M",
+      "type": "FLOAT",
+      "dark": 80,
+      "light": 80
+    },
+    {
+      "id": "VariableID:621:4912",
+      "name": "Width/Container/L",
+      "type": "FLOAT",
+      "dark": 120,
+      "light": 120
+    },
+    {
+      "id": "VariableID:621:4913",
+      "name": "Width/Container/XL",
+      "type": "FLOAT",
+      "dark": 160,
+      "light": 160
+    },
+    {
+      "id": "VariableID:621:4914",
+      "name": "Width/Container/XS",
+      "type": "FLOAT",
+      "dark": 64,
+      "light": 64
+    },
+    {
+      "id": "VariableID:621:4915",
+      "name": "Width/Container/S",
+      "type": "FLOAT",
+      "dark": 72,
+      "light": 72
+    },
+    {
+      "id": "VariableID:670:5483",
+      "name": "Spacing/L",
+      "type": "FLOAT",
+      "dark": 10,
+      "light": 10
+    },
+    {
+      "id": "VariableID:781:7115",
+      "name": "Border/strong",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        0.2
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.08
+      ]
+    },
+    {
+      "id": "VariableID:781:7464",
+      "name": "Surface/danger",
+      "type": "COLOR",
+      "dark": [
+        66.000004,
+        36.000002,
+        36.000002,
+        0.8
+      ],
+      "light": [
+        255,
+        232.000001,
+        232.000001,
+        0.8
+      ]
+    },
+    {
+      "id": "VariableID:781:7508",
+      "name": "State/default",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        0.05
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.03
+      ]
+    },
+    {
+      "id": "VariableID:781:8226",
+      "name": "Overlay/toast",
+      "type": "COLOR",
+      "dark": [
+        36.000002,
+        48.000001,
+        50.000001,
+        0.8
+      ],
+      "light": [
+        61,
+        72.000003,
+        75.000003,
+        0.6
+      ]
+    },
+    {
+      "id": "VariableID:854:5850",
+      "name": "Spacing/5XL",
+      "type": "FLOAT",
+      "dark": 40,
+      "light": 40
+    },
+    {
+      "id": "VariableID:954:7234",
+      "name": "Spacing/none",
+      "type": "FLOAT",
+      "dark": 0,
+      "light": 0
+    },
+    {
+      "id": "VariableID:954:7235",
+      "name": "Radius/none",
+      "type": "FLOAT",
+      "dark": 0,
+      "light": 0
+    },
+    {
+      "id": "VariableID:1469:13259",
+      "name": "Overlay/weak",
+      "type": "COLOR",
+      "dark": [
+        0,
+        0,
+        0,
+        0.2
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.05
+      ]
+    },
+    {
+      "id": "VariableID:1537:11424",
+      "name": "Text/link",
+      "type": "COLOR",
+      "dark": [
+        11,
+        193.000004,
+        184.000004,
+        1
+      ],
+      "light": [
+        6,
+        155.000006,
+        150.000006,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:1537:11429",
+      "name": "Text/link-hover",
+      "type": "COLOR",
+      "dark": [
+        112.199999,
+        234.600004,
+        222.046192,
+        1
+      ],
+      "light": [
+        11,
+        193.000004,
+        184.000004,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:2021:2",
+      "name": "Typography/Font Size/14",
+      "type": "FLOAT",
+      "dark": 14,
+      "light": 14
+    },
+    {
+      "id": "VariableID:2021:3",
+      "name": "Typography/Font Size/16",
+      "type": "FLOAT",
+      "dark": 16,
+      "light": 16
+    },
+    {
+      "id": "VariableID:2021:4",
+      "name": "Typography/Font Size/18",
+      "type": "FLOAT",
+      "dark": 18,
+      "light": 18
+    },
+    {
+      "id": "VariableID:2021:5",
+      "name": "Typography/Font Size/20",
+      "type": "FLOAT",
+      "dark": 20,
+      "light": 20
+    },
+    {
+      "id": "VariableID:2021:6",
+      "name": "Typography/Font Size/24",
+      "type": "FLOAT",
+      "dark": 24,
+      "light": 24
+    },
+    {
+      "id": "VariableID:2021:7",
+      "name": "Typography/Font Size/28",
+      "type": "FLOAT",
+      "dark": 28,
+      "light": 28
+    },
+    {
+      "id": "VariableID:2021:8",
+      "name": "Typography/Line Height/20",
+      "type": "FLOAT",
+      "dark": 20,
+      "light": 20
+    },
+    {
+      "id": "VariableID:2021:9",
+      "name": "Typography/Line Height/24",
+      "type": "FLOAT",
+      "dark": 24,
+      "light": 24
+    },
+    {
+      "id": "VariableID:2021:10",
+      "name": "Typography/Line Height/28",
+      "type": "FLOAT",
+      "dark": 28,
+      "light": 28
+    },
+    {
+      "id": "VariableID:2021:11",
+      "name": "Typography/Line Height/32",
+      "type": "FLOAT",
+      "dark": 32,
+      "light": 32
+    },
+    {
+      "id": "VariableID:2021:12",
+      "name": "Typography/Line Height/40",
+      "type": "FLOAT",
+      "dark": 40,
+      "light": 40
+    },
+    {
+      "id": "VariableID:2023:2",
+      "name": "Typography/Line Height/48",
+      "type": "FLOAT",
+      "dark": 48,
+      "light": 48
+    },
+    {
+      "id": "VariableID:2130:17691",
+      "name": "Typography/Font Size/12",
+      "type": "FLOAT",
+      "dark": 12,
+      "light": 12
+    },
+    {
+      "id": "VariableID:2261:8661",
+      "name": "Control/fill/white",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        1
+      ],
+      "light": [
+        255,
+        255,
+        255,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:2261:15385",
+      "name": "Text/brand",
+      "type": "COLOR",
+      "dark": [
+        32.000002,
+        208.000003,
+        196.000004,
+        1
+      ],
+      "light": [
+        2,
+        47.000001,
+        49.000001,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:2441:15080",
+      "name": "Width/Container/2XL",
+      "type": "FLOAT",
+      "dark": 240,
+      "light": 240
+    },
+    {
+      "id": "VariableID:2441:15081",
+      "name": "State/selected-tab-sliding",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        0.15
+      ],
+      "light": [
+        255,
+        255,
+        255,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:2768:25096",
+      "name": "缓动曲线/弹跳",
+      "type": "EASING",
+      "dark": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0.3521615505218506
+        }
+      },
+      "light": {
+        "type": "CUSTOM_SPRING",
+        "easingFunctionSpring": {
+          "bounce": 0.35
+        }
+      }
+    },
+    {
+      "id": "VariableID:2840:15427",
+      "name": "Text/on-brand-disabled",
+      "type": "COLOR",
+      "dark": [
+        0,
+        0,
+        0,
+        0.5
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.2
+      ]
+    },
+    {
+      "id": "VariableID:3126:22528",
+      "name": "Background/alpha",
+      "type": "COLOR",
+      "dark": [
+        23.432433,
+        26.878378,
+        27.567568,
+        0
+      ],
+      "light": [
+        244.314289,
+        245.285715,
+        245.285715,
+        0
+      ]
+    },
+    {
+      "id": "VariableID:3731:3151",
+      "name": "State/selected",
+      "type": "COLOR",
+      "dark": [
+        255,
+        255,
+        255,
+        0.15
+      ],
+      "light": [
+        0,
+        0,
+        0,
+        0.08
+      ]
+    },
+    {
+      "id": "VariableID:3921:22210",
+      "name": "Surface/floating",
+      "type": "COLOR",
+      "dark": [
+        38.000002,
+        42.000001,
+        43.000001,
+        1
+      ],
+      "light": [
+        255,
+        255,
+        255,
+        1
+      ]
+    },
+    {
+      "id": "VariableID:3947:22904",
+      "name": "Surface/warring",
+      "type": "COLOR",
+      "dark": [
+        124,
+        56,
+        18.000001,
+        1
+      ],
+      "light": [
+        255,
+        242.000001,
+        213.000003,
+        1
+      ]
+    }
+  ]
+}

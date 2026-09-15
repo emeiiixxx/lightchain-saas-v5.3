@@ -1,0 +1,348 @@
+{
+  "source": {
+    "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+    "nodeId": "17:1333",
+    "library": "Lightchain SaaS v5.1 libraries Beta"
+  },
+  "frame": {
+    "width": 1920,
+    "height": 1080,
+    "inset": 40,
+    "radius": 24,
+    "padding": 24,
+    "tile": 291,
+    "gap": 8
+  },
+  "components": [
+    {
+      "id": "50:19741",
+      "name": "Style=Ghost, State=default, Size=M",
+      "key": "b89eba90a8f3626115209ea4da5e17fb151f0767",
+      "parent": "50:19707"
+    },
+    {
+      "id": "50:21965",
+      "name": "Style=Secondary, State=selected, Size=M",
+      "key": "28587fc05f5882fe70e8d96986544448187c6104",
+      "parent": "50:21949"
+    },
+    {
+      "id": "50:21953",
+      "name": "Style=Secondary, State=default, Size=M",
+      "key": "488fa800420e5b0055f2e5d5486599b7972eaadc",
+      "parent": "50:21949"
+    },
+    {
+      "id": "50:19959",
+      "name": "Type=Text, Size=M, State=default",
+      "key": "d72f3ab0fea167269f1300ca57388b0f480d1289",
+      "parent": "50:19958"
+    },
+    {
+      "id": "1:15",
+      "name": "Orientation=Horizontal, Tone=Weak",
+      "key": "bebaeb64a6a993ee2a5a814b4131a2c80fd76911",
+      "parent": "1:14"
+    },
+    {
+      "id": "50:22572",
+      "name": "State=default",
+      "key": "d49a5f4a45f2ada0cc1915dd8ba2fb713b8836c1",
+      "parent": "50:22571"
+    },
+    {
+      "id": "50:20458",
+      "name": "State=default, Size=L",
+      "key": "6476a2267ccf0c136fc6a1e69bbc8316c810b230",
+      "parent": "50:20457"
+    },
+    {
+      "id": "50:20447",
+      "name": "State=loaded",
+      "key": "ccfdee703385de367190daa70850fd390301b0a3",
+      "parent": "50:20446"
+    },
+    {
+      "id": "50:20688",
+      "name": "Style=Secondary, State=default, Size=M",
+      "key": "74b94f3929f1ac1d142e8fc7dd208d358d7ccafe",
+      "parent": "50:20677"
+    },
+    {
+      "id": "50:20679",
+      "name": "Style=Primary, State=default, Size=M",
+      "key": "baeaf6046cb0bbb5252e83a50c19231807676402",
+      "parent": "50:20677"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "Brand/primary-disabled",
+      "key": "05de351e3244ce377d3ed3d6d9934ac4cad321fc",
+      "Dark": {
+        "r": 0.05098039284348488,
+        "g": 0.3843137323856354,
+        "b": 0.3803921639919281,
+        "a": 1
+      },
+      "Light": {
+        "r": 0.6529729962348938,
+        "g": 0.9870270490646362,
+        "b": 0.9416216015815735,
+        "a": 1
+      }
+    },
+    {
+      "name": "Overlay/scrim",
+      "key": "d2c33fedfcf58cb49374d3f96569757a8b16ee87",
+      "Dark": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.75
+      },
+      "Light": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.75
+      }
+    },
+    {
+      "name": "Text/placeholder",
+      "key": "ba0b74ab72da58f6a71a11f97b5797be118d2209",
+      "Dark": {
+        "r": 0.48235294222831726,
+        "g": 0.5411764979362488,
+        "b": 0.5333333611488342,
+        "a": 1
+      },
+      "Light": {
+        "r": 0.48235294222831726,
+        "g": 0.5411764979362488,
+        "b": 0.5333333611488342,
+        "a": 1
+      }
+    },
+    {
+      "name": "Brand/secondary",
+      "key": "77aaaf3e77354c37e36d063dc810a69872eba231",
+      "Dark": {
+        "r": 0.3137255012989044,
+        "g": 0.3607843220233917,
+        "b": 0.3686274588108063,
+        "a": 1
+      },
+      "Light": {
+        "r": 0.9019607901573181,
+        "g": 0.9137254953384399,
+        "b": 0.9176470637321472,
+        "a": 1
+      }
+    },
+    {
+      "name": "Brand/secondary-hover",
+      "key": "74e96d9eab47717ba78ff8f2b20da02245c64655",
+      "Dark": {
+        "r": 0.4745098054409027,
+        "g": 0.5137255191802979,
+        "b": 0.5254902243614197,
+        "a": 1
+      },
+      "Light": {
+        "r": 0.8274509906768799,
+        "g": 0.8470588326454163,
+        "b": 0.8509804010391235,
+        "a": 1
+      }
+    },
+    {
+      "name": "Text/brand",
+      "key": "05cc0adec8e3c89a23da712da16f3d1e09371d1e",
+      "Dark": {
+        "r": 0.125490203499794,
+        "g": 0.8156862854957581,
+        "b": 0.7686274647712708,
+        "a": 1
+      },
+      "Light": {
+        "r": 0.007843137718737125,
+        "g": 0.18431372940540314,
+        "b": 0.1921568661928177,
+        "a": 1
+      }
+    },
+    {
+      "name": "Text/on-brand-disabled",
+      "key": "dfe6838c090d3445fbee712a45361bdfd08f4fb3",
+      "Dark": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.5
+      },
+      "Light": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0.20000000298023224
+      }
+    }
+  ],
+  "assets": [
+    {
+      "name": "imgTypeCircleCheckedFalseSizeLStateDefault",
+      "url": "https://www.figma.com/api/mcp/asset/b72c6d83-7425-4087-a891-000ade48a119.svg",
+      "path": "public/assets/upload/imgTypeCircleCheckedFalseSizeLStateDefault.svg"
+    },
+    {
+      "name": "imgAsset",
+      "url": "https://www.figma.com/api/mcp/asset/5fa58612-8516-4abe-9744-10f3cfb39efe.png",
+      "path": "public/assets/upload/imgAsset.png"
+    },
+    {
+      "name": "imgAsset1",
+      "url": "https://www.figma.com/api/mcp/asset/de76796d-9e93-4258-9743-c4ff9e4ccea2.png",
+      "path": "public/assets/upload/imgAsset1.png"
+    },
+    {
+      "name": "imgAsset2",
+      "url": "https://www.figma.com/api/mcp/asset/f6014f3c-4336-4513-b462-76faa1eac5af.png",
+      "path": "public/assets/upload/imgAsset2.png"
+    },
+    {
+      "name": "imgAsset3",
+      "url": "https://www.figma.com/api/mcp/asset/6718cd5d-7350-4e1d-90ec-804d6cfd74bb.png",
+      "path": "public/assets/upload/imgAsset3.png"
+    },
+    {
+      "name": "imgAsset4",
+      "url": "https://www.figma.com/api/mcp/asset/2b71935b-3385-4182-8f94-442132178761.png",
+      "path": "public/assets/upload/imgAsset4.png"
+    },
+    {
+      "name": "imgAsset5",
+      "url": "https://www.figma.com/api/mcp/asset/29533694-ffaa-403d-a644-af8c7564139b.png",
+      "path": "public/assets/upload/imgAsset5.png"
+    },
+    {
+      "name": "imgAsset6",
+      "url": "https://www.figma.com/api/mcp/asset/ca1aeaa1-9c8f-4f97-819e-07a222902f55.png",
+      "path": "public/assets/upload/imgAsset6.png"
+    },
+    {
+      "name": "imgAsset7",
+      "url": "https://www.figma.com/api/mcp/asset/c982dcf0-51eb-4d84-b95f-db991e2abbfc.png",
+      "path": "public/assets/upload/imgAsset7.png"
+    },
+    {
+      "name": "imgAsset8",
+      "url": "https://www.figma.com/api/mcp/asset/bee4c9f9-4a84-4479-9e09-cb28e2692b9c.png",
+      "path": "public/assets/upload/imgAsset8.png"
+    },
+    {
+      "name": "imgAsset9",
+      "url": "https://www.figma.com/api/mcp/asset/ddbd9026-f6ca-4fcd-9be1-dc162e058ea9.png",
+      "path": "public/assets/upload/imgAsset9.png"
+    },
+    {
+      "name": "imgAsset10",
+      "url": "https://www.figma.com/api/mcp/asset/4b493eda-57f1-470e-9179-ecb6e17fc16e.png",
+      "path": "public/assets/upload/imgAsset10.png"
+    },
+    {
+      "name": "imgAsset11",
+      "url": "https://www.figma.com/api/mcp/asset/410b20fb-f3a2-45ab-b323-fb16f7b85c2d.png",
+      "path": "public/assets/upload/imgAsset11.png"
+    },
+    {
+      "name": "imgAsset12",
+      "url": "https://www.figma.com/api/mcp/asset/9ca66e22-b16c-4255-885d-7180d24da091.png",
+      "path": "public/assets/upload/imgAsset12.png"
+    },
+    {
+      "name": "imgAsset13",
+      "url": "https://www.figma.com/api/mcp/asset/597b544a-a6d7-4afb-8ab1-96e2fd2bf770.png",
+      "path": "public/assets/upload/imgAsset13.png"
+    },
+    {
+      "name": "imgAsset14",
+      "url": "https://www.figma.com/api/mcp/asset/ca535997-1171-49d4-9484-c35004c9bdfd.png",
+      "path": "public/assets/upload/imgAsset14.png"
+    },
+    {
+      "name": "imgAsset15",
+      "url": "https://www.figma.com/api/mcp/asset/75cc5c2f-e60c-4173-b661-9b6abca9a3b8.png",
+      "path": "public/assets/upload/imgAsset15.png"
+    },
+    {
+      "name": "imgAsset16",
+      "url": "https://www.figma.com/api/mcp/asset/a3d1e03b-419a-4157-8c9e-43c194c198f6.png",
+      "path": "public/assets/upload/imgAsset16.png"
+    },
+    {
+      "name": "imgIconSystem",
+      "url": "https://www.figma.com/api/mcp/asset/7c36725e-6302-490b-9776-b84fd6fc19cc.svg",
+      "path": "public/assets/upload/imgIconSystem.svg"
+    },
+    {
+      "name": "imgIconSystem1",
+      "url": "https://www.figma.com/api/mcp/asset/76e1c63e-fd2b-40aa-b25e-cdc982557adc.svg",
+      "path": "public/assets/upload/imgIconSystem1.svg"
+    },
+    {
+      "name": "imgIconSystem2",
+      "url": "https://www.figma.com/api/mcp/asset/c712086e-1606-4b0c-8e90-5c42bf048341.svg",
+      "path": "public/assets/upload/imgIconSystem2.svg"
+    }
+  ],
+  "selectionCheck": {
+    "fileKey": "FO7bCfBv6NPle8egsVaDvG",
+    "nodeId": "81:321",
+    "key": "a345fa69807981edea3f2d45a267df46ad7e75e6",
+    "original": "/assets/upload/checked.svg",
+    "glyph": "/assets/upload/check-mark.svg",
+    "note": "Exact check geometry extracted from the export; circle fill and stroke use the library theme tokens."
+  },
+  "behavior": {
+    "maxMainImages": 1,
+    "selectAnother": "Replace the current selection",
+    "multiFileDrop": "Reject with limit message",
+    "confirm": "Replace the existing main image; preserve selected operation",
+    "cancel": "No canvas changes; uploads remain in session history",
+    "sources": "Figma demo fixtures plus local session uploads in history; other sources empty until connected",
+    "persistence": "Session only"
+  },
+  "motion": "200ms ease-out",
+  "singleSelectRevision": {
+    "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+    "nodeId": "50:24161",
+    "date": "2026-09-14",
+    "defaultState": "Full screen picker, no checkbox or footer, one Figma demo image",
+    "interactionSource": "User instruction: dark hover overlay and bottom slide-up Use action, using Primitive Button",
+    "implementation": {
+      "button": "Existing 5.1 Beta Button, primary, M",
+      "overlay": "Product token --asset-hover-scrim: rgba(0,0,0,0.4), same in both themes; hover not present in supplied Figma frame",
+      "motion": "200ms ease-out from src/motion.css",
+      "use": "Directly replaces the single main image and closes picker",
+      "upload": "Adds one image to session history in its default state; rejects multiple files",
+      "keyboard": "focus-within reveals Use; Enter activates native button",
+      "touch": "Use remains visible on devices without hover"
+    },
+    "asset": {
+      "url": "https://www.figma.com/api/mcp/asset/3a8f90b1-477d-4061-a4f7-8b7279a6b119.png",
+      "path": "public/assets/upload/single-select-asset.png"
+    }
+  },
+  "multiSelectRevision": {
+    "date": "2026-09-14",
+    "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+    "entryNode": "14:3550",
+    "initialCanvasNode": "12:3127",
+    "pickerNode": "17:1333",
+    "maxSelection": 20,
+    "implementation": "Shared AssetPicker, 5.1 Beta Button and existing exported checkbox check; add-image entry reuses the same exported glyph as Upload/Dropzone",
+    "behavior": "File input and drop share selection-cap validation; upload auto-selects successful images, confirmation appends one batch without replacing main; cancel keeps canvas unchanged",
+    "singleSelectPreserved": true
+  }
+}

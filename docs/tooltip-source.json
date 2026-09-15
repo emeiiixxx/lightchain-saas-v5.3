@@ -1,0 +1,14 @@
+{
+  "fileKey": "FO7bCfBv6NPle8egsVaDvG",
+  "nodeId": "406:2959",
+  "variants": { "top": "406:2895", "bottom": "406:2899", "left": "406:2903", "right": "406:2907" },
+  "bubble": { "background": "rgba(0,0,0,0.75)", "foreground": "Text/on-brand-white", "radius": 6, "padding": "4px 8px", "fontSize": 12, "lineHeight": 16, "fontWeight": 400, "backdropBlur": 10 },
+  "arrow": { "width": 8, "height": 4, "path": "public/assets/tooltip/arrow.svg", "source": "https://www.figma.com/api/mcp/asset/2b69a899-c959-4031-8417-25d63bf81f19.svg" },
+  "behavior": [
+    "Shared Button exposes tooltip labels for icon-only controls; replaces native title tooltips.",
+    "Pointer hover includes disabled buttons; keyboard focus also shows the tooltip.",
+    "Escape, pointer down, pointer leave, focus loss and scrolling dismiss the tooltip with 200ms ease-out exit retention.",
+    "Placement flips below top-edge buttons, uses right placement for the side toolbar, and clamps to viewport edges.",
+    "Portal and manual popover preserve dialog accessibility and escape toolbar overflow/canvas transforms. Tooltip does not change image/button stacking or canvas scaling."
+  ]
+}

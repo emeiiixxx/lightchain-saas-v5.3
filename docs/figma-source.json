@@ -1,0 +1,764 @@
+{
+  "keys": {
+    "f7618653ccd4ab66f4b245699fe7a7a0257ad315": {
+      "id": "38:9594",
+      "name": "Canvas/ProjectPanel"
+    },
+    "46ce1ca0f9efb9eeb18d748d4cb854fae7866e03": {
+      "id": "7:234",
+      "name": "Name=万能穿搭融合"
+    },
+    "bebaeb64a6a993ee2a5a814b4131a2c80fd76911": {
+      "id": "1:15",
+      "name": "Orientation=Horizontal, Tone=Weak"
+    },
+    "b89eba90a8f3626115209ea4da5e17fb151f0767": {
+      "id": "38:9048",
+      "name": "Style=Ghost, State=default, Size=M"
+    },
+    "3d31c887160d9fc22d0d4dc90ebcc81f69a4e91d": {
+      "id": "38:8844",
+      "name": "Style=Linear, Name=chevron-left"
+    },
+    "b4ffa9e152386a749fcb1997c6ac82608587d979": {
+      "id": "1:17",
+      "name": "Orientation=Vertical, Tone=Weak"
+    },
+    "0b2c9fc9f47c7a65e7d31ec52b43109790ce9a09": {
+      "id": "38:9267",
+      "name": "Type=Text, Size=M, State=filled"
+    },
+    "629a349eaeb996f750b98beabcb81f66478544b5": {
+      "id": "38:10623",
+      "name": "Style=Outline, State=default, Size=L"
+    },
+    "30ce9696b8140bc8396c14c4800f29b6d57d6f7b": {
+      "id": "1:157",
+      "name": "Name=remove-background"
+    },
+    "427003d218146beb5a625c1654f9ab7c54ecb138": {
+      "id": "38:8832",
+      "name": "Style=Linear, Name=add"
+    },
+    "7f5814a3ed413566084cd8cbad808f98a36fd446": {
+      "id": "9:298",
+      "name": "Name=batch-edit"
+    },
+    "4a608e50b253d342d2c9611aa506132d5db637cd": {
+      "id": "14:3588",
+      "name": "Name=add-design-detail"
+    },
+    "0fa4a557d3e71c487ae6800cad61826217cc73e7": {
+      "id": "14:3659",
+      "name": "Name=convert-to-3d-tile"
+    },
+    "7bdbd2dec11fcee68cb740df474a36fd2b1f07fe": {
+      "id": "38:11335",
+      "name": "Type=IconLeft, Size=M, State=filled"
+    },
+    "2b1dddff3dc0f17a1ab6d22a77e29a859a654953": {
+      "id": "38:8861",
+      "name": "Style=Linear, Name=global"
+    },
+    "9940e52e6f71c6449726606605b15f489094599a": {
+      "id": "38:8843",
+      "name": "Style=Linear, Name=chevron-down"
+    },
+    "4511ecf4b3f5f54ab277dadf0f85265948a78c41": {
+      "id": "38:10630",
+      "name": "Style=Ghost, State=default, Size=S"
+    },
+    "465b4bd1a9fa06457dd1e135dd9d0c1df1c51f29": {
+      "id": "38:8831",
+      "name": "Style=Linear, Name=help-center"
+    },
+    "687ba9d4602aa454699df18977ff627998dce5c2": {
+      "id": "38:8879",
+      "name": "Style=Linear, Name=customer-support"
+    },
+    "c7fb2899fcf06bdd04e80d7d065d8c53e2e3f475": {
+      "id": "38:11015",
+      "name": "Theme=Dark, State=default, Size=M"
+    },
+    "854864089111dda66dec549dd8aa33834bef03dd": {
+      "id": "38:8816",
+      "name": "Style=Filled, Name=star"
+    },
+    "7b4a25e38e1929ae133ca752b0349120be517e2d": {
+      "id": "1:224",
+      "name": "Size=S, Content=Image"
+    }
+  },
+  "tokens": [
+    {
+      "name": "Background/canvas",
+      "key": "39ec52b023c0df7f68b96bae570fb32397d46007",
+      "values": {
+        "Dark": {
+          "r": 0.037254903465509415,
+          "g": 0.04117647185921669,
+          "b": 0.04117647185921669,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.9476190209388733,
+          "g": 0.9523809552192688,
+          "b": 0.9523809552192688,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Spacing/none",
+      "key": "d36a1ecdfb12ca09580f63ed8fbb6cbda3a7a36f",
+      "values": {
+        "Dark": 0,
+        "Light": 0
+      }
+    },
+    {
+      "name": "Radius/XL",
+      "key": "1d0355ec8794ec31dcc781dea599c0f156c9f9ed",
+      "values": {
+        "Dark": 16,
+        "Light": 16
+      }
+    },
+    {
+      "name": "Surface/default",
+      "key": "33634e4559cff00260e1de748582246f08725832",
+      "values": {
+        "Dark": {
+          "r": 0.14901961386203766,
+          "g": 0.16470588743686676,
+          "b": 0.16862745583057404,
+          "a": 1
+        },
+        "Light": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Border/weak",
+      "key": "f2c76498ec40f165bd792be5a75637afea489256",
+      "values": {
+        "Dark": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0.10000000149011612
+        },
+        "Light": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.05000000074505806
+        }
+      }
+    },
+    {
+      "name": "Overlay/weak",
+      "key": "8674413911d3de2be0f9c9f900a6edf52a04d663",
+      "values": {
+        "Dark": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.20000000298023224
+        },
+        "Light": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.05000000074505806
+        }
+      }
+    },
+    {
+      "name": "Spacing/XS",
+      "key": "ecf82af74913dbbdbe173e926726a4ee91b7fcb6",
+      "values": {
+        "Dark": 4,
+        "Light": 4
+      }
+    },
+    {
+      "name": "Spacing/XL",
+      "key": "c41961626e2b9b14040b6b03715138f841fbf28d",
+      "values": {
+        "Dark": 12,
+        "Light": 12
+      }
+    },
+    {
+      "name": "Spacing/Base",
+      "key": "8f08cde7820d55e6c28055b1736abd41532542c7",
+      "values": {
+        "Dark": 8,
+        "Light": 8
+      }
+    },
+    {
+      "name": "Text/on-brand-white",
+      "key": "3f1aa4145435eb4124758723de44ba3c5fa3ad2a",
+      "values": {
+        "Dark": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "Light": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Text/tertiary",
+      "key": "f1698eb2ef4f9d126d0541ef46ee55bd1e5f427b",
+      "values": {
+        "Dark": {
+          "r": 0.6666666865348816,
+          "g": 0.7215686440467834,
+          "b": 0.7137255072593689,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.32156863808631897,
+          "g": 0.3803921639919281,
+          "b": 0.37254902720451355,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Radius/L",
+      "key": "f9550431042881ff1979c6704368203e619a03f7",
+      "values": {
+        "Dark": 12,
+        "Light": 12
+      }
+    },
+    {
+      "name": "Height/2XL",
+      "key": "00b0f7801f3c09f2befd696a7bb89049e3ea1dd3",
+      "values": {
+        "Dark": 32,
+        "Light": 32
+      }
+    },
+    {
+      "name": "Radius/Base",
+      "key": "1fe6d408f1678e06e302efde47d4d3c090446e23",
+      "values": {
+        "Dark": 8,
+        "Light": 8
+      }
+    },
+    {
+      "name": "Height/L",
+      "key": "6573bde1d6706cf9a2240b9ec8591d7005a5352e",
+      "values": {
+        "Dark": 20,
+        "Light": 20
+      }
+    },
+    {
+      "name": "Height/XL",
+      "key": "29ac44dcf66a83d845a4792e697b74e645f044d1",
+      "values": {
+        "Dark": 24,
+        "Light": 24
+      }
+    },
+    {
+      "name": "State/default",
+      "key": "6051c7f59dc1ee096ecbdd8e52ae331bf8ec2f0e",
+      "values": {
+        "Dark": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0.05000000074505806
+        },
+        "Light": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.029999999329447746
+        }
+      }
+    },
+    {
+      "name": "Text/secondary",
+      "key": "dec124ad81154453ab33cf6b52f5f8780f3bc6fc",
+      "values": {
+        "Dark": {
+          "r": 0.8899999260902405,
+          "g": 0.9100000262260437,
+          "b": 0.9100000262260437,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.18431372940540314,
+          "g": 0.23137255012989044,
+          "b": 0.22745098173618317,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Spacing/4XL",
+      "key": "faeff8ea8ce7b593e677d3a4de65812583a8fb92",
+      "values": {
+        "Dark": 32,
+        "Light": 32
+      }
+    },
+    {
+      "name": "Spacing/3XL",
+      "key": "e5b279fa0c1ddf39e04f4a9a188a1c84e8d61f9d",
+      "values": {
+        "Dark": 24,
+        "Light": 24
+      }
+    },
+    {
+      "name": "Height/4XL",
+      "key": "773c52f5ac8e3e9bf66791ecf7eff4cadc6d6e17",
+      "values": {
+        "Dark": 48,
+        "Light": 48
+      }
+    },
+    {
+      "name": "Control/fill/default",
+      "key": "72e657c75cab9284a7ae40b911228c040d7920c7",
+      "values": {
+        "Dark": {
+          "r": 0.14901961386203766,
+          "g": 0.16470588743686676,
+          "b": 0.16862745583057404,
+          "a": 1
+        },
+        "Light": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Text/primary",
+      "key": "8b610c2fb550df91d4f7f0db2465d1e05987f352",
+      "values": {
+        "Dark": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.06666667014360428,
+          "g": 0.0941176488995552,
+          "b": 0.09019608050584793,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Fill/on-brand",
+      "key": "f96b79c27b96bc6ce783db34413b0bc64a5d6a69",
+      "values": {
+        "Dark": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.75
+        },
+        "Light": {
+          "r": 0.9803921580314636,
+          "g": 0.9803921580314636,
+          "b": 0.9803921580314636,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Spacing/2XL",
+      "key": "3e6f2632623e1fd7d5240b36d3df065a0cddb582",
+      "values": {
+        "Dark": 16,
+        "Light": 16
+      }
+    },
+    {
+      "name": "Brand/primary",
+      "key": "a1f20adb54c86ca3ab1a157010861d793ed2d37c",
+      "values": {
+        "Dark": {
+          "r": 0.04313725605607033,
+          "g": 0.7568627595901489,
+          "b": 0.7215686440467834,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.4399999976158142,
+          "g": 0.9200000166893005,
+          "b": 0.8707693815231323,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Height/Base",
+      "key": "bb5ebab8b8662933a00b2d4816a164765347a2f7",
+      "values": {
+        "Dark": 16,
+        "Light": 16
+      }
+    },
+    {
+      "name": "Radius/Max",
+      "key": "dc78fb9782a1c04cd327b3be173e4cadd05bab65",
+      "values": {
+        "Dark": 999,
+        "Light": 999
+      }
+    },
+    {
+      "name": "Text/disabled",
+      "key": "260cbf7ca1ebad224b85dc16be9af8a517c1a04e",
+      "values": {
+        "Dark": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0.30000001192092896
+        },
+        "Light": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.20000000298023224
+        }
+      }
+    },
+    {
+      "name": "Border/medium",
+      "key": "11005644e3c38035d3142d7fbf5c530260f03c52",
+      "values": {
+        "Dark": {
+          "r": 0.4745098054409027,
+          "g": 0.501960813999176,
+          "b": 0.501960813999176,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.6352941393852234,
+          "g": 0.6627451181411743,
+          "b": 0.6627451181411743,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "State/hover",
+      "key": "f7a97f3d37b812a5ede1b17f5eed2b72a0de25da",
+      "values": {
+        "Dark": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0.10000000149011612
+        },
+        "Light": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.07999999821186066
+        }
+      }
+    },
+    {
+      "name": "Status/danger",
+      "key": "4b4d4b242b131a71e5249d5e940ac2ded6da2017",
+      "values": {
+        "Dark": {
+          "r": 1,
+          "g": 0.29999998211860657,
+          "b": 0.29999998211860657,
+          "a": 1
+        },
+        "Light": {
+          "r": 1,
+          "g": 0.29999998211860657,
+          "b": 0.29999998211860657,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "Border/brand",
+      "key": "18933f8f606ac569c8bd5662fb9ea88cf76beca2",
+      "values": {
+        "Dark": {
+          "r": 0.04313725605607033,
+          "g": 0.7568627595901489,
+          "b": 0.7215686440467834,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.125490203499794,
+          "g": 0.8156862854957581,
+          "b": 0.7686274647712708,
+          "a": 1
+        }
+      }
+    },
+    {
+      "name": "State/selected",
+      "key": "4de524e1331c153c7f8d00e746255cf390e3fb06",
+      "values": {
+        "Dark": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0.15000000596046448
+        },
+        "Light": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0.07999999821186066
+        }
+      }
+    },
+    {
+      "name": "Text/on-brand-black",
+      "key": "0bc09dbca2ddf01a22af413c8bad8192ee262adb",
+      "values": {
+        "Dark": {
+          "r": 0.06666666666666667,
+          "g": 0.09411764705882353,
+          "b": 0.09019607843137255,
+          "a": 1
+        },
+        "Light": {
+          "r": 0.06666666666666667,
+          "g": 0.09411764705882353,
+          "b": 0.09019607843137255,
+          "a": 1
+        }
+      }
+    }
+  ],
+  "collections": {
+    "VariableCollectionId:1d9ae9b382a322b3269f72a299610a0d514dff19/1998:93": {
+      "name": "Semantic Tokens",
+      "key": "1d9ae9b382a322b3269f72a299610a0d514dff19",
+      "modes": [
+        {
+          "name": "Dark",
+          "modeId": "3:0"
+        },
+        {
+          "name": "Light",
+          "modeId": "54:0"
+        }
+      ],
+      "default": "3:0"
+    },
+    "VariableCollectionId:c673cebe8743c918e4d5654048aaa359342f70c1/30:1": {
+      "name": "Primitive Colors",
+      "key": "c673cebe8743c918e4d5654048aaa359342f70c1",
+      "modes": [
+        {
+          "name": "Value",
+          "modeId": "30:0"
+        }
+      ],
+      "default": "30:0"
+    }
+  },
+  "pattern": {
+    "width": 4,
+    "height": 4,
+    "fills": [
+      {
+        "type": "SOLID",
+        "visible": true,
+        "opacity": 0.6000000238418579,
+        "blendMode": "NORMAL",
+        "color": {
+          "r": 0.239215686917305,
+          "g": 0.2823529541492462,
+          "b": 0.29411765933036804
+        },
+        "boundVariables": {
+          "color": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:08835b0a14c9d5c838f99a3d81a4b914aaa50a68/3957:304"
+          }
+        }
+      }
+    ],
+    "children": []
+  },
+  "matches": [
+    {
+      "key": "7bdbd2dec11fcee68cb740df474a36fd2b1f07fe",
+      "id": "2151:3666",
+      "name": "Type=IconLeft, Size=M, State=filled"
+    },
+    {
+      "key": "0b2c9fc9f47c7a65e7d31ec52b43109790ce9a09",
+      "id": "133:1357",
+      "name": "Type=Text, Size=M, State=filled"
+    },
+    {
+      "key": "b89eba90a8f3626115209ea4da5e17fb151f0767",
+      "id": "139:1700",
+      "name": "Style=Ghost, State=default, Size=M"
+    },
+    {
+      "key": "629a349eaeb996f750b98beabcb81f66478544b5",
+      "id": "141:1818",
+      "name": "Style=Outline, State=default, Size=L"
+    },
+    {
+      "key": "4511ecf4b3f5f54ab277dadf0f85265948a78c41",
+      "id": "141:1832",
+      "name": "Style=Ghost, State=default, Size=S"
+    },
+    {
+      "key": "bebaeb64a6a993ee2a5a814b4131a2c80fd76911",
+      "id": "258:2108",
+      "name": "Orientation=Horizontal, Tone=Weak"
+    },
+    {
+      "key": "b4ffa9e152386a749fcb1997c6ac82608587d979",
+      "id": "258:2114",
+      "name": "Orientation=Vertical, Tone=Weak"
+    },
+    {
+      "key": "7b4a25e38e1929ae133ca752b0349120be517e2d",
+      "id": "831:2430",
+      "name": "Size=S, Content=Image"
+    },
+    {
+      "key": "854864089111dda66dec549dd8aa33834bef03dd",
+      "id": "120:156",
+      "name": "Style=Filled, Name=star"
+    },
+    {
+      "key": "465b4bd1a9fa06457dd1e135dd9d0c1df1c51f29",
+      "id": "120:106",
+      "name": "Style=Linear, Name=help-center"
+    },
+    {
+      "key": "427003d218146beb5a625c1654f9ab7c54ecb138",
+      "id": "120:31",
+      "name": "Style=Linear, Name=add"
+    },
+    {
+      "key": "9940e52e6f71c6449726606605b15f489094599a",
+      "id": "120:43",
+      "name": "Style=Linear, Name=chevron-down"
+    },
+    {
+      "key": "3d31c887160d9fc22d0d4dc90ebcc81f69a4e91d",
+      "id": "120:45",
+      "name": "Style=Linear, Name=chevron-left"
+    },
+    {
+      "key": "2b1dddff3dc0f17a1ab6d22a77e29a859a654953",
+      "id": "120:13",
+      "name": "Style=Linear, Name=global"
+    },
+    {
+      "key": "687ba9d4602aa454699df18977ff627998dce5c2",
+      "id": "120:145",
+      "name": "Style=Linear, Name=customer-support"
+    },
+    {
+      "key": "7f5814a3ed413566084cd8cbad808f98a36fd446",
+      "id": "2431:13611",
+      "name": "Name=batch-edit"
+    },
+    {
+      "key": "46ce1ca0f9efb9eeb18d748d4cb854fae7866e03",
+      "id": "2247:5432",
+      "name": "Name=万能穿搭融合"
+    },
+    {
+      "key": "4a608e50b253d342d2c9611aa506132d5db637cd",
+      "id": "2530:13186",
+      "name": "Name=add-design-detail"
+    },
+    {
+      "key": "0fa4a557d3e71c487ae6800cad61826217cc73e7",
+      "id": "120:194",
+      "name": "Name=convert-to-3d-tile"
+    },
+    {
+      "key": "30ce9696b8140bc8396c14c4800f29b6d57d6f7b",
+      "id": "120:179",
+      "name": "Name=remove-background"
+    },
+    {
+      "key": "c7fb2899fcf06bdd04e80d7d065d8c53e2e3f475",
+      "id": "160:44",
+      "name": "Theme=Dark, State=default, Size=M"
+    },
+    {
+      "key": "f7618653ccd4ab66f4b245699fe7a7a0257ad315",
+      "id": "2599:981",
+      "name": "Canvas/ProjectPanel"
+    }
+  ],
+  "source": {
+    "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+    "nodeId": "12:3127",
+    "libraryFileKey": "FO7bCfBv6NPle8egsVaDvG",
+    "library": "Lightchain SaaS v5.1 libraries Beta",
+    "captured": "2026-09-14"
+  },
+  "presentationNotes": {
+    "canvasDot": {
+      "primitive": "Alpha/灰色/strong",
+      "key": "08835b0a14c9d5c838f99a3d81a4b914aaa50a68",
+      "rgba": [
+        61,
+        72,
+        75,
+        0.6
+      ],
+      "paintOpacity": 0.6,
+      "tileSize": 4,
+      "scale": 0.5
+    },
+    "purchaseButton": {
+      "darkVariant": "38:11015",
+      "lightVariant": "38:11018",
+      "darkBase": "#171c1c",
+      "lightBase": "#effefb",
+      "darkForeground": "Brand/primary",
+      "lightForeground": "Text/secondary"
+    },
+    "runtimeAdditions": [
+      "Upload dialog",
+      "Appearance menu",
+      "Canvas image controls",
+      "Responsive wrapping"
+    ]
+  }
+}

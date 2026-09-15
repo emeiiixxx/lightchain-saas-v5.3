@@ -1,0 +1,136 @@
+/* Live Figma 5.1 Beta variables. Sources: docs/figma-source.json and docs/button-theme-states.json. */
+[data-theme="dark"] {
+  --background-canvas: rgba(10, 11, 11, 1);
+  --spacing-none: 0px;
+  --radius-xl: 16px;
+  --surface-default: rgba(38, 42, 43, 1);
+  --border-weak: rgba(255, 255, 255, 0.1);
+  --overlay-weak: rgba(0, 0, 0, 0.2);
+  --spacing-xs: 4px;
+  --spacing-xl: 12px;
+  --spacing-base: 8px;
+  --text-on-brand-white: rgba(255, 255, 255, 1);
+  --text-tertiary: rgba(170, 184, 182, 1);
+  --radius-l: 12px;
+  --height-2xl: 32px;
+  --radius-base: 8px;
+  --height-l: 20px;
+  --height-xl: 24px;
+  --state-default: rgba(255, 255, 255, 0.05);
+  --text-secondary: rgba(227, 232, 232, 1);
+  --spacing-4xl: 32px;
+  --spacing-3xl: 24px;
+  --height-4xl: 48px;
+  --control-fill-default: rgba(38, 42, 43, 1);
+  --control-fill-hover: rgba(48, 53, 54, 1);
+  --brand-primary-hover: rgba(32, 208, 196, 1);
+  --text-primary: rgba(255, 255, 255, 1);
+  --fill-on-brand: rgba(0, 0, 0, 0.75);
+  --spacing-2xl: 16px;
+  --brand-primary: rgba(11, 193, 184, 1);
+  --height-base: 16px;
+  --radius-max: 999px;
+  --text-disabled: rgba(255, 255, 255, 0.3);
+  --border-medium: rgba(121, 128, 128, 1);
+  --state-hover: rgba(255, 255, 255, 0.1);
+  --status-danger: rgba(255, 76, 76, 1);
+  --border-brand: rgba(11, 193, 184, 1);
+  --state-selected: rgba(255, 255, 255, 0.15);
+}
+[data-theme="light"] {
+  --background-canvas: rgba(242, 243, 243, 1);
+  --spacing-none: 0px;
+  --radius-xl: 16px;
+  --surface-default: rgba(255, 255, 255, 1);
+  --border-weak: rgba(0, 0, 0, 0.05);
+  --overlay-weak: rgba(0, 0, 0, 0.05);
+  --spacing-xs: 4px;
+  --spacing-xl: 12px;
+  --spacing-base: 8px;
+  --text-on-brand-white: rgba(255, 255, 255, 1);
+  --text-tertiary: rgba(82, 97, 95, 1);
+  --radius-l: 12px;
+  --height-2xl: 32px;
+  --radius-base: 8px;
+  --height-l: 20px;
+  --height-xl: 24px;
+  --state-default: rgba(0, 0, 0, 0.03);
+  --text-secondary: rgba(47, 59, 58, 1);
+  --spacing-4xl: 32px;
+  --spacing-3xl: 24px;
+  --height-4xl: 48px;
+  --control-fill-default: rgba(255, 255, 255, 1);
+  --control-fill-hover: rgba(244, 245, 245, 1);
+  --brand-primary-hover: rgba(32, 208, 196, 1);
+  --text-primary: rgba(17, 24, 23, 1);
+  --fill-on-brand: rgba(250, 250, 250, 1);
+  --spacing-2xl: 16px;
+  --brand-primary: rgba(112, 235, 222, 1);
+  --height-base: 16px;
+  --radius-max: 999px;
+  --text-disabled: rgba(0, 0, 0, 0.2);
+  --border-medium: rgba(162, 169, 169, 1);
+  --state-hover: rgba(0, 0, 0, 0.08);
+  --status-danger: rgba(255, 76, 76, 1);
+  --border-brand: rgba(32, 208, 196, 1);
+  --state-selected: rgba(0, 0, 0, 0.08);
+}
+
+
+/* Verified in the 5.1 Beta library; identical across both themes. */
+[data-theme] { --text-on-brand-black: rgba(17, 24, 23, 1); }
+
+/* Asset picker: live 5.1 Beta bindings, docs/asset-picker-source.json. */
+[data-theme="dark"] {
+  --brand-primary-disabled: rgba(13, 98, 97, 1);
+  --overlay-scrim: rgba(0, 0, 0, 0.75);
+  --text-placeholder: rgba(123, 138, 136, 1);
+  --brand-secondary: rgba(80, 92, 94, 1);
+  --brand-secondary-hover: rgba(121, 131, 134, 1);
+  --text-brand: rgba(32, 208, 196, 1);
+  --text-on-brand-disabled: rgba(0, 0, 0, 0.5);
+}
+[data-theme="light"] {
+  --brand-primary-disabled: rgba(167, 252, 240, 1);
+  --overlay-scrim: rgba(0, 0, 0, 0.75);
+  --text-placeholder: rgba(123, 138, 136, 1);
+  --brand-secondary: rgba(230, 233, 234, 1);
+  --brand-secondary-hover: rgba(211, 216, 217, 1);
+  --text-brand: rgba(2, 47, 49, 1);
+  --text-on-brand-disabled: rgba(0, 0, 0, 0.2);
+}
+
+/* Product single-image hover overlay, shared across light and dark themes. */
+:root { --asset-hover-scrim: rgba(0, 0, 0, 0.4); }
+
+/* Upload/Dropzone 794:8931, verified source variable bindings. */
+[data-theme='dark'] { --border-strong: rgba(255, 255, 255, .2); }
+[data-theme='light'] { --border-strong: rgba(0, 0, 0, .08); }
+:root { --alpha-brand-20: rgba(32, 208, 196, .2); }
+
+/* IconButton / Tonal: shared media overlay colors in both semantic modes. */
+:root { --surface-media-overlay: rgba(0, 0, 0, .6); --surface-media-overlay-strong: rgba(0, 0, 0, .75); }
+
+/* 5.1 Beta Control/fill/focus, used by the canvas zoom Select. */
+[data-theme='dark'] { --control-fill-focus: rgb(23.4324325, 26.8783783, 27.5675682); }
+[data-theme='light'] { --control-fill-focus: rgb(249.4410047, 250.359005, 250.359005); }
+
+
+/* Live 5.1 Beta Overlay/toast, fullscreen image hint. */
+[data-theme='dark'] { --overlay-toast: rgba(36, 48, 50, .8); }
+[data-theme='light'] { --overlay-toast: rgba(61, 72, 75, .6); }
+
+/* BackgroundBlur/S: Figma radius 20, design-context CSS blur 10px. */
+:root { --background-blur-s: 10px; }
+
+/* 5.1 Beta State/selected-brand, resolved from the live library 2026-09-15. */
+[data-theme='dark'] { --state-selected-brand: rgb(32, 208, 196); }
+[data-theme='light'] { --state-selected-brand: rgb(112.199999, 234.600004, 222.046192); }
+
+/* Figma 89:4021: grid alignment guide, Dodger Blue/400 (both themes). */
+:root { --dodger-blue-400: #5fb7fb; }
+
+/* Task widget 103:4291, live semantic aliases. */
+[data-theme] { --surface-floating: var(--surface-default); }
+[data-theme='dark'] { --surface-secondary: rgb(48.45,52.53,53.55); --background-default: rgb(23.4324325,26.8783783,27.5675682); }
+[data-theme='light'] { --surface-secondary: rgb(249.441005,250.359005,250.359005); --background-default: rgb(244.314289,245.285715,245.285715); }

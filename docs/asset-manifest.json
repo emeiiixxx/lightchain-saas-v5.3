@@ -1,0 +1,77 @@
+[
+  {
+    "name": "imgImageFill",
+    "url": "https://www.figma.com/api/mcp/asset/e54f866a-ddd4-4ae6-81f6-bea44f32bf9e.png",
+    "path": "/assets/imgImageFill.png"
+  },
+  {
+    "name": "img",
+    "url": "https://www.figma.com/api/mcp/asset/a14e3a62-e943-4ba5-95c6-40d5f8f73c1a.png",
+    "path": "/assets/img.png"
+  },
+  {
+    "name": "imgIcon",
+    "url": "https://www.figma.com/api/mcp/asset/f2db8ef2-2fee-400d-b244-e4f44239f88e.svg",
+    "path": "/assets/imgIcon.svg"
+  },
+  {
+    "name": "imgIcon1",
+    "url": "https://www.figma.com/api/mcp/asset/579dd617-3f6d-4747-9c88-3ce5c34a426b.svg",
+    "path": "/assets/imgIcon1.svg"
+  },
+  {
+    "name": "imgIconImageEditingTool",
+    "url": "https://www.figma.com/api/mcp/asset/87b075bf-6ad1-47ac-b75d-87644d3fba8a.svg",
+    "path": "/assets/imgIconImageEditingTool.svg"
+  },
+  {
+    "name": "imgIconBusinessAi",
+    "url": "https://www.figma.com/api/mcp/asset/3ea33cea-befd-4db3-9c17-3ad7687e0f68.svg",
+    "path": "/assets/imgIconBusinessAi.svg"
+  },
+  {
+    "name": "imgIconBusinessApparelDesign",
+    "url": "https://www.figma.com/api/mcp/asset/bec25125-6c8e-42ab-a85c-68fdfcf642e4.svg",
+    "path": "/assets/imgIconBusinessApparelDesign.svg"
+  },
+  {
+    "name": "imgIconBusinessTryOnModel",
+    "url": "https://www.figma.com/api/mcp/asset/76e692db-1c84-4dd8-8a20-784825f3f93f.svg",
+    "path": "/assets/imgIconBusinessTryOnModel.svg"
+  },
+  {
+    "name": "imgContainerLightchainLogo01",
+    "url": "https://www.figma.com/api/mcp/asset/4ed59075-ad68-4cb6-9324-94351da6ee51.svg",
+    "path": "/assets/imgContainerLightchainLogo01.svg"
+  },
+  {
+    "name": "imgContainerLightchainLogo02",
+    "url": "https://www.figma.com/api/mcp/asset/ab56ba46-ea98-41b0-8a08-de9daed563ab.svg",
+    "path": "/assets/imgContainerLightchainLogo02.svg"
+  },
+  {
+    "name": "imgIconSystem",
+    "url": "https://www.figma.com/api/mcp/asset/df11e701-c698-4d57-895d-78e37190e6d9.svg",
+    "path": "/assets/imgIconSystem.svg"
+  },
+  {
+    "name": "imgChevron",
+    "url": "https://www.figma.com/api/mcp/asset/30bc21e4-f9aa-4796-b326-d9f6eee72172.svg",
+    "path": "/assets/imgChevron.svg"
+  },
+  {
+    "name": "imgIconSystem1",
+    "url": "https://www.figma.com/api/mcp/asset/0dfeb489-a0cd-4485-b80f-963a7e8d13be.svg",
+    "path": "/assets/imgIconSystem1.svg"
+  },
+  {
+    "name": "imgIconSystem2",
+    "url": "https://www.figma.com/api/mcp/asset/ee7a0a5d-35af-4e19-b6df-d9de630425e2.svg",
+    "path": "/assets/imgIconSystem2.svg"
+  },
+  {
+    "name": "imgIconSystem3",
+    "url": "https://www.figma.com/api/mcp/asset/dfd9d5be-c9f8-496c-bd5b-919dc7b48522.svg",
+    "path": "/assets/imgIconSystem3.svg"
+  }
+]

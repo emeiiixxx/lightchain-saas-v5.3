@@ -1,0 +1,48 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodeId": "103:4783",
+  "component": "Canvas/SmartImageSearchPanel",
+  "size": {
+    "width": 400,
+    "height": 871,
+    "header": 56,
+    "padding": 16,
+    "contentGap": 12,
+    "tileHeight": 120,
+    "collapsedWidth": 320
+  },
+  "responsive": "Collapsed 320px; expanded 400px. Only clamp width when viewport cannot fit it with 16px desktop / 12px narrow-screen margins. Expanded height capped and content scrolls.",
+  "tokens": {
+    "surface": "Surface/default",
+    "border": "Border/weak",
+    "intro": "Text/placeholder",
+    "tile": "State/default + Text/tertiary",
+    "tileHover": "State/hover + Border/strong + Text/primary"
+  },
+  "assets": [
+    "public/assets/canvas/searchAssistant.svg",
+    "public/assets/canvas/searchDetect.svg",
+    "public/assets/canvas/chooseFromCanvas.svg"
+  ],
+  "scope": "Expanded empty-state design. Upload keeps existing asset-picker flow. Canvas selection/history remain existing no-backend demo feedback; no search results fabricated.",
+  "validation": [
+    "TypeScript noEmit passed",
+    "Chrome: desktop dimensions, both themes and tile hover, collapse/reopen, narrow viewport scrolling passed",
+    "Updated: 1747/800/640/360px browser widths verified collapsed 320px, expanded 400px (336px viewport clamp at 360px); original 32px canvas-choice SVG mask present; screenshot inspected; TypeScript passed."
+  ],
+  "headerIcon": "User override: retain original smartSearch AI magnifier, 20px, for both collapsed and expanded states.",
+  "collapsedNodeId": "103:4747",
+  "canvasChoiceIcon": {
+    "node": "105:4785",
+    "path": "public/assets/canvas/chooseFromCanvas.svg",
+    "size": 32
+  },
+  "disclosureFocus": "User requested no focus outline on expand/collapse button; hover, Tooltip and keyboard activation retained. Scoped to this disclosure only.",
+  "disclosureMotion": "Shell width/height and disclosure chevron transition together at 200ms ease-out. Collapse starts immediately; content remains for its 200ms fade-out before unmounting. Overflow is clipped to rounded shell. Respects prefers-reduced-motion.",
+  "latestExpandedRevision": {
+    "node": "103:4783",
+    "intro": "Original 64px gradient search-ai SVG, Text/tertiary copy",
+    "tiles": "120px, State/default, no border; State/hover on hover, original 32px icons retained",
+    "validation": "Browser: 400x871; SVG natural width64; tile border0; transition0.2s; screenshot inspected"
+  }
+}

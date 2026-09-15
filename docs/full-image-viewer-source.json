@@ -1,0 +1,17 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodeId": "68:27657",
+  "imageNode": "68:27748",
+  "hintNode": "68:27757",
+  "closeNode": "68:28013",
+  "layout": { "initialImageMaxWidth": 800, "initialImageMaxHeight": 800, "imageFit": "contain, preserve original aspect ratio", "hintTop": 48, "hintPadding": "8px 16px", "hintRadius": 8, "closeTop": 24, "closeRight": 24, "closeSize": 32, "closeIconSize": 20 },
+  "tokens": { "scrim": "Overlay/scrim, black 75% in both themes", "backdropBlur": "50px", "hintBackgroundDark": "rgba(36,48,50,.8)", "hintBackgroundLight": "rgba(61,72,75,.6)", "hintForeground": "Text/on-brand-white", "hintBlur": "10px" },
+  "behavior": [
+    "Native modal dialog covers the application viewport; underlying canvas stays inert.",
+    "Wheel zoom is anchored to the pointer, from 0.1x to 8x the initial fitted image.",
+    "Pointer dragging pans the image directly; release/cancel clears dragging.",
+    "Escape and the close button exit with the shared 200ms ease-out animation.",
+    "Canvas viewport, image positions and selection are unchanged; reopening resets the image view.",
+    "Responsive initial fit keeps portrait/landscape images uncropped on smaller screens."
+  ]
+}

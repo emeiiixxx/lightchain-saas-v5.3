@@ -1,0 +1,15 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Icon/ImageEditingTool">
+<g id="Union">
+<path d="M11 1C13.2091 1 15 2.79086 15 5V6.5C15 6.77614 14.7761 7 14.5 7C14.2239 7 14 6.77614 14 6.5V5C14 3.34315 12.6569 2 11 2H5C3.34315 2 2 3.34315 2 5V11C2 12.6569 3.34315 14 5 14H6.5C6.77614 14 7 14.2239 7 14.5C7 14.7761 6.77614 15 6.5 15H5C2.79086 15 1 13.2091 1 11V5C1 2.79086 2.79086 1 5 1H11Z" fill="#E3E8E8"/>
+<path d="M10 14H8.5C8.22386 14 8 13.7761 8 13.5V12H10V14Z" fill="#E3E8E8"/>
+<path d="M14 13.5C14 13.7761 13.7761 14 13.5 14H12V12H14V13.5Z" fill="#E3E8E8"/>
+<path d="M8 12H6.5C6.22386 12 6 11.7761 6 11.5V10H8V12Z" fill="#E3E8E8"/>
+<path d="M12 12H10V10H12V12Z" fill="#E3E8E8"/>
+<path d="M10 10H8V8H10V10Z" fill="#E3E8E8"/>
+<path d="M13.5 8C13.7761 8 14 8.22386 14 8.5V10H12V8H13.5Z" fill="#E3E8E8"/>
+<path d="M8 8H6V6.5C6 6.22386 6.22386 6 6.5 6H8V8Z" fill="#E3E8E8"/>
+<path d="M11.5 6C11.7761 6 12 6.22386 12 6.5V8H10V6H11.5Z" fill="#E3E8E8"/>
+</g>
+</g>
+</svg>

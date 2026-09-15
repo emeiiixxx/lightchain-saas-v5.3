@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "layout": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 360,
+      "height": 540
+    },
+    {
+      "x": 384,
+      "y": 0,
+      "width": 360,
+      "height": 540
+    },
+    {
+      "x": 768,
+      "y": 0,
+      "width": 360,
+      "height": 540
+    }
+  ],
+  "checks": [
+    "auto-select batch 3",
+    "3-column layout and 24px gaps",
+    "group drag preserves all selections",
+    "undo and redo restore group",
+    "shift-toggle",
+    "outside click clear",
+    "marquee selection",
+    "delete and undo",
+    "hand pan preserves positions",
+    "new batch selects only new images",
+    "single toolbar after deselection",
+    "image preview close preserves selection",
+    "single upload style",
+    "zoom overlay alignment",
+    "dark/light/mobile",
+    "no page errors"
+  ]
+}

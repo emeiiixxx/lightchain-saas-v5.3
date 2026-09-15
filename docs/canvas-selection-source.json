@@ -1,0 +1,368 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "date": "2026-09-14",
+  "singleNode": "57:25504",
+  "multipleNode": "57:24422",
+  "toolbars": {
+    "single": "57:25814",
+    "multiple": "57:25319"
+  },
+  "geometry": {
+    "imageMaxWidth": 360,
+    "imageGap": 24,
+    "mediaCornerRadius": 16,
+    "selectionBorder": 2,
+    "groupBorder": "2px dashed #3a97f7",
+    "groupFill": "rgba(58,151,247,0.2)",
+    "toolbarImageGap": 16,
+    "toolbarPadding": 4,
+    "toolbarHeight": 42
+  },
+  "assets": [
+    {
+      "name": "move",
+      "url": "https://www.figma.com/api/mcp/asset/34ce915b-46cd-4178-9d01-c5c0b93ad3e6.svg",
+      "path": "public/assets/canvas/move.svg"
+    },
+    {
+      "name": "hand",
+      "url": "https://www.figma.com/api/mcp/asset/fb8c1645-c5c2-4424-b045-61dc809c6b93.svg",
+      "path": "public/assets/canvas/hand.svg"
+    },
+    {
+      "name": "canvasUpload",
+      "url": "https://www.figma.com/api/mcp/asset/831c1594-e247-458b-b698-3f08b734d13e.svg",
+      "path": "public/assets/canvas/canvasUpload.svg"
+    },
+    {
+      "name": "undoIcon",
+      "url": "https://www.figma.com/api/mcp/asset/2fdf645a-d1cb-466f-ba72-b5dd0ee64913.svg",
+      "path": "public/assets/canvas/undoIcon.svg"
+    },
+    {
+      "name": "redoIcon",
+      "url": "https://www.figma.com/api/mcp/asset/f13f3103-f077-4f39-bfae-827668af8a6b.svg",
+      "path": "public/assets/canvas/redoIcon.svg",
+      "libraryFileKey": "FO7bCfBv6NPle8egsVaDvG",
+      "nodeId": "2118:2318",
+      "note": "Opaque Icon/Editor flip-right master; disabled color comes from Text/disabled and toolbar instance opacity 0.65, without duplicating SVG alpha."
+    },
+    {
+      "name": "zoomOutIcon",
+      "url": "https://www.figma.com/api/mcp/asset/1cedd567-2b9f-4a93-b658-766b1708e1e9.svg",
+      "path": "public/assets/canvas/zoomOutIcon.svg"
+    },
+    {
+      "name": "arrangeIcon",
+      "url": "https://www.figma.com/api/mcp/asset/765c8aae-1e39-45df-afb2-9424a5b37c69.svg",
+      "path": "public/assets/canvas/arrangeIcon.svg"
+    },
+    {
+      "name": "mapIcon",
+      "url": "https://www.figma.com/api/mcp/asset/696a28ed-ced4-46bc-a017-edfa3aafd56a.svg",
+      "path": "public/assets/canvas/mapIcon.svg"
+    },
+    {
+      "name": "viewFull",
+      "url": "https://www.figma.com/api/mcp/asset/896c10e1-f808-4cec-b962-0be95d20fe18.svg",
+      "path": "public/assets/canvas/viewFull.svg"
+    },
+    {
+      "name": "guideIcon",
+      "url": "https://www.figma.com/api/mcp/asset/add05ca1-4d8b-4201-9fda-425fe4e171c8.svg",
+      "path": "public/assets/canvas/guideIcon.svg"
+    },
+    {
+      "name": "keyboardIcon",
+      "url": "https://www.figma.com/api/mcp/asset/191bc10e-1a73-4559-993f-dcd5868b1535.svg",
+      "path": "public/assets/canvas/keyboardIcon.svg"
+    },
+    {
+      "name": "smartSearch",
+      "url": "https://www.figma.com/api/mcp/asset/5202c2d2-9acb-4b64-8215-610bc20518d3.svg",
+      "path": "public/assets/canvas/smartSearch.svg"
+    },
+    {
+      "name": "historyIcon",
+      "url": "https://www.figma.com/api/mcp/asset/b0376938-6bc4-4fd5-abd9-16403458f485.svg",
+      "path": "public/assets/canvas/historyIcon.svg"
+    },
+    {
+      "name": "newChat",
+      "url": "https://www.figma.com/api/mcp/asset/9688ba2e-8ad3-4a1d-9f35-5c8450f36379.svg",
+      "path": "public/assets/canvas/newChat.svg"
+    },
+    {
+      "name": "panelChevron",
+      "url": "https://www.figma.com/api/mcp/asset/93c2df37-01f0-45e7-aac4-c16339de35a4.svg",
+      "path": "public/assets/canvas/panelChevron.svg"
+    },
+    {
+      "name": "platformIcon",
+      "url": "https://www.figma.com/api/mcp/asset/eb508290-6dcd-4f8f-8ed9-f6434e54d3b5.svg",
+      "path": "public/assets/canvas/platformIcon.svg"
+    },
+    {
+      "name": "taskIcon",
+      "url": "https://www.figma.com/api/mcp/asset/4fed7f33-2cf8-4650-871d-69903b9d72de.svg",
+      "path": "public/assets/canvas/taskIcon.svg"
+    },
+    {
+      "name": "mergeImages",
+      "url": "https://www.figma.com/api/mcp/asset/df2ea35a-bab3-49bb-a3a8-2579bc5f72a7.svg",
+      "path": "public/assets/canvas/mergeImages.svg"
+    },
+    {
+      "name": "batchEdit",
+      "url": "https://www.figma.com/api/mcp/asset/6426e70c-5a5d-4250-9a9b-cf267707e6a3.svg",
+      "path": "public/assets/canvas/batchEdit.svg"
+    },
+    {
+      "name": "multiFlat",
+      "url": "https://www.figma.com/api/mcp/asset/168ecbcf-f3ed-4e66-bfbb-8b5acc85e08b.svg",
+      "path": "public/assets/canvas/multiFlat.svg"
+    },
+    {
+      "name": "removeBackground",
+      "url": "https://www.figma.com/api/mcp/asset/ddedde36-aebe-4056-8a35-3cd633c8abda.svg",
+      "path": "public/assets/canvas/removeBackground.svg"
+    },
+    {
+      "name": "downloadIcon",
+      "url": "https://www.figma.com/api/mcp/asset/5832407f-a494-4db7-ae0f-210f1ef6bdfb.svg",
+      "path": "public/assets/canvas/downloadIcon.svg"
+    },
+    {
+      "name": "singleFlat",
+      "url": "https://www.figma.com/api/mcp/asset/10c583d7-b34e-48af-b8c1-9a74a87946ea.svg",
+      "path": "public/assets/canvas/singleFlat.svg"
+    },
+    {
+      "name": "editImage",
+      "url": "https://www.figma.com/api/mcp/asset/0bd9bfd6-ef54-40d4-a21f-db449c9ea7d8.svg",
+      "path": "public/assets/canvas/editImage.svg"
+    },
+    {
+      "name": "imageSearch",
+      "url": "https://www.figma.com/api/mcp/asset/cd5e1b10-c09b-41b5-8a8b-0d92c3d14850.svg",
+      "path": "public/assets/canvas/imageSearch.svg"
+    },
+    {
+      "name": "saveAsset",
+      "url": "https://www.figma.com/api/mcp/asset/d32a7575-52b4-4d41-90cd-89887a5359e3.svg",
+      "path": "public/assets/canvas/saveAsset.svg"
+    },
+    {
+      "name": "sendIcon",
+      "url": "https://www.figma.com/api/mcp/asset/f5f93e72-328f-4bd9-9464-7ec251bd26c1.svg",
+      "path": "public/assets/canvas/sendIcon.svg"
+    },
+    {
+      "name": "gridSnapOff",
+      "url": "https://www.figma.com/api/mcp/asset/33fc2a5b-de81-4e4b-8808-ecf91f229ae4.svg",
+      "path": "public/assets/canvas/gridSnapOff.svg",
+      "nodeId": "89:3545"
+    },
+    {
+      "name": "gridSnapOn",
+      "url": "https://www.figma.com/api/mcp/asset/d5ed30ac-9f85-456c-9c74-1fde4383382a.svg",
+      "path": "public/assets/canvas/gridSnapOn.svg",
+      "nodeId": "89:3798"
+    }
+  ],
+  "behavior": [
+    "Batch uploads select exactly the newly added images; existing images stay unselected.",
+    "Single selection shows individual toolbar; multiple selection shows group toolbar and group frame.",
+    "Selection frame tracks bounds and viewport; toolbar stays at UI size.",
+    "Group drag, Shift selection, marquee, select all, delete, undo and redo retain selection semantics.",
+    "Image aspect ratio is preserved; reference frames use fixed image dimensions.",
+    "Download uses original images; AI processing, task backend and asset persistence remain demo feedback."
+  ],
+  "notes": [
+    "Both zoom icons in the supplied frame reference the same zoom-out export; retained source glyph and distinct accessible zoom labels."
+  ],
+  "previewButton": {
+    "libraryFileKey": "FO7bCfBv6NPle8egsVaDvG",
+    "instance": "57:25817",
+    "component": "IconButton / Tonal / M",
+    "default": "139:1673",
+    "hover": "139:1682",
+    "disabled": "139:1691",
+    "background": "Surface/media-overlay (black 60%)",
+    "hoverBackground": "Surface/media-overlay-strong (black 75%)",
+    "foreground": "Text/on-brand-white",
+    "sizeAt100Percent": 32,
+    "iconSizeAt100Percent": 20,
+    "behavior": "Scales with canvas including icon, radius and inset. Stacking stays within its owning image; no independent elevated z-index."
+  },
+  "canvasControlsUpdate": {
+    "date": "2026-09-15",
+    "toolbarNode": "35:6349",
+    "selectedBackground": "State/selected-brand",
+    "selectedForeground": "Text/on-brand-black",
+    "selectedBrandResolved": {
+      "dark": [
+        32,
+        208,
+        196
+      ],
+      "light": [
+        112.199999,
+        234.600004,
+        222.046192
+      ]
+    },
+    "gridSnap": {
+      "offNode": "89:3545",
+      "onNode": "89:3798",
+      "missingRequestedNode": "89:3550",
+      "position": "Bottom right, immediately after minimap",
+      "style": "Independent ToggleButton; see toolbarLayoutUpdate.toggleButton",
+      "guides": "Screen-space 1px Dodger Blue/400 (#5FB7FB) dashed lines through the dragged anchor snapped world coordinates; shared delta for multi-selection; removed on release, disable or Alt bypass with 200ms ease-out.",
+      "guideColor": {
+        "source": "89:4021",
+        "vector": "89:3989",
+        "token": "Dodger Blue/400",
+        "cssVariable": "--dodger-blue-400",
+        "hex": "#5FB7FB",
+        "theme": "same in dark and light"
+      }
+    },
+    "validation": [
+      "TypeScript noEmit passed",
+      "Isolated Chrome: source icon/order, disabled redo alpha, light selected token and hover, image/node guide coordinates, release/off/Alt cleanup, no runtime errors."
+    ],
+    "selectedBackgroundScope": "Center mutually exclusive select/hand tools only"
+  },
+  "toolbarLayoutUpdate": {
+    "date": "2026-09-15",
+    "source": "57:25504",
+    "bottomLeft": {
+      "source": "89:3870",
+      "width": 240,
+      "height": 40,
+      "content": "Task trigger, existing behavior"
+    },
+    "leftMiddle": "Platform assets only",
+    "bottomRight": {
+      "source": "89:3853",
+      "order": [
+        "zoom",
+        "arrange",
+        "minimap",
+        "gridSnap",
+        "tutorial",
+        "shortcuts"
+      ],
+      "width": 384,
+      "height": 40,
+      "gap": 8,
+      "edgeInset": 16
+    },
+    "toggleButton": {
+      "set": "89:4047",
+      "default": "89:4050",
+      "hover": "89:4053",
+      "selected": "89:4056",
+      "disabled": "89:4059",
+      "states": {
+        "default": [
+          "transparent",
+          "Text/secondary"
+        ],
+        "hover": [
+          "State/hover",
+          "Text/primary"
+        ],
+        "selected": [
+          "Alpha/Brand/20%",
+          "Text/brand"
+        ],
+        "selectedHover": "same as selected",
+        "disabled": [
+          "transparent",
+          "Text/disabled"
+        ]
+      },
+      "behavior": "Independent pressed states; native Enter/Space; shared Tooltip; 200ms ease-out",
+      "disabledOpacity": 0.7,
+      "approvedOverride": "User approved matching unselected hover to adjacent Ghost buttons. Selected icon follows actual visible icon Text/brand in product instance 89:3270, not hidden Label Brand/primary-hover. Individual containers and layout unchanged."
+    },
+    "responsive": "681-1100: center tools one row above; <=680: right controls one row above, compact icons and task entry; <=380: further compact task entry. Fit reserves bottom min(144, H*0.25) at <=1100.",
+    "validation": [
+      "Live Figma ToggleButton variant fills, foreground tokens and disabled root opacity inspected.",
+      "TypeScript noEmit passed; 6 geometry tests passed.",
+      "Isolated Chrome: dark/light default, hover, selected, selected-hover, disabled; independent toggles and native Space/Enter passed.",
+      "320, 360, 380, 640, 681, 1024, 1101, 1280 and 1816px toolbar bounds, overlap checks, minimap bounds and zoom menu dismissal passed.",
+      "Dark/light screenshots visually inspected; no page errors."
+    ],
+    "minimapPlacement": "Centered above trigger: left 50%, translateX(-50%), width 224px; existing vertical spacing and responsive row avoidance retained."
+  },
+  "gridCameraSync": {
+    "date": "2026-09-15",
+    "cause": "Global CSS transform transition also animates SVG patternTransform. SVG attribute/baseVal already contains target matrix while computed transform still interpolates for 200ms.",
+    "fix": "Exclude .canvas-grid pattern and .canvas-world from transition in motion.css.",
+    "validation": {
+      "method": "Compare actual computed transforms every animation frame, not just attributes; allow up to 0.002px translation and 0.000002 scale serialization rounding.",
+      "darkSamples": 128,
+      "lightSamples": 128,
+      "mismatches": 0,
+      "actions": [
+        "wheel zoom in/out including rapid consecutive events",
+        "wheel pan",
+        "zoom buttons",
+        "fit screen"
+      ],
+      "patternTransition": "0s",
+      "buttonTransition": "0.2s",
+      "pageErrors": 0
+    }
+  },
+  "lightButtonAudit": {
+    "date": "2026-09-15",
+    "sources": [
+      "89:3580",
+      "89:3270"
+    ],
+    "ghost": {
+      "defaultForeground": {
+        "token": "Text/secondary",
+        "dark": "#E3E8E8",
+        "light": "#2F3B3A"
+      },
+      "container": "Surface/default + Border/weak",
+      "hover": "State/hover + Text/primary (approved uniform canvas hover)",
+      "disabled": "Text/disabled, opacity 0.65; master 88:29302"
+    },
+    "toggle": {
+      "selectedBackground": "Alpha/Brand/20% (32,208,196,0.2)",
+      "selectedForeground": {
+        "token": "Text/brand",
+        "dark": "#20D0C4",
+        "light": "#022F31"
+      },
+      "disabled": "Text/disabled, opacity 0.7"
+    },
+    "cause": "Previously read hidden Label Brand/primary-hover instead of actual visible icon Text/brand. They coincide in Dark but differ in Light.",
+    "validation": {
+      "browser": "Isolated Chrome",
+      "result": "Both themes: all five floating controls default, hover, selected, selected-hover, disabled, actual icon mask colors and wrapper colors passed; no page errors.",
+      "screenshots": [
+        "artifacts/canvas-buttons-light-verified.png",
+        "artifacts/canvas-buttons-dark-verified.png"
+      ]
+    },
+    "hoverBorder": {
+      "sources": [
+        "89:3579",
+        "89:3580",
+        "89:3269",
+        "89:3270"
+      ],
+      "figma": "40x40 shell and child at (0,0), 1px INSIDE Border/weak stroke",
+      "before": "CSS layout border shrank child to 38x38 at (1,1), exposing a pale surface ring around hover fill.",
+      "fix": "No layout border; full-size child plus non-interactive ::after 1px inset border overlay. Shared by all five floating buttons.",
+      "validation": "Chrome: all five controls in both themes share exact shell/child bounds; stroke remains Border/weak; overlay does not intercept clicks; compact viewport 32px shell/child also matches. Light hover screenshot inspected."
+    }
+  }
+}

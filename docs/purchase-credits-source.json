@@ -1,0 +1,59 @@
+{
+  "source": {
+    "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+    "nodeId": "35:6267",
+    "componentKey": "c7fb2899fcf06bdd04e80d7d065d8c53e2e3f475",
+    "library": "Lightchain SaaS v5.1 libraries Beta",
+    "masterFileKey": "FO7bCfBv6NPle8egsVaDvG",
+    "masterNodeId": "160:1082"
+  },
+  "layout": {
+    "width": 152,
+    "height": 32,
+    "radius": 8,
+    "padding": [
+      4,
+      16,
+      4,
+      16
+    ],
+    "gap": 8,
+    "insideStroke": 1,
+    "cost": {
+      "width": 55,
+      "height": 18,
+      "gap": 4,
+      "clipsContent": true
+    }
+  },
+  "states": {
+    "darkDefault": {
+      "nodeId": "50:19662",
+      "background": "#171c1c",
+      "foreground": "Brand/primary",
+      "border": "Border/weak"
+    },
+    "darkHover": {
+      "nodeId": "160:992",
+      "background": "#0a0b0b",
+      "foreground": "Brand/primary-hover",
+      "border": "Border/brand",
+      "borderWidth": 1,
+      "divider": "Border/weak"
+    },
+    "lightDefault": {
+      "nodeId": "50:19665",
+      "background": "#effefb",
+      "foreground": "Text/secondary",
+      "border": "Border/weak"
+    },
+    "lightHover": {
+      "nodeId": "50:19666",
+      "background": "#c9fef6",
+      "foreground": "Text/primary",
+      "border": "Border/weak"
+    }
+  },
+  "gradients": "Existing exported SVG layers match get_design_context for 35:6267 exactly.",
+  "motion": "200ms ease-out"
+}

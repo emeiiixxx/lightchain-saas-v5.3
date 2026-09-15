@@ -1,0 +1,1015 @@
+{
+  "source": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodeId": "12:3172",
+  "variants": [
+    {
+      "id": "12:3172",
+      "name": "Header / Purchase Credits",
+      "width": 152,
+      "height": 32,
+      "padding": [
+        4,
+        16,
+        4,
+        16
+      ],
+      "gap": 8,
+      "radius": 8,
+      "strokeWeight": 1,
+      "strokeAlign": "INSIDE",
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.09200000017881393,
+            "g": 0.1080000028014183,
+            "b": 0.1080000028014183
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:e8a9011c6c615d6f9011b937a9f9dd811bc58fe1/2682:65"
+            }
+          }
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.5,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.22745098173618317,
+                "g": 0.5921568870544434,
+                "b": 0.9686274528503418,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:e649ed1682b8e2b0a203ec3b86da272dbb0399af/3957:327"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 0.09019608050584793,
+                "g": 0.10980392247438431,
+                "b": 0.10980392247438431,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1.6548868417739868,
+              -4.8099179261913705e-14,
+              0.27786755561828613
+            ],
+            [
+              4.888511741674845e-15,
+              0.5,
+              0.4999999701976776
+            ]
+          ]
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.75,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.125490203499794,
+                "g": 0.8156862854957581,
+                "b": 0.7686274647712708,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:1282d84274ba2384b4543145036c7180968bf29b/3957:293"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 0.09200000017881393,
+                "g": 0.1080000028014183,
+                "b": 0.1080000028014183,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              2.0370371341705322,
+              -8.228288219678311e-16,
+              0.5
+            ],
+            [
+              4.5975923467097245e-15,
+              0.3759632110595703,
+              0.5
+            ]
+          ]
+        }
+      ],
+      "tree": {
+        "name": "Header / Purchase Credits",
+        "type": "INSTANCE",
+        "x": 1379,
+        "y": 0,
+        "width": 152,
+        "height": 32,
+        "children": [
+          {
+            "name": "购买积分",
+            "type": "TEXT",
+            "x": 16,
+            "y": 8,
+            "width": 48,
+            "height": 16,
+            "characters": "购买积分",
+            "fontSize": 12,
+            "lineHeight": {
+              "unit": "PIXELS",
+              "value": 16
+            }
+          },
+          {
+            "name": "Divider",
+            "type": "INSTANCE",
+            "x": 72,
+            "y": 8,
+            "width": 1,
+            "height": 16,
+            "children": [
+              {
+                "name": "Line",
+                "type": "RECTANGLE",
+                "x": 0,
+                "y": 0,
+                "width": 1,
+                "height": 16
+              }
+            ]
+          },
+          {
+            "name": "Cost Pill",
+            "type": "FRAME",
+            "x": 81,
+            "y": 7,
+            "width": 55,
+            "height": 18,
+            "children": [
+              {
+                "name": "Icon/System",
+                "type": "INSTANCE",
+                "x": 0,
+                "y": 1,
+                "width": 16,
+                "height": 16,
+                "children": [
+                  {
+                    "name": "Union",
+                    "type": "VECTOR",
+                    "x": 0.9502733945846558,
+                    "y": 2.050009250640869,
+                    "width": 14.483343124389648,
+                    "height": 12.383529663085938
+                  }
+                ]
+              },
+              {
+                "name": "99999",
+                "type": "TEXT",
+                "x": 20,
+                "y": 1,
+                "width": 35,
+                "height": 16,
+                "characters": "99999",
+                "fontSize": 12,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "38:11015",
+      "name": "Theme=Dark, State=default, Size=M",
+      "width": 152,
+      "height": 32,
+      "padding": [
+        4,
+        16,
+        4,
+        16
+      ],
+      "gap": 8,
+      "radius": 8,
+      "strokeWeight": 1,
+      "strokeAlign": "INSIDE",
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.09200000017881393,
+            "g": 0.1080000028014183,
+            "b": 0.1080000028014183
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:e8a9011c6c615d6f9011b937a9f9dd811bc58fe1/2682:65"
+            }
+          }
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.5,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.22745098173618317,
+                "g": 0.5921568870544434,
+                "b": 0.9686274528503418,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:e649ed1682b8e2b0a203ec3b86da272dbb0399af/3957:327"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 0.09019608050584793,
+                "g": 0.10980392247438431,
+                "b": 0.10980392247438431,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1.6548868417739868,
+              -4.8099179261913705e-14,
+              0.27786755561828613
+            ],
+            [
+              4.888511741674845e-15,
+              0.5,
+              0.4999999701976776
+            ]
+          ]
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.75,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.125490203499794,
+                "g": 0.8156862854957581,
+                "b": 0.7686274647712708,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:1282d84274ba2384b4543145036c7180968bf29b/3957:293"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 0.09200000017881393,
+                "g": 0.1080000028014183,
+                "b": 0.1080000028014183,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              2.0370371341705322,
+              -8.228288219678311e-16,
+              0.5
+            ],
+            [
+              4.5975923467097245e-15,
+              0.3759632110595703,
+              0.5
+            ]
+          ]
+        }
+      ],
+      "tree": {
+        "name": "Theme=Dark, State=default, Size=M",
+        "type": "COMPONENT",
+        "x": 20,
+        "y": 20.000244140625,
+        "width": 152,
+        "height": 32,
+        "children": [
+          {
+            "name": "购买积分",
+            "type": "TEXT",
+            "x": 16,
+            "y": 8,
+            "width": 48,
+            "height": 16,
+            "characters": "购买积分",
+            "fontSize": 12,
+            "lineHeight": {
+              "unit": "PIXELS",
+              "value": 16
+            }
+          },
+          {
+            "name": "Divider",
+            "type": "INSTANCE",
+            "x": 72,
+            "y": 8,
+            "width": 1,
+            "height": 16,
+            "children": [
+              {
+                "name": "Line",
+                "type": "RECTANGLE",
+                "x": 0,
+                "y": 0,
+                "width": 1,
+                "height": 16
+              }
+            ]
+          },
+          {
+            "name": "Cost Pill",
+            "type": "FRAME",
+            "x": 81,
+            "y": 7,
+            "width": 55,
+            "height": 18,
+            "children": [
+              {
+                "name": "Icon/System",
+                "type": "INSTANCE",
+                "x": 0,
+                "y": 1,
+                "width": 16,
+                "height": 16,
+                "children": [
+                  {
+                    "name": "Union",
+                    "type": "VECTOR",
+                    "x": 0.9502733945846558,
+                    "y": 2.050009250640869,
+                    "width": 14.483343124389648,
+                    "height": 12.383529663085938
+                  }
+                ]
+              },
+              {
+                "name": "99999",
+                "type": "TEXT",
+                "x": 20,
+                "y": 1,
+                "width": 35,
+                "height": 16,
+                "characters": "99999",
+                "fontSize": 12,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "38:11016",
+      "name": "Theme=Dark, State=hover, Size=M",
+      "width": 152,
+      "height": 32,
+      "padding": [
+        4,
+        16,
+        4,
+        16
+      ],
+      "gap": 8,
+      "radius": 8,
+      "strokeWeight": 1,
+      "strokeAlign": "INSIDE",
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.037254903465509415,
+            "g": 0.04117647185921669,
+            "b": 0.04117647185921669
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:0a81db49f04ee8df37bfb96c9407c465a14aaf45/2682:86"
+            }
+          }
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.5,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.22745098173618317,
+                "g": 0.5921568870544434,
+                "b": 0.9686274528503418,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:e649ed1682b8e2b0a203ec3b86da272dbb0399af/3957:327"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 0.09019608050584793,
+                "g": 0.10980392247438431,
+                "b": 0.10980392247438431,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1.6548868417739868,
+              -4.8099179261913705e-14,
+              0.27786755561828613
+            ],
+            [
+              4.888511741674845e-15,
+              0.5,
+              0.4999999701976776
+            ]
+          ]
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.75,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.125490203499794,
+                "g": 0.8156862854957581,
+                "b": 0.7686274647712708,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:1282d84274ba2384b4543145036c7180968bf29b/3957:293"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 0.09019608050584793,
+                "g": 0.10980392247438431,
+                "b": 0.10980392247438431,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              2.0370371341705322,
+              -8.228288219678311e-16,
+              0.5
+            ],
+            [
+              4.5975923467097245e-15,
+              0.3759632110595703,
+              0.5
+            ]
+          ]
+        }
+      ],
+      "tree": {
+        "name": "Theme=Dark, State=hover, Size=M",
+        "type": "COMPONENT",
+        "x": 20,
+        "y": 104.000244140625,
+        "width": 152,
+        "height": 32,
+        "children": [
+          {
+            "name": "购买积分",
+            "type": "TEXT",
+            "x": 16,
+            "y": 8,
+            "width": 48,
+            "height": 16,
+            "characters": "购买积分",
+            "fontSize": 12,
+            "lineHeight": {
+              "unit": "PIXELS",
+              "value": 16
+            }
+          },
+          {
+            "name": "Divider",
+            "type": "INSTANCE",
+            "x": 72,
+            "y": 8,
+            "width": 1,
+            "height": 16,
+            "children": []
+          },
+          {
+            "name": "Cost Pill",
+            "type": "FRAME",
+            "x": 81,
+            "y": 7,
+            "width": 55,
+            "height": 18,
+            "children": [
+              {
+                "name": "Icon/System",
+                "type": "INSTANCE",
+                "x": 0,
+                "y": 1,
+                "width": 16,
+                "height": 16,
+                "children": []
+              },
+              {
+                "name": "99999",
+                "type": "TEXT",
+                "x": 20,
+                "y": 1,
+                "width": 35,
+                "height": 16,
+                "characters": "99999",
+                "fontSize": 12,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "38:11018",
+      "name": "Theme=Light, State=default, Size=M",
+      "width": 152,
+      "height": 32,
+      "padding": [
+        4,
+        16,
+        4,
+        16
+      ],
+      "gap": 8,
+      "radius": 8,
+      "strokeWeight": 1,
+      "strokeAlign": "INSIDE",
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.9372549057006836,
+            "g": 0.9960784316062927,
+            "b": 0.9843137264251709
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:04cf606557195e168398c3185a1923d66c3ef305/3957:131"
+            }
+          }
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.5,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.22745098173618317,
+                "g": 0.5921568870544434,
+                "b": 0.9686274528503418,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:e649ed1682b8e2b0a203ec3b86da272dbb0399af/3957:327"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1.6548868417739868,
+              -4.8099179261913705e-14,
+              0.27786755561828613
+            ],
+            [
+              4.888511741674845e-15,
+              0.5,
+              0.4999999701976776
+            ]
+          ]
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.75,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.125490203499794,
+                "g": 0.8156862854957581,
+                "b": 0.7686274647712708,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:1282d84274ba2384b4543145036c7180968bf29b/3957:293"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              2.0370371341705322,
+              -8.228288219678311e-16,
+              0.5
+            ],
+            [
+              4.5975923467097245e-15,
+              0.3759632110595703,
+              0.5
+            ]
+          ]
+        }
+      ],
+      "tree": {
+        "name": "Theme=Light, State=default, Size=M",
+        "type": "COMPONENT",
+        "x": 20,
+        "y": 272.000244140625,
+        "width": 152,
+        "height": 32,
+        "children": [
+          {
+            "name": "购买积分",
+            "type": "TEXT",
+            "x": 16,
+            "y": 8,
+            "width": 48,
+            "height": 16,
+            "characters": "购买积分",
+            "fontSize": 12,
+            "lineHeight": {
+              "unit": "PIXELS",
+              "value": 16
+            }
+          },
+          {
+            "name": "Divider",
+            "type": "INSTANCE",
+            "x": 72,
+            "y": 8,
+            "width": 1,
+            "height": 16,
+            "children": []
+          },
+          {
+            "name": "Cost Pill",
+            "type": "FRAME",
+            "x": 81,
+            "y": 7,
+            "width": 55,
+            "height": 18,
+            "children": [
+              {
+                "name": "Icon/System",
+                "type": "INSTANCE",
+                "x": 0,
+                "y": 1,
+                "width": 16,
+                "height": 16,
+                "children": []
+              },
+              {
+                "name": "99999",
+                "type": "TEXT",
+                "x": 20,
+                "y": 1,
+                "width": 35,
+                "height": 16,
+                "characters": "99999",
+                "fontSize": 12,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "38:11019",
+      "name": "Theme=Light, State=hover, Size=M",
+      "width": 152,
+      "height": 32,
+      "padding": [
+        4,
+        16,
+        4,
+        16
+      ],
+      "gap": 8,
+      "radius": 8,
+      "strokeWeight": 1,
+      "strokeAlign": "INSIDE",
+      "fills": [
+        {
+          "type": "SOLID",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "color": {
+            "r": 0.7882353067398071,
+            "g": 0.9960784316062927,
+            "b": 0.9647058844566345
+          },
+          "boundVariables": {
+            "color": {
+              "type": "VARIABLE_ALIAS",
+              "id": "VariableID:ca3d212290b522b6c912b51672205a5f22d47cd8/3957:132"
+            }
+          }
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.5,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.22745098173618317,
+                "g": 0.5921568870544434,
+                "b": 0.9686274528503418,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:e649ed1682b8e2b0a203ec3b86da272dbb0399af/3957:327"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              1.6548868417739868,
+              -4.8099179261913705e-14,
+              0.27786755561828613
+            ],
+            [
+              4.888511741674845e-15,
+              0.5,
+              0.4999999701976776
+            ]
+          ]
+        },
+        {
+          "type": "GRADIENT_RADIAL",
+          "visible": true,
+          "opacity": 0.75,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.125490203499794,
+                "g": 0.8156862854957581,
+                "b": 0.7686274647712708,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {
+                "color": {
+                  "type": "VARIABLE_ALIAS",
+                  "id": "VariableID:1282d84274ba2384b4543145036c7180968bf29b/3957:293"
+                }
+              }
+            },
+            {
+              "color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+              2.0370371341705322,
+              -8.228288219678311e-16,
+              0.5
+            ],
+            [
+              4.5975923467097245e-15,
+              0.3759632110595703,
+              0.5
+            ]
+          ]
+        }
+      ],
+      "tree": {
+        "name": "Theme=Light, State=hover, Size=M",
+        "type": "COMPONENT",
+        "x": 20,
+        "y": 356.000244140625,
+        "width": 152,
+        "height": 32,
+        "children": [
+          {
+            "name": "购买积分",
+            "type": "TEXT",
+            "x": 16,
+            "y": 8,
+            "width": 48,
+            "height": 16,
+            "characters": "购买积分",
+            "fontSize": 12,
+            "lineHeight": {
+              "unit": "PIXELS",
+              "value": 16
+            }
+          },
+          {
+            "name": "Divider",
+            "type": "INSTANCE",
+            "x": 72,
+            "y": 8,
+            "width": 1,
+            "height": 16,
+            "children": []
+          },
+          {
+            "name": "Cost Pill",
+            "type": "FRAME",
+            "x": 81,
+            "y": 7,
+            "width": 55,
+            "height": 18,
+            "children": [
+              {
+                "name": "Icon/System",
+                "type": "INSTANCE",
+                "x": 0,
+                "y": 1,
+                "width": 16,
+                "height": 16,
+                "children": []
+              },
+              {
+                "name": "99999",
+                "type": "TEXT",
+                "x": 20,
+                "y": 1,
+                "width": 35,
+                "height": 16,
+                "characters": "99999",
+                "fontSize": 12,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 16
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "implementation": {
+    "gradient": "Exact SVG gradient layers from Figma get_design_context, not simplified CSS stops.",
+    "insideStroke": true,
+    "width": 152,
+    "height": 32,
+    "costHeight": 18
+  },
+  "check": {
+    "fileKey": "FO7bCfBv6NPle8egsVaDvG",
+    "nodeId": "120:14",
+    "componentKey": "7276dfc5145f76e432f7c67559ed4df69298a131",
+    "asset": "/assets/check.svg"
+  },
+  "motion": {
+    "duration": "200ms",
+    "easing": "ease-out",
+    "entryExit": true
+  }
+}

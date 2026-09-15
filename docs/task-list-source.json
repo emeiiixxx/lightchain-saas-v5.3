@@ -1,0 +1,43 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodeId": "103:4291",
+  "geometry": {
+    "width": 240,
+    "threeRowHeight": 266,
+    "expandedTrigger": 32,
+    "rowHeight": 64,
+    "thumbnail": 48,
+    "padding": 12,
+    "gap": 8
+  },
+  "motion": {
+    "nodeId": "103:4266",
+    "rotate": [
+      -360,
+      0
+    ],
+    "durationMs": 3000,
+    "easing": "linear",
+    "repeat": "infinite",
+    "reducedMotion": "static"
+  },
+  "dataContract": {
+    "component": "CanvasTaskList",
+    "via": "CanvasChrome.tasks",
+    "fields": [
+      "id",
+      "status: running|completed|failed",
+      "createdAt: ISO timestamp",
+      "thumbnailUrl?: string"
+    ],
+    "default": [],
+    "expandAllowed": "tasks.length > 0, including completed-only lists",
+    "count": "running only",
+    "clear": "close and disable"
+  },
+  "validation": [
+    "TypeScript noEmit passed",
+    "Isolated browser fixtures: empty disabled, nonempty expand, completed-only expand, running count, clear auto-close, keyboard activation, 240x266 geometry, both themes and reduced motion passed",
+    "Dark/light screenshots inspected; fixtures not persisted or added to production canvas"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodeId": "57:27017",
+  "menuNodeId": "57:26492",
+  "controlNodeId": "57:26220",
+  "menu": { "width": 112, "height": 300, "padding": 8, "itemHeight": 32, "itemGap": 4, "radius": 12, "gapAboveControl": 4 },
+  "control": { "width": 144, "height": 40, "selectWidth": 72, "buttonHeight": 32 },
+  "presets": [200, 100, 50, 30, 10, 5, 3],
+  "fitLabel": "适应屏幕",
+  "selectedState": "State/hover background, Text/brand foreground, original library check icon",
+  "focusState": "Control/fill/focus background, 1px Border/brand ring, upward arrow",
+  "behavior": "Selected state follows actual zoom. Canvas supports down to 3%. Fit computes image bounds. Outside pointer down and Escape close the menu. Preset selection preserves viewport center."
+}

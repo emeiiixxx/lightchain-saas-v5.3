@@ -1,0 +1,8 @@
+/* 5.1 Beta Tooltip 406:2959. Arrow is the original Figma export. */
+.lc-tooltip { position: fixed; inset: auto; margin: 0; border: 0; overflow: visible; background: transparent; z-index: 100; display: flex; align-items: center; width: max-content; max-width: calc(100vw - 16px); padding: 0 0 4px; pointer-events: none; color: var(--text-on-brand-white); filter: drop-shadow(0 6px 7px var(--overlay-weak)); }
+.lc-tooltip-bubble { max-width: 336px; padding: 4px 8px; border-radius: 6px; background: var(--surface-media-overlay-strong); backdrop-filter: blur(10px); font-size: 12px; font-weight: 400; line-height: 16px; overflow-wrap: anywhere; }
+.lc-tooltip-arrow { position: absolute; width: 8px; height: 4px; left: var(--tooltip-arrow-x, 50%); bottom: 0; transform: translateX(-50%) rotate(180deg); }
+.lc-tooltip[data-side='bottom'] { padding: 4px 0 0; }
+.lc-tooltip[data-side='bottom'] .lc-tooltip-arrow { top: 0; bottom: auto; transform: translateX(-50%); }
+.lc-tooltip[data-side='right'] { padding: 0 0 0 4px; }
+.lc-tooltip[data-side='right'] .lc-tooltip-arrow { left: 0; top: 50%; bottom: auto; transform: translate(-2px, -50%) rotate(-90deg); }

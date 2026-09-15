@@ -1,0 +1,7 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "expandedEditor": {"nodeId":"36:8218","width":960,"inputHeight":640,"maxWidth":1280,"maxInputHeight":720,"resize":"Four corners; viewport clamped; direct manipulation","exit":"Escape, blank backdrop or collapse; edits persist in node","limit":2000},
+  "savePopover": {"nodeId":"38:14912","width":280,"padding":16,"gap":16,"nameLimit":50,"placement":"Above trigger where available, otherwise below; viewport clamped; native popover top layer"},
+  "library": {"nodeId":"42:18476","width":1280,"height":800,"sidebarWidth":320,"features":["search","select detail","add","edit","apply"],"storage":"Local browser only; migrates legacy strings to named records; shared across nodes"},
+  "validation": ["TypeScript passed","Isolated browser: named save and library apply","Full editor text synchronizes with node","Corner resize exercised","Save popover inside modal works","Escape exits","Screenshots inspected"]
+}

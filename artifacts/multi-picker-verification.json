@@ -1,0 +1,18 @@
+{
+  "checks": [
+    "TypeScript check passed",
+    "Five initial entries",
+    "21-file selection rejected before import",
+    "20-file selection automatically selected and added",
+    "Selection cap applies to library cards and persists across search",
+    "Batch layout without overlapping images",
+    "Batch undo",
+    "Single main flow keeps one image",
+    "Cancel preserves canvas",
+    "Batch append preserves existing main",
+    "Dark and light theme screenshots inspected",
+    "390px viewport dialog fits",
+    "No browser runtime errors"
+  ],
+  "preview": "http://127.0.0.1:4173/"
+}
