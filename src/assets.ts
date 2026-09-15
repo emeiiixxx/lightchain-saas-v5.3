@@ -3,6 +3,7 @@ export const assets = {
   promptPin: '/assets/prompts/pin.svg',
   promptMore: '/assets/prompts/more.svg',
   promptTrash: '/assets/prompts/trash.svg',
+  promptEdit: '/assets/prompts/edit.svg',
   promptCollapse: '/assets/fusion/promptCollapse.svg',
   cutoutAi: '/assets/cutout/cutoutAi.svg',
   cutoutBrush: '/assets/cutout/cutoutBrush.svg',
