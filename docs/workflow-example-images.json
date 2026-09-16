@@ -1,0 +1,109 @@
+{
+  "generator": "Built-in image_gen for previous fusion assets and directed fusion; user-provided originals for current one-click fusion and lingerie",
+  "assets": [
+    {
+      "key": "fusion-main",
+      "path": "public/assets/workflow-examples/fusion-main.png"
+    },
+    {
+      "key": "fusion-reference",
+      "path": "public/assets/workflow-examples/fusion-reference.png"
+    },
+    {
+      "key": "fusion-result",
+      "path": "public/assets/workflow-examples/fusion-result.png"
+    },
+    {
+      "key": "directed-reference",
+      "path": "public/assets/workflow-examples/directed-reference.png"
+    },
+    {
+      "key": "directed-result",
+      "path": "public/assets/workflow-examples/directed-result.png"
+    },
+    {
+      "key": "lingerie-product",
+      "path": "public/assets/workflow-examples/lingerie-product.jpeg",
+      "source": "User-provided 422395f86d90e7944db078fb3cdb53f7.jpeg",
+      "width": 1792,
+      "height": 2400
+    },
+    {
+      "key": "lingerie-result",
+      "path": "public/assets/workflow-examples/lingerie-result.png",
+      "source": "User-provided screenshot-20260916-180851.png",
+      "width": 794,
+      "height": 1064,
+      "usage": "Lingerie demonstration result"
+    },
+    {
+      "key": "fusion-loungewear",
+      "path": "public/assets/workflow-examples/fusion-loungewear.png",
+      "source": "User-provided 179b47ed1eb000a30b1b29c71623c27f.png",
+      "usage": "One-click fusion main image; no preset reference"
+    },
+    {
+      "key": "fusion-loungewear-result",
+      "path": "public/assets/workflow-examples/fusion-loungewear-result.png",
+      "source": "User-provided GbBGKRCM.png",
+      "width": 1792,
+      "height": 2400,
+      "usage": "One-click fusion initialization and generated demo result"
+    },
+    {
+      "key": "lingerie-model",
+      "path": "public/assets/workflow-examples/lingerie-model.png",
+      "source": "User-provided screenshot-20260916-181809.png",
+      "usage": "Lingerie model reference; result remains lingerie-result.png"
+    },
+    {
+      "key": "flat-main",
+      "path": "public/assets/workflow-examples/flat-main.jpg",
+      "source": "User-provided 万能营销工作台-2026-06-12 16-28-20.jpg",
+      "width": 1696,
+      "height": 2528,
+      "usage": "3D flat-lay main image"
+    },
+    {
+      "key": "flat-result",
+      "path": "public/assets/workflow-examples/flat-result.png",
+      "source": "User-provided 万能穿搭融合-2026-04-09 12-09-40.png",
+      "width": 1792,
+      "height": 2400,
+      "usage": "3D flat-lay initialization and generated demo result"
+    }
+  ],
+  "prompts": [
+    {
+      "key": "fusion-main",
+      "prompt": "Use case: photorealistic-natural. Create one high quality realistic fashion ecommerce photograph, portrait 2:3. A clearly adult woman aged 30, shoulder-length chestnut bob hair, natural face, wearing a mustard yellow knee-length wrap dress with long airy sleeves and small white polka dots, matching fabric waist tie, simple tan sandals. Full body including feet, neutral standing pose one arm gently relaxed sideways, centered. Warm pale beige seamless studio backdrop, softly lit, realistic textile detail and folds, crisp but natural. Single photograph, no collage, no text, no logos. Preserve ample room around silhouette."
+    },
+    {
+      "key": "fusion-reference",
+      "prompt": "Use case: photorealistic-natural. Create one photorealistic vertical 2:3 fashion campaign location reference photograph. Mediterranean coastal terrace with pale limestone paving, cream plaster wall on one side, blue sea and softly distant coastline, one olive tree and natural warm late-afternoon sunlight. The central foreground paving is empty with enough space to place a full-length fashion model. Camera at standing person's waist/chest level with natural perspective, editorial photography, not an illustration. No people, no text, no logo, no collage."
+    },
+    {
+      "key": "fusion-result",
+      "prompt": "Use case: compositing. Image 1 is the subject identity and clothing source. Image 2 is the replacement background reference. Place the exact adult woman from image 1 into the Mediterranean terrace from image 2, standing naturally on the foreground stone paving. Keep her face, hairstyle, body proportions, pose, mustard yellow white-polka-dot wrap dress, fabric tie, sleeve shape, hemline and tan sandals unchanged. Match natural warm late-afternoon light, contact shadows, scale and perspective to image 2, keeping the sea, cream wall and olive tree visible. Full-body fashion campaign photo, 2:3 portrait, realistic materials and anatomy. No surreal objects, no other people, no text, no collage."
+    },
+    {
+      "key": "directed-reference",
+      "prompt": "Use case: product-mockup. Create one photorealistic ecommerce flat-lay garment photo, portrait 2:3. One cornflower-blue knee-length wrap dress with small ivory floral print, long airy sleeves, v-neck and matching fabric waist tie. Complete dress laid flat with sleeves slightly spread, centered against warm ivory seamless background. Clearly show collar, fabric, sleeves, belt and hem. Soft diffuse lighting and natural soft shadow, realistic woven fabric. No person or mannequin, no accessories, no text, no logo, no collage."
+    },
+    {
+      "key": "directed-result",
+      "prompt": "Use case: precise-object-edit / garment virtual try-on. Image 1 is the edit target. Image 2 is the exact replacement dress reference. Change ONLY the woman's mustard yellow polka-dot dress to the cornflower-blue wrap dress with small ivory floral print from image 2, faithfully reproducing the V neck, long sleeves, fabric waist tie, blue color and small floral pattern. Preserve the SAME adult woman's face, hair, body proportions, exact pose, hands, legs, tan sandals, beige studio backdrop, camera/framing, and lighting from image 1. The only change is the garment region. Single full-body realistic ecommerce fashion photograph, portrait 2:3. No text, logos, collage or borders."
+    },
+    {
+      "key": "lingerie-result",
+      "prompt": "将主图中的黄紫拼色内衣套装穿到参考模特身上，保留淡黄色蕾丝、浅紫色罩杯、黑色肩带与包边，以及配套高腰内裤的拼色和侧边镂空细节。保留模特的金色长发、双臂抬起的姿势，搭配暖桃色背景与粉色球形布景，呈现自然贴合、柔和光影的内衣产品大片。",
+      "usage": "Demo node description only; supplied image copied unchanged, not generated from this prompt"
+    },
+    {
+      "key": "fusion-loungewear",
+      "prompt": "视觉主旨： 高端时尚社论，一位拥有空灵气质的模特双腿自然叠放坐在复古单人沙发上。 核心焦点： 姜黄色自然短发。模特身着图中服饰。 环境细节： 70年代复古风格卧室，乳白色淡淡的碎花壁纸，复古格纹沙发，旁边有复古木制床头柜和黄铜灯杆的布艺灯罩台灯。 摄影标准： 采用35mm高端电影镜头，光线明亮干净、阴影浅淡自然，主光从模特正面 45° 角打光，辅光弱化阴影，无强烈明暗对比，整体光线均匀通透，画面色彩饱，高宽容度，呈现出极致的细节纹理。没有任何病态感，整体氛围是空灵、温馨、自然随性的艺术瞬间。",
+      "usage": "Exact user-provided demo node prompt; matching result supplied as GbBGKRCM.png"
+    }
+  ],
+  "note": "Local demonstration assets. Current one-click fusion, lingerie and 3D flat-lay inputs/results are user-provided originals, copied unchanged. No live AI generation in the app."
+}

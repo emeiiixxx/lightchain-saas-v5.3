@@ -80,6 +80,13 @@
 /* Verified in the 5.1 Beta library; identical across both themes. */
 [data-theme] { --text-on-brand-black: rgba(17, 24, 23, 1); }
 
+/* Badge/Text/Pill, Figma 136:18786: Brand/gradient-chat. */
+[data-theme] {
+  --gradient-cyan-300: #61fff4;
+  --gradient-perfume-300: #ccb2ff;
+  --brand-gradient-chat: linear-gradient(24.943905deg, var(--gradient-cyan-300) 0%, var(--gradient-perfume-300) 100%);
+}
+
 /* Asset picker: live 5.1 Beta bindings, docs/asset-picker-source.json. */
 [data-theme="dark"] {
   --brand-primary-disabled: rgba(13, 98, 97, 1);

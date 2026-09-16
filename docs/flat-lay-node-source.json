@@ -1,0 +1,72 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodes": {
+    "withMain": "136:18488",
+    "empty": "136:18657"
+  },
+  "component": "src/components/FlatLayNode.tsx",
+  "library": "Lightchain SaaS v5.1 libraries Beta",
+  "geometry": {
+    "width": 280,
+    "height": 417,
+    "padding": 12,
+    "gap": 12,
+    "radius": 16,
+    "mainHeight": 56,
+    "headerHeight": 52
+  },
+  "controls": {
+    "region": {
+      "label": "选择区域",
+      "options": [
+        {
+          "value": "top",
+          "label": "上装"
+        },
+        {
+          "value": "bottom",
+          "label": "下装"
+        },
+        {
+          "value": "full",
+          "label": "连身装"
+        }
+      ],
+      "default": "top",
+      "exampleDefault": "full"
+    },
+    "face": {
+      "label": "生成面",
+      "options": [
+        "front",
+        "back"
+      ],
+      "default": "front",
+      "selection": "single"
+    },
+    "ratio": "auto",
+    "resolution": "2K"
+  },
+  "primitives": {
+    "select": "Existing SettingSelect with top-layer menu, 8px option gaps and Beta check icon",
+    "face": "ChoiceChip Outline M, 32px high, selected Alpha/Brand/20% + Border/brand + Text/primary as shown in target instance",
+    "generate": "Existing GenerateTaskButton, cost 999",
+    "icons": [
+      "fusionTip",
+      "fusionAddImage",
+      "fusionRatio",
+      "fusionHd"
+    ]
+  },
+  "behavior": [
+    "Empty canvas opens a connected main/editor/result example using user-supplied images.",
+    "Single-image toolbar creates an independent flat editor for the selected image.",
+    "Deleting the main preserves the empty editor and its position, resetting settings to defaults.",
+    "Adding a main via the single asset picker preserves the flat editor identity and existing result connections.",
+    "Region, face, ratio and resolution changes use canvas undo history.",
+    "Generating requires a main image only; it appends the fixed supplied example at width 360 and original 1792:2400 ratio. No AI request or charge.",
+    "Navigation, selection, dragging, arrangement and connection layers use shared canvas geometry.",
+    "Both themes use existing semantic tokens; interactions use 200ms ease-out and reduced-motion handling."
+  ],
+  "validation": "Implementation only; no browser, build or tests run per user instruction."
+}

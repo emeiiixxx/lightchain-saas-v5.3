@@ -1,10 +1,10 @@
-import { FUSION_HEIGHT, fusionPosition, type CanvasImage } from '../canvas';
+import { workflowHeight, fusionPosition, type CanvasImage } from '../canvas';
 
 // This SVG is dynamic graph geometry, not an icon asset. Both endpoints derive
 // from world-space node bounds and remain attached during independent dragging.
 export function FusionConnection({ image, active, zoom = 1 }: { image: CanvasImage; active: boolean; zoom?: number }) {
   const node = fusionPosition(image);
-  return <ImageConnection image={image} target={{...node, id: `${image.id}:fusion`, width: 280, height: FUSION_HEIGHT}} active={active} zoom={zoom} />;
+  return <ImageConnection image={image} target={{...node, id: `${image.id}:fusion`, width: 280, height: workflowHeight(image.fusion)}} active={active} zoom={zoom} />;
 }
 
 export function ImageConnection({ image, target: node, active, zoom }: { image: CanvasImage; target: Pick<CanvasImage, 'id' | 'x' | 'y' | 'width' | 'height'>; active: boolean; zoom: number }) {

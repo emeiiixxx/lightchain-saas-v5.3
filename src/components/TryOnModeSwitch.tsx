@@ -26,5 +26,5 @@ export function TryOnModeSwitch({ value, onChange, locale, active = false }: { a
       }}>
       <Icon name={mode === 'regular' ? 'aiTryOn' : 'lingerieTryOn'} size={16} /><span className="tryon-mode-label" aria-hidden={value !== mode}>{t[mode]}</span>
     </button>)}
-  </div><TryOnAnnouncement active={active} mode={value} anchor={anchor} locale={locale} onTry={() => { onChange('lingerie'); buttons.current[1]?.focus({ preventScroll: true }); }} /></>;
+  </div><TryOnAnnouncement active={active} anchor={anchor} locale={locale} onTry={() => { onChange('lingerie'); buttons.current[1]?.focus({ preventScroll: true }); }} /></>;
 }

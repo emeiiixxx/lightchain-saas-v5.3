@@ -1,4 +1,4 @@
-import { FUSION_HEIGHT, FUSION_WIDTH, fusionPosition, fusionReferences, type CanvasImage } from './canvas';
+import { workflowHeight, FUSION_WIDTH, fusionPosition, fusionReferences, type CanvasImage } from './canvas';
 
 // Copy the visible selection, not the storage record (which may hold both an
 // image and its editor). Whitelist fields so old graph relationships never leak.
@@ -13,10 +13,11 @@ export function copyCanvasSelection(items: CanvasImage[], selected: string[]): C
       const position = { ...fusionPosition(item) };
       copies.push({
         id: `${item.id}:fusion`, name: '', url: '', ...position,
-        width: FUSION_WIDTH, height: FUSION_HEIGHT, nodeOnly: true,
+        width: FUSION_WIDTH, height: workflowHeight(item.fusion), nodeOnly: true,
         fusion: {
           kind: item.fusion.kind, position, prompt: item.fusion.prompt, ratio: item.fusion.ratio, resolution: item.fusion.resolution,
           references: fusionReferences(item.fusion).map(reference => ({ ...reference })),
+          directedPoints: item.fusion.directedPoints?.map(point => ({ ...point, reference: { ...point.reference } })),
         },
       });
     }
@@ -32,6 +33,7 @@ export function pasteCanvasSelection(items: CanvasImage[], dx: number, dy: numbe
       fusion: item.fusion ? {
         ...item.fusion, position,
         references: fusionReferences(item.fusion).map(reference => ({ ...reference })),
+        directedPoints: item.fusion.directedPoints?.map(point => ({ ...point, id: crypto.randomUUID(), reference: { ...point.reference } })),
       } : undefined,
     };
   });

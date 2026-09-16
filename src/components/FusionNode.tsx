@@ -63,6 +63,6 @@ export function FusionNode({ image, locale, onChange, onAddMain, onReference, on
       </div>{error && <p className="fusion-error" id={`${promptId}-error`} role="alert">{t.required}</p>}</div>
       <div className="fusion-field"><span className="fusion-label">{t.settings}</span><div className="fusion-settings"><SettingSelect label={t.ratio} value={settings.ratio} icon="fusionRatio" options={['auto', '1:1', '3:4', '4:3', '9:16', '16:9'].map(value => ({value, label: value === 'auto' ? t.auto : value}))} onChange={ratio => onChange({ ratio })} /><SettingSelect label={t.resolution} value={settings.resolution} icon="fusionHd" options={['1K', '2K', '4K'].map(value => ({value,label:value}))} onChange={resolution => onChange({ resolution })} /></div></div>
     </div>
-    <GenerateTaskButton label={t.generate} cost="999" className="fusion-generate" onClick={() => { if (image.nodeOnly) { onAddMain(); return; } if (!settings.prompt.trim()) { setError(true); prompt.current?.focus(); } else onGenerate(); }} />
+    <GenerateTaskButton label={t.generate} cost="999" className="fusion-generate" onClick={() => { if (image.nodeOnly) { onAddMain(); return; } if (!lingerie && !settings.prompt.trim()) { setError(true); prompt.current?.focus(); } else onGenerate(); }} />
   </section>;
 }

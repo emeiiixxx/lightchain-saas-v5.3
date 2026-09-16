@@ -1,0 +1,25 @@
+{
+  "library": "Lightchain SaaS v5.1 libraries Beta",
+  "fileKey": "FO7bCfBv6NPle8egsVaDvG",
+  "icons": [
+    {
+      "id": "120:70",
+      "name": "Style=Linear, Name=download",
+      "key": "386c676197a45dc4a0e2f4fe8d8004a57c2738c9",
+      "path": "public/assets/canvas/context-download.svg"
+    },
+    {
+      "id": "120:50",
+      "name": "Style=Linear, Name=copy",
+      "key": "d289f6b1da5dfe5bdb258ca3a15ec9bdb198ebff",
+      "path": "public/assets/canvas/context-copy.svg"
+    },
+    {
+      "id": "120:72",
+      "name": "Style=Linear, Name=trash",
+      "key": "84050c6c0d557e84e4338c4cf8a679e0062e86e7",
+      "path": "public/assets/canvas/context-trash.svg"
+    }
+  ],
+  "note": "Original SVG exports; copy and duplicate reuse the Beta System/copy component. Layout and menu content follow the user screenshot."
+}

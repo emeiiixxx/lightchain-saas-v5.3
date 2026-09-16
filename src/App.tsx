@@ -2,7 +2,7 @@ import { AiTryOnPage } from './components/AiTryOnPage';
 import { ProgressiveImage } from './components/ProgressiveImage';
 import { notify, ToastHost } from './components/Toast';
 import { CutoutEditor } from './components/CutoutEditor';
-import { fusionReferences, workflowReferenceLimit, type WorkflowKind, type FusionReference } from './canvas';
+import { fusionReferences, workflowReferenceLimit, workflowHeight, MAX_DIRECTED_POINTS, type WorkflowKind, type FusionReference } from './canvas';
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { assets } from './assets';
 import { Button, Dialog, Divider, Icon, type IconName } from './components/ui';
@@ -15,6 +15,9 @@ import { SelectionToolbar } from './components/SelectionToolbar';
 import { CanvasChrome } from './components/CanvasChrome';
 import { FullImageViewer } from './components/FullImageViewer';
 import { FusionNode } from './components/FusionNode';
+import { DirectedFusionNode } from './components/DirectedFusionNode';
+import { FlatLayNode } from './components/FlatLayNode';
+import { createWorkflowExample, workflowExampleResult } from './workflow-examples';
 import { ImageConnection } from './components/FusionConnection';
 import { copyCanvasSelection, pasteCanvasSelection } from './canvas-clipboard';
 import { CanvasContextMenu } from './components/CanvasContextMenu';
@@ -57,7 +60,7 @@ export default function App() {
   const [systemDark, setSystemDark] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches);
   const [projectName, setProjectName] = useState(() => saved('lc-flow-project-name', 'Untitle'));
   const [menu, setMenu] = useState<'language' | null>(null);
-  const [canvasMenu, setCanvasMenu] = useState<{ x: number; y: number; worldX: number; worldY: number } | null>(null);
+  const [canvasMenu, setCanvasMenu] = useState<{ x: number; y: number; worldX: number; worldY: number; kind?: 'image' } | null>(null);
   const closeCanvasMenu = useCallback(() => setCanvasMenu(null), []);
   const [modal, setModal] = useState<Modal>(null);
   const [images, setImages] = useState<CanvasImage[]>([]);
@@ -89,6 +92,8 @@ export default function App() {
   const [marquee, setMarquee] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
   const [mainTarget, setMainTarget] = useState<string | null>(null);
   const shownMainTarget = usePresence(mainTarget);
+  const [directedTarget, setDirectedTarget] = useState<{ editorId: string; pointId?: string } | null>(null);
+  const shownDirectedTarget = usePresence(directedTarget);
   const [cutoutImage, setCutoutImage] = useState<CanvasImage | null>(null);
   const shownCutout = usePresence(cutoutImage);
   const [previewImage, setPreviewImage] = useState<CanvasImage | null>(null);
@@ -177,7 +182,7 @@ export default function App() {
   useEffect(() => {
     const route = () => {
       setPage(window.location.hash === '#/ai-try-on' ? 'tryon' : 'canvas');
-      setMenu(null); setCanvasMenu(null); setSpaceDown(false); setDragging(false); setMarquee(null); setSnapGuide(null); setCanvasReference(null);
+      setMenu(null); setCanvasMenu(null); setDirectedTarget(null); setSpaceDown(false); setDragging(false); setMarquee(null); setSnapGuide(null); setCanvasReference(null);
       gesture.current = null;
       document.dispatchEvent(new CustomEvent('lc-select-open', { detail: 'page-navigation' }));
     };
@@ -241,8 +246,8 @@ export default function App() {
   const removeSelected = useCallback(() => { if (selectedIds.length) { remember(imageRef.current); setImages(items => deleteCanvasSelection(items, selectedIds)); setSelectedIds([]); } }, [selectedIds, remember]);
   const closeModal = useCallback(() => { uploadEpoch.current++; setModal(null); setReading(false); }, []);
 
-  const pasteCopiedItems = useCallback((point?: { x: number; y: number }) => {
-    const clipboard = canvasClipboard.current;
+  const pasteCopiedItems = useCallback((point?: { x: number; y: number }, sourceItems?: CanvasImage[]) => {
+    const clipboard = sourceItems ? { items: sourceItems, pastes: 0 } : canvasClipboard.current;
     if (!clipboard || !canvas.current) return;
     const v = viewRef.current;
     const offset = 32 * (clipboard.pastes + 1) / v.zoom;
@@ -264,6 +269,29 @@ export default function App() {
     setImages(next); setSelectedIds(ids);
   }, [remember]);
 
+  const duplicateSelected = useCallback(() => {
+    const items = copyCanvasSelection(imageRef.current, selectedRef.current);
+    if (items.length) pasteCopiedItems(undefined, items);
+  }, [pasteCopiedItems]);
+
+  async function copySelectedFromMenu() {
+    const items = copyCanvasSelection(imageRef.current, selectedRef.current);
+    if (!items.length) return;
+    const token = crypto.randomUUID();
+    canvasClipboard.current = { token, items, pastes: 0 };
+    closeCanvasMenu();
+    try {
+      // Keep readable names in the OS clipboard; HTML carries only a session
+      // marker so pasting unrelated external text never inserts stale images.
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/plain': new Blob([items.map(item => item.name).join('\n')], { type: 'text/plain' }),
+        'text/html': new Blob([`<span data-lightchain-canvas="${token}"></span>`], { type: 'text/html' }),
+      })]);
+    } catch {
+      announce(locale === 'zh-CN' ? '已复制，可右键画布选择「粘贴」' : locale === 'ja' ? 'コピーしました。キャンバスを右クリックして貼り付けできます' : 'Copied. Right-click the canvas to paste.');
+    }
+  }
+
   useEffect(() => {
     const mime = 'application/x-lightchain-canvas';
     const blocked = (event: ClipboardEvent) => page !== 'canvas' || isField(event.target) || isField(document.activeElement)
@@ -281,9 +309,11 @@ export default function App() {
     };
     const paste = (event: ClipboardEvent) => {
       const clipboard = canvasClipboard.current;
-      if (blocked(event) || !clipboard || event.clipboardData?.getData(mime) !== clipboard.token || !canvas.current) return;
+      if (blocked(event) || !clipboard || !event.clipboardData || !canvas.current) return;
+      const htmlToken = new DOMParser().parseFromString(event.clipboardData.getData('text/html'), 'text/html').querySelector('[data-lightchain-canvas]')?.getAttribute('data-lightchain-canvas');
+      if (event.clipboardData.getData(mime) !== clipboard.token && htmlToken !== clipboard.token) return;
       event.preventDefault();
-      pasteCopiedItems(canvasMenu ? { x: canvasMenu.worldX, y: canvasMenu.worldY } : undefined);
+      pasteCopiedItems(canvasMenu && !canvasMenu.kind ? { x: canvasMenu.worldX, y: canvasMenu.worldY } : undefined);
       closeCanvasMenu();
     };
     window.addEventListener('copy', copy);
@@ -302,6 +332,7 @@ export default function App() {
       if (canvasReference) { if (event.key === 'Escape') { setCanvasReference(null); setSpaceDown(false); } else if (event.code === 'Space') { event.preventDefault(); setSpaceDown(true); } return; }
       if (event.key === 'Escape') { if (previewImage) {setPreviewImage(null); return;} if (modal || referenceTarget || document.querySelector('dialog[open]')) return; setSelectedIds([]); setMenu(null); setSpaceDown(false); return; }
       if (isField(event.target) || (event.target instanceof Element && event.target.closest('.fusion-node')) || modal || referenceTarget || menu || previewImage || document.querySelector('dialog[open]')) return;
+      if ((event.ctrlKey || event.metaKey) && !event.shiftKey && !event.altKey && event.key.toLowerCase() === 'd' && !mainTarget && !cutoutImage && !document.querySelector('[popover]:popover-open')) { event.preventDefault(); duplicateSelected(); }
       if (event.code === 'Space' && !event.ctrlKey && !event.metaKey && !event.altKey) { event.preventDefault(); setSpaceDown(true); }
       if (event.key.toLowerCase() === 'v' && !event.ctrlKey && !event.metaKey && !event.altKey) { event.preventDefault(); setCanvasMode('select'); }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); event.shiftKey ? redo() : undo(); }
@@ -313,7 +344,7 @@ export default function App() {
     const blur = () => { setSpaceDown(false); gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null); };
     window.addEventListener('keydown', down); window.addEventListener('keyup', up); window.addEventListener('blur', blur);
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); window.removeEventListener('blur', blur); };
-  }, [page, modal, referenceTarget, canvasReference, menu, previewImage, canvasMenu, closeCanvasMenu, fit, undo, redo, removeSelected]);
+  }, [page, modal, referenceTarget, mainTarget, cutoutImage, canvasReference, menu, previewImage, canvasMenu, closeCanvasMenu, fit, undo, redo, removeSelected, duplicateSelected]);
 
   useEffect(() => {
     const element = canvas.current;
@@ -342,6 +373,9 @@ export default function App() {
     if (!fusion && event.target instanceof Element && event.target.closest('[data-overlay]')) return;
     event.preventDefault(); event.stopPropagation();
     if (canvasReference && !spaceDown && canvasMode !== 'hand' && event.button === 0 && id && !fusion) { toggleCanvasReference(id); return; }
+    // Pointer gestures suppress native focus transfer. Give keyboard shortcuts
+    // back to the canvas instead of leaving focus in the previous node control.
+    canvas.current?.focus({ preventScroll: true });
     const pan = !!canvasReference || spaceDown || canvasMode === 'hand' || event.button === 1 || !images.length;
     let ids = selectedRef.current;
     if (!pan && id) {
@@ -396,7 +430,7 @@ export default function App() {
     if (!item) return;
     const rect = canvas.current!.getBoundingClientRect();
     const v = viewRef.current;
-    const created: CanvasImage = { ...item, fusion: item.operation === 'fusion' || item.operation === 'lingerie' ? defaultFusion(item.operation) : undefined, role: 'main', x: point?.x ?? (rect.width / 2 - v.x) / v.zoom - item.width / 2, y: point?.y ?? (rect.height / 2 - v.y) / v.zoom - item.height / 2 };
+    const created: CanvasImage = { ...item, fusion: item.operation === 'fusion' || item.operation === 'lingerie' || item.operation === 'directed' || item.operation === 'flat' ? defaultFusion(item.operation) : undefined, role: 'main', x: point?.x ?? (rect.width / 2 - v.x) / v.zoom - item.width / 2, y: point?.y ?? (rect.height / 2 - v.y) / v.zoom - item.height / 2 };
     remember(imageRef.current); setImages(previous => [...previous.filter(n => n.role !== 'main' || n.nodeOnly), created]); setSelectedIds([created.id]);
     if (created.operation === 'cutout') setCutoutImage(created);
     if (created.fusion) revealFusion(created);
@@ -447,7 +481,35 @@ export default function App() {
     if (failed) announce(t.uploadError);
 
   }
-  function openTool(id: Tool) { uploadEpoch.current++; setReading(false); setMenu(null); setModal(id); }
+  function openTool(id: Tool) {
+    if (id === 'fusion' || id === 'directed' || id === 'lingerie' || id === 'flat') { void openWorkflowExample(id); return; }
+    uploadEpoch.current++; setReading(false); setMenu(null); setModal(id);
+  }
+  async function openWorkflowExample(kind: WorkflowKind) {
+    if (reading || imageRef.current.length) return;
+    const epoch = ++uploadEpoch.current;
+    setReading(true); setMenu(null);
+    const cancel = () => {
+      if (epoch === uploadEpoch.current) { uploadEpoch.current++; setReading(false); }
+    };
+    window.addEventListener('hashchange', cancel, { once: true });
+    try {
+      const example = await createWorkflowExample(kind);
+      if (epoch !== uploadEpoch.current || imageRef.current.length || window.location.hash === '#/ai-try-on' || !canvas.current) return;
+      const rect = canvas.current.getBoundingClientRect();
+      const next = arrangeImages(example, 0, rect);
+      remember(imageRef.current);
+      imageRef.current = next; selectedRef.current = [];
+      setImages(next); setSelectedIds([]);
+      setView(fitImages(canvasNodes(next), rect.width, rect.height));
+      announce(locale === 'zh-CN' ? '已载入功能示例，可修改节点配置继续体验' : locale === 'ja' ? '機能サンプルを表示しました。設定を変更してお試しください' : 'Example loaded. Edit the node settings to explore.');
+    } catch {
+      if (epoch === uploadEpoch.current) announce(locale === 'zh-CN' ? '示例图片加载失败，请重试' : locale === 'ja' ? 'サンプル画像を読み込めませんでした。再試行してください' : 'Could not load example images. Please try again.');
+    } finally {
+      window.removeEventListener('hashchange', cancel);
+      if (epoch === uploadEpoch.current) setReading(false);
+    }
+  }
   function revealFusion(image: CanvasImage) {
     const r = canvas.current!.getBoundingClientRect();
     const current = viewRef.current;
@@ -470,22 +532,26 @@ export default function App() {
     const current = imageRef.current;
     const editor = current.find(item => item.id === editorId && item.fusion);
     if (!editor) return;
+    if (editor.fusion?.kind === 'directed' && !editor.fusion.directedPoints?.length) return;
     const source = editor.editorSourceId ? current.find(item => item.id === editor.editorSourceId && !item.nodeOnly) : !editor.nodeOnly ? editor : undefined;
     if (!source) return;
     const position = fusionPosition(editor);
-    const width = 360, height = 360, x = position.x + 280 + 80;
+    const sample = workflowExampleResult(editor.fusion?.kind ?? 'fusion');
+    const { width, height } = sample, x = position.x + 280 + 80;
     let y = position.y;
     const occupied = canvasNodes(current);
     while (occupied.some(item => x < item.x + item.width + 16 && x + width + 16 > item.x && y < item.y + item.height + 16 && y + height + 16 > item.y)) y += height + 80;
-    const result: CanvasImage = {id: crypto.randomUUID(), name: '融合结果 · 演示', url: '/assets/prompts/result.png', x, y, width, height, generatedByEditorId: editorId};
+    const result: CanvasImage = {id: crypto.randomUUID(), ...sample, x, y, generatedByEditorId: editorId};
     remember(current);
-    setImages([...current, result]);
-    setSelectedIds([result.id]);
+    imageRef.current = [...current, result]; selectedRef.current = [result.id];
+    setImages(imageRef.current);
+    setSelectedIds(selectedRef.current);
+    canvas.current?.focus({ preventScroll: true });
     announce('已添加示例图，可点击整理查看连接布局');
   }
 
   function updateFusion(id: string, patch: Partial<FusionSettings>) {
-    if ('references' in patch) remember(imageRef.current);
+    if ('references' in patch || 'directedPoints' in patch || imageRef.current.find(n => n.id === id)?.fusion?.kind === 'flat') remember(imageRef.current);
     setImages(items => items.map(n => n.id === id && n.fusion ? { ...n, fusion: { ...n.fusion, ...patch } } : n));
   }
   function referenceLimitMessage(target: string) {
@@ -547,7 +613,7 @@ export default function App() {
       </div>
     </header>
 
-    <main hidden={page !== 'canvas'} inert={page !== 'canvas'} ref={canvas} className={`canvas ${spaceDown || canvasMode === 'hand' ? 'is-panning' : ''} ${dragging ? 'is-dragging' : ''}`} aria-label={t.canvas}
+    <main hidden={page !== 'canvas'} inert={page !== 'canvas'} ref={canvas} tabIndex={-1} className={`canvas ${spaceDown || canvasMode === 'hand' ? 'is-panning' : ''} ${dragging ? 'is-dragging' : ''}`} aria-label={t.canvas}
       onPointerDown={e => beginPointer(e)} onPointerMove={movePointer} onPointerUp={endPointer} onPointerCancel={endPointer}
       onDoubleClick={e => {
         if (canvasReference || !(e.target instanceof Element) || e.target.closest('[data-overlay], [data-image], .fusion-position, .selection-overlay')) return;
@@ -592,7 +658,10 @@ export default function App() {
       {images.length === 0 && <section className="empty-state flex flex-col items-center gap-8" data-overlay data-node-id="14:3674">
         <p className="empty-intro font-medium text-base leading-6 text-muted text-center">{t.intro}</p>
         <div className="tool-grid flex items-center gap-4" data-node-id="14:3688">
-          {tools.map(tool => <Button key={tool.id} variant="outline" size="l" icon={tool.icon} className="entry-tool" onClick={() => openTool(tool.id)} data-node-id={tool.nodeId}>{t[tool.id]}</Button>)}
+          {tools.map(tool => <Button key={tool.id} variant="outline" size="l" icon={tool.icon} className="entry-tool" disabled={reading} onClick={() => openTool(tool.id)} data-node-id={tool.nodeId}>
+            {t[tool.id]}
+            {tool.id === 'lingerie' && <span className="entry-tool-badge" data-node-id="136:18786">NEW</span>}
+          </Button>)}
         </div>
         <button type="button" className={`asset-upload empty-upload ${initialDropActive ? 'is-over' : ''}`} data-node-id="62:27018"
           aria-label={t.addImagesPrompt} disabled={reading} onClick={openUpload}
@@ -610,7 +679,7 @@ export default function App() {
           const editor = images.find(item => item.id === result.generatedByEditorId && item.fusion);
           if (!editor) return null;
           const sourceId = editor.editorSourceId ?? (!editor.nodeOnly ? editor.id : undefined);
-          return <ImageConnection zoom={view.zoom} key={`generation:${result.id}`} image={{...editor, ...fusionPosition(editor), id:`${editor.id}:fusion`, width:280, height:579}} target={result} active={selectedIds.includes(result.id) || selectedIds.includes(`${editor.id}:fusion`) || (!!sourceId && selectedIds.includes(sourceId))} />;
+          return <ImageConnection zoom={view.zoom} key={`generation:${result.id}`} image={{...editor, ...fusionPosition(editor), id:`${editor.id}:fusion`, width:280, height:workflowHeight(editor.fusion)}} target={result} active={selectedIds.includes(result.id) || selectedIds.includes(`${editor.id}:fusion`) || (!!sourceId && selectedIds.includes(sourceId))} />;
         })}
         {images.filter(result => !result.nodeOnly && result.sourceImageId).map(result => {
           const source = images.find(item => !item.nodeOnly && item.id === result.sourceImageId);
@@ -619,7 +688,21 @@ export default function App() {
         {images.filter(n => !n.nodeOnly).map(n => <div key={n.id} data-image className={`canvas-image ${(canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)) ? 'selected' : ''}`} style={{ left: n.x, top: n.y, width: n.width, height: n.height, zIndex: foregroundIds.has(n.id) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
           tabIndex={0} role="button" aria-label={`${t.image}: ${n.name}`} aria-pressed={canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)}
           onFocus={e => { if (!canvasReference && e.target === e.currentTarget && !selectedRef.current.includes(n.id)) setSelectedIds([n.id]); }} onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || (e.key === ' ' && document.documentElement.dataset.focusNavigation === 'keyboard'))) { e.preventDefault(); if (canvasReference) { toggleCanvasReference(n.id); return; } setSelectedIds(e.shiftKey ? selectedIds.includes(n.id) ? selectedIds.filter(id => id !== n.id) : [...selectedIds, n.id] : [n.id]); } }}
-          onPointerDown={e => beginPointer(e, n.id)}>
+          onPointerDown={e => beginPointer(e, n.id)}
+          onContextMenu={e => {
+            e.preventDefault(); e.stopPropagation();
+            if (canvasReference || !canvas.current) return;
+            const ids = selectedRef.current.includes(n.id)
+              ? imageRef.current.filter(item => !item.nodeOnly && selectedRef.current.includes(item.id)).map(item => item.id)
+              : [n.id];
+            selectedRef.current = ids; setSelectedIds(ids);
+            const activeGesture = gesture.current;
+            if (activeGesture && canvas.current.hasPointerCapture(activeGesture.pointerId)) canvas.current.releasePointerCapture(activeGesture.pointerId);
+            gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null);
+            const rect = canvas.current.getBoundingClientRect(), v = viewRef.current;
+            document.dispatchEvent(new CustomEvent('lc-select-open', { detail: 'canvas-context' }));
+            setCanvasMenu({ kind: 'image', x: e.clientX, y: e.clientY, worldX: (e.clientX - rect.left - v.x) / v.zoom, worldY: (e.clientY - rect.top - v.y) / v.zoom });
+          }}>
           <Button hidden={!!canvasReference} variant="tonal" className="image-preview-button" aria-label={`${t.viewFull} · ${n.name}`} title={t.viewFull} data-overlay onClick={() => setPreviewImage(n)}><Icon name="viewFull" size={20} /></Button>
           <ProgressiveImage src={n.url} alt={n.name} width={n.width} height={n.height} fit="contain" />
         </div>)}
@@ -627,8 +710,8 @@ export default function App() {
           const source = n.editorSourceId ? images.find(item => item.id === n.editorSourceId && !item.nodeOnly) : !n.nodeOnly ? n : undefined;
           const editorImage = source ? {...source, id: n.id, fusion: n.fusion, nodeOnly: false} : n;
           return <div key={`${n.id}:fusion`}>
-          {source && <ImageConnection zoom={view.zoom} image={source} target={{...fusionPosition(n),id:`${n.id}:fusion`,width:280,height:579}} active={selectedIds.includes(source.id) || selectedIds.includes(`${n.id}:fusion`)} />}
-          <div className="fusion-position" data-fusion-id={n.id} data-selected={selectedIds.includes(`${n.id}:fusion`)} tabIndex={0} role="group" aria-label={`${n.fusion?.kind === 'lingerie' ? t.lingerie : t.fusion} · ${n.name}`}
+          {source && <ImageConnection zoom={view.zoom} image={source} target={{...fusionPosition(n),id:`${n.id}:fusion`,width:280,height:workflowHeight(n.fusion)}} active={selectedIds.includes(source.id) || selectedIds.includes(`${n.id}:fusion`)} />}
+          <div className="fusion-position" data-fusion-id={n.id} data-selected={selectedIds.includes(`${n.id}:fusion`)} tabIndex={0} role="group" aria-label={`${n.fusion?.kind === 'directed' ? t.directed : n.fusion?.kind === 'lingerie' ? t.lingerie : n.fusion?.kind === 'flat' ? t.flat : t.fusion} · ${n.name}`}
             style={{ left: fusionPosition(n).x, top: fusionPosition(n).y, zIndex: foregroundIds.has(`${n.id}:fusion`) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
             onFocus={() => { if (!canvasReference && !selectedRef.current.includes(`${n.id}:fusion`)) setSelectedIds([`${n.id}:fusion`]); }}
             onPointerDownCapture={e => {
@@ -641,7 +724,11 @@ export default function App() {
               }
               beginPointer(e, `${n.id}:fusion`, true);
             }}>
-            <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => n.fusion?.kind === 'lingerie' ? announce(t.noBackend) : generateDemo(n.id)} onNotify={announce} />
+            {n.fusion?.kind === 'flat'
+              ? <FlatLayNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onGenerate={() => generateDemo(n.id)} />
+              : n.fusion?.kind === 'directed'
+              ? <DirectedFusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onChoosePoint={pointId => setDirectedTarget({ editorId: n.id, pointId })} onGenerate={() => generateDemo(n.id)} onNotify={announce} />
+              : <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => generateDemo(n.id)} onNotify={announce} />}
           </div>
         </div>;})}
       </div>
@@ -652,7 +739,7 @@ export default function App() {
       }}>
         {shownSelection.value.count > 1 && <div className="group-selection-frame" data-selection-count={shownSelection.value.count} />}
         {shownSelection.value.showToolbar && <div className="media-toolbar-anchor" data-overlay inert={shownSelection.phase === 'exit'}>
-          <SelectionToolbar locale={locale} multiple={shownSelection.value.count > 1} onAction={action => action === 'fusion' || action === 'lingerie' ? openFusion(action) : action === 'cutout' ? setCutoutImage(imageRef.current.find(n => selectedRef.current.includes(n.id)) ?? null) : announce(t.noBackend)} onDownload={() => void downloadSelected()} />
+          <SelectionToolbar locale={locale} multiple={shownSelection.value.count > 1} onAction={action => action === 'fusion' || action === 'lingerie' || action === 'directed' || action === 'flat' ? openFusion(action) : action === 'cutout' ? setCutoutImage(imageRef.current.find(n => selectedRef.current.includes(n.id)) ?? null) : announce(t.noBackend)} onDownload={() => void downloadSelected()} />
         </div>}
       </div>}
       {shownSnapGuide.value && <div className="canvas-snap-guides" aria-hidden="true" data-phase={shownSnapGuide.phase}>
@@ -682,6 +769,10 @@ export default function App() {
     <AiTryOnPage active={page === 'tryon'} locale={locale} uploads={uploads} onUpload={rememberUpload} />
 
     <CanvasContextMenu point={canvasMenu} canPaste={!!canvasClipboard.current} locale={locale} onClose={closeCanvasMenu}
+      onDownload={() => { closeCanvasMenu(); void downloadSelected(); }}
+      onCopy={() => { void copySelectedFromMenu(); }}
+      onDuplicate={() => { duplicateSelected(); closeCanvasMenu(); }}
+      onDelete={() => { removeSelected(); closeCanvasMenu(); }}
       onUpload={() => { closeCanvasMenu(); openUpload(); }}
       onPaste={() => { if (canvasMenu) pasteCopiedItems({ x: canvasMenu.worldX, y: canvasMenu.worldY }); closeCanvasMenu(); }} />
     <ToastHost />
@@ -699,6 +790,12 @@ export default function App() {
       const position = fusionPosition(target);
       const id = crypto.randomUUID();
       remember(imageRef.current);
+      if (target.fusion?.kind === 'flat') {
+        const main: CanvasImage = { ...item, id, x: position.x - item.width - 80, y: position.y };
+        setImages(previous => [...previous.map(n => n.id === target.id ? { ...n, editorSourceId: id } : n), main]);
+        setSelectedIds([`${target.id}:fusion`]); setMainTarget(null);
+        return;
+      }
       setImages(previous => previous.map(n => n.id === target.id ? {...item, id, x: position.x - item.width - 80, y: position.y, fusion: {...target.fusion!, position}, nodeOnly: false} : n));
       setSelectedIds([`${id}:fusion`]); setMainTarget(null);
     }} />}
@@ -707,6 +804,20 @@ export default function App() {
       excludedUrls={fusionReferences(images.find(n => n.id === shownReference.value)?.fusion).map(n => n.url)} limitMessage={referenceLimitMessage(shownReference.value)}
       onConfirm={image => { addReferences(shownReference.value!, [image]); setReferenceTarget(null); }}
       onConfirmBatch={images.find(n => n.id === shownReference.value)?.fusion?.kind === 'lingerie' ? undefined : items => { addReferences(shownReference.value!, items); setReferenceTarget(null); }} />}
+
+    {shownDirectedTarget.value && <AssetPicker key={`directed:${shownDirectedTarget.value.editorId}:${shownDirectedTarget.value.pointId ?? 'new'}`} locale={locale} phase={shownDirectedTarget.phase} uploads={uploads} onUpload={rememberUpload}
+      onClose={() => setDirectedTarget(null)} onConfirm={item => {
+        if (!directedTarget) return;
+        const editor = imageRef.current.find(n => n.id === directedTarget.editorId && n.fusion?.kind === 'directed');
+        if (!editor?.fusion) { setDirectedTarget(null); return; }
+        const points = editor.fusion.directedPoints ?? [];
+        const reference = { id: item.id, name: item.name, url: item.url };
+        const next = directedTarget.pointId
+          ? points.map(point => point.id === directedTarget.pointId ? { ...point, reference } : point)
+          : points.length < MAX_DIRECTED_POINTS ? [...points, { id: crypto.randomUUID(), reference }] : points;
+        updateFusion(editor.id, { directedPoints: next });
+        setDirectedTarget(null);
+      }} />}
 
     {activeTool && <AssetPicker key={activeTool.id} locale={locale} phase={shownModal.phase} uploads={uploads} onUpload={rememberUpload}
       onClose={closeModal} onConfirm={image => { addImages([{ ...image, operation: activeTool.id }]); closeModal(); }} />}

@@ -2,15 +2,27 @@ import { rememberImagePreview } from './image-previews';
 export type Viewport = { x: number; y: number; zoom: number };
 export type FusionReference = { id: string; name: string; url: string };
 export const MAX_FUSION_REFERENCES = 4;
-export type WorkflowKind = 'fusion' | 'lingerie';
-export type FusionSettings = { kind?: WorkflowKind; position?: { x: number; y: number }; prompt: string; ratio: string; resolution: string; reference?: FusionReference; references?: FusionReference[] };
+export type WorkflowKind = 'fusion' | 'lingerie' | 'directed' | 'flat';
+export type FlatRegion = 'top' | 'bottom' | 'full';
+export type FlatFace = 'front' | 'back';
+export type DirectedFusionPoint = { id: string; reference: FusionReference };
+export const MAX_DIRECTED_POINTS = 3;
+export type FusionSettings = { kind?: WorkflowKind; position?: { x: number; y: number }; prompt: string; ratio: string; resolution: string; reference?: FusionReference; references?: FusionReference[]; directedPoints?: DirectedFusionPoint[]; flatRegion?: FlatRegion; flatFace?: FlatFace };
 export const fusionReferences = (settings?: FusionSettings): FusionReference[] => settings?.references ?? (settings?.reference ? [settings.reference] : []);
 export const workflowReferenceLimit = (settings?: FusionSettings) => settings?.kind === 'lingerie' ? 1 : MAX_FUSION_REFERENCES;
-export const defaultFusion = (kind: WorkflowKind = 'fusion'): FusionSettings => ({ kind, prompt: '', ratio: 'auto', resolution: '2K' });
+export const defaultFusion = (kind: WorkflowKind = 'fusion'): FusionSettings => ({ kind, prompt: '', ratio: 'auto', resolution: '2K', ...(kind === 'directed' ? { directedPoints: [] } : {}), ...(kind === 'flat' ? { flatRegion: 'top', flatFace: 'front' } : {}) });
 export const FUSION_GAP = 80;
 export const GROUP_GAP = 120;
 export const FUSION_WIDTH = 280;
 export const FUSION_HEIGHT = 579;
+// Figma: 269px with no points, plus 129px card + 12px gap per point.
+// The 56px add entry and its 12px gap disappear at the three-point limit.
+export function workflowHeight(settings?: FusionSettings) {
+  if (settings?.kind === 'flat') return 417;
+  if (settings?.kind !== 'directed') return FUSION_HEIGHT;
+  const count = Math.min(MAX_DIRECTED_POINTS, settings.directedPoints?.length ?? 0);
+  return 269 + count * 141 - (count === MAX_DIRECTED_POINTS ? 68 : 0);
+}
 export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; nodeOnly?: boolean; editorSourceId?: string; generatedByEditorId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'lingerie' | 'flat' };
 export const CANVAS_GRID_SIZE = 32;
 
@@ -70,7 +82,7 @@ export function arrangeImages(items: CanvasImage[], startX = 0, viewport = { wid
   const vertices = new Map<string, Vertex>();
   for (const item of items) {
     if (!item.nodeOnly) vertices.set(item.id, {id:item.id, width:item.width, height:item.height, editor:false, children:[]});
-    if (item.fusion) vertices.set(`${item.id}:fusion`, {id:`${item.id}:fusion`, width:FUSION_WIDTH, height:FUSION_HEIGHT, editor:true, children:[]});
+    if (item.fusion) vertices.set(`${item.id}:fusion`, {id:`${item.id}:fusion`, width:FUSION_WIDTH, height:workflowHeight(item.fusion), editor:true, children:[]});
   }
   const parents = new Map<string, string>();
   const connect = (parent: string | undefined, child: string) => {
@@ -168,7 +180,7 @@ export function fusionPosition(image: CanvasImage) {
 
 // Include workflow nodes in navigation without treating them as uploaded images.
 export function canvasNodes(images: CanvasImage[]): CanvasImage[] {
-  return images.flatMap(image => image.fusion ? [...(image.nodeOnly ? [] : [image]), { ...image, id: `${image.id}:fusion`, fusion: undefined, ...fusionPosition(image), width: FUSION_WIDTH, height: FUSION_HEIGHT }] : image.nodeOnly ? [] : [image]);
+  return images.flatMap(image => image.fusion ? [...(image.nodeOnly ? [] : [image]), { ...image, id: `${image.id}:fusion`, fusion: undefined, ...fusionPosition(image), width: FUSION_WIDTH, height: workflowHeight(image.fusion) }] : image.nodeOnly ? [] : [image]);
 }
 
 // Keep an empty workflow record when its source image is removed.
@@ -213,9 +225,10 @@ export function createFusionEditor(items: CanvasImage[], sourceId: string, id: s
   const source = items.find(n => n.id === sourceId && !n.nodeOnly);
   if (!source) return null;
   const x = source.x + source.width + FUSION_GAP;
+  const height = workflowHeight(defaultFusion(kind));
   let y = source.y;
   const occupied = canvasNodes(items);
-  while (occupied.some(n => x < n.x + n.width + 16 && x + FUSION_WIDTH + 16 > n.x && y < n.y + n.height + 16 && y + FUSION_HEIGHT + 16 > n.y)) y += FUSION_HEIGHT + FUSION_GAP;
-  return {id, name: source.name, url: '', x, y, width: FUSION_WIDTH, height: FUSION_HEIGHT,
+  while (occupied.some(n => x < n.x + n.width + 16 && x + FUSION_WIDTH + 16 > n.x && y < n.y + n.height + 16 && y + height + 16 > n.y)) y += height + FUSION_GAP;
+  return {id, name: source.name, url: '', x, y, width: FUSION_WIDTH, height,
     nodeOnly: true, editorSourceId: source.id, fusion: {...defaultFusion(kind), position: {x,y}}};
 }

@@ -86,7 +86,7 @@
       "Clothing-image deletion leaves an empty lingerie node and resets its fields; adding clothing restores its connection and preserves the node position.",
       "Copying an editor preserves its kind and configuration and pastes it without a clothing image.",
       "Prompt expansion, prompt library, save, clear and generation settings reuse the existing controls.",
-      "Generation requests require clothing and nonempty description, then display the existing no-backend feedback. No AI request, charge or fabricated try-on result."
+      "User-authorized demo generation requires only a clothing image; description and model image may be empty. Each click adds the user-provided yellow/lavender lingerie model result at width 360 with its original 794:1064 aspect ratio, linked to the editor and labeled as a demo, with undo and arrangement support. Paired product/reference/result assets and prompts are recorded in workflow-example-images.json. No live AI request, charge or generation-history write."
     ]
   }
 }

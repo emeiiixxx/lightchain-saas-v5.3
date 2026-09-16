@@ -1,0 +1,52 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodes": {
+    "empty": "136:18424",
+    "mainOnly": "136:17846",
+    "withPoint": "136:17987"
+  },
+  "library": "Lightchain SaaS v5.1 libraries Beta",
+  "libraryFileKey": "FO7bCfBv6NPle8egsVaDvG",
+  "geometry": {
+    "emptyHeight": 269,
+    "width": 280,
+    "mainOnlyHeight": 269,
+    "onePointHeight": 410,
+    "pointCardHeight": 129,
+    "padding": 12,
+    "gap": 12,
+    "pointLimit": 3,
+    "mainRowHeight": 56,
+    "mainThumbnail": 40,
+    "pointThumbnail": 56
+  },
+  "icons": [
+    {
+      "id": "120:31",
+      "name": "Style=Linear, Name=add",
+      "key": "427003d218146beb5a625c1654f9ab7c54ecb138",
+      "path": "public/assets/canvas/directed-add.svg"
+    },
+    {
+      "id": "2118:2376",
+      "name": "Style=Linear, Name=replace",
+      "key": "9ff35cd38ca0e5dfbc7d8dd38e8cce042776d380",
+      "path": "public/assets/canvas/directed-replace.svg"
+    },
+    {
+      "id": "120:42",
+      "name": "Style=Linear, Name=chevron-right",
+      "key": "a37f947ad94bb0b3c618bcd154a0e3d28c580b5a",
+      "path": "public/assets/canvas/directed-chevron-right.svg"
+    }
+  ],
+  "behavior": {
+    "empty": "Deleting the main image preserves the directed editor position, resets points to an empty array and removes the input connection. Empty node 136:18424 retains the header, tip, 56px add-main entry, divider, 56px add-point entry and generation button. Add-point or generation without a main image opens the existing single-select main-image picker; adding a main image restores the connection. Undo restores the image and prior configuration.",
+    "entry": "Initialization and single-image toolbar open directed workflow.",
+    "points": "Choose one reference image per point through existing single-select AssetPicker; replace and remove support undo/redo. Hide add entry at three points.",
+    "geometry": "workflowHeight supplies connections, minimap, selection, arrangement and viewport fitting.",
+    "mask": "User-authorized demo brush overlays appear on both point thumbnails: main image uses Brand/primary, reference uses Status/danger at 70% opacity. Three point positions vary. Overlays do not modify assets or represent saved editable masks; adjustment entry still shows explicit unavailable feedback.",
+    "generation": "User-authorized local demo: with a main image, each click adds the matching blue-floral-dress result at 360x540, linked by generatedByEditorId, selected and undoable. At least one fusion point is required; the generate button is disabled when there are no points, and the generation handler also rejects that state. No backend call or charging. Paired generated assets and prompts are recorded in workflow-example-images.json."
+  },
+  "validation": "Implementation only; browser, build and tests not run per user instruction."
+}
