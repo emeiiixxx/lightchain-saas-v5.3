@@ -1,5 +1,6 @@
 // Figma node 12:3127 assets; theme icons reuse the existing 5.2 TopBar artwork.
 export const assets = {
+  lingerieTryOn: '/assets/lingerie-try-on.svg',
   promptPin: '/assets/prompts/pin.svg',
   promptMore: '/assets/prompts/more.svg',
   promptTrash: '/assets/prompts/trash.svg',

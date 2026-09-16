@@ -2,7 +2,7 @@ import { ProgressiveImage } from './ProgressiveImage';
 import { PromptTools } from './PromptTools';
 import { useEffect, useId, useRef, useState } from 'react';
 import { assets } from '../assets';
-import { fusionReferences, MAX_FUSION_REFERENCES, type CanvasImage, type FusionSettings } from '../canvas';
+import { fusionReferences, workflowReferenceLimit, type CanvasImage, type FusionSettings } from '../canvas';
 import { ReferenceSourceMenu } from './ReferenceSourceMenu';
 import { GenerateTaskButton } from './GenerateTaskButton';
 import type { Locale } from '../i18n';
@@ -16,10 +16,18 @@ const copy = {
 };
 
 
+const lingerieCopy = {
+  'zh-CN': { title: '内衣试衣', tip: '内衣专用AI试衣工具', main: '服装图', addMain: '添加服装图', reference: '模特图', add: '添加模特图', remove: '移除模特图', prompt: '试衣描述', placeholder: '请输入试衣描述', required: '请输入试衣描述' },
+  en: { title: 'Lingerie try-on', tip: 'AI try-on for lingerie', main: 'Garment image', addMain: 'Add garment image', reference: 'Model image', add: 'Add model image', remove: 'Remove model image', prompt: 'Try-on description', placeholder: 'Enter a try-on description', required: 'Enter a try-on description' },
+  ja: { title: '下着試着', tip: '下着専用AI試着ツール', main: '衣服画像', addMain: '衣服画像を追加', reference: 'モデル画像', add: 'モデル画像を追加', remove: 'モデル画像を削除', prompt: '試着の説明', placeholder: '試着の説明を入力', required: '試着の説明を入力してください' },
+};
+
 type Props = { image: CanvasImage; locale: Locale; onChange: (patch: Partial<FusionSettings>) => void; onAddMain: () => void; onReference: (source: 'upload' | 'canvas') => void; onDemo: () => void; onGenerate: () => void; onNotify: (message: string) => void };
 export function FusionNode({ image, locale, onChange, onAddMain, onReference, onDemo, onGenerate, onNotify }: Props) {
-  const t = copy[locale];
   const settings = image.fusion!;
+  const lingerie = settings.kind === 'lingerie';
+  const t = lingerie ? { ...copy[locale], ...lingerieCopy[locale] } : copy[locale];
+  const referenceLimit = workflowReferenceLimit(settings);
   const references = fusionReferences(settings);
   const prompt = useRef<HTMLTextAreaElement>(null);
   const root = useRef<HTMLElement>(null);
@@ -35,18 +43,18 @@ export function FusionNode({ image, locale, onChange, onAddMain, onReference, on
   }, []);
   useEffect(() => { if (image.nodeOnly) setError(false); }, [image.nodeOnly]);
   function updatePrompt(value: string) { onChange({ prompt: value.slice(0, 2000) }); setError(false); }
-  return <section ref={root} className={`fusion-node${image.nodeOnly ? ' is-empty' : ''}`} data-overlay data-node-id={image.nodeOnly ? '107:5118' : '35:6422'} data-source-image={image.id} aria-label={t.title}>
+  return <section ref={root} className={`fusion-node${image.nodeOnly ? ' is-empty' : ''}${lingerie ? ' lingerie-node' : ''}`} data-overlay data-node-id={lingerie ? (image.nodeOnly ? '136:17414' : '136:17371') : (image.nodeOnly ? '107:5118' : '35:6422')} data-source-image={image.id} aria-label={t.title}>
     <header className="fusion-header"><h2>{t.title}</h2><div className="fusion-tip"><img src={assets.fusionTip} alt="" width={20} height={20} /><span>{t.tip}</span></div></header>
     <div className="fusion-content">
-      {image.nodeOnly ? <button className="fusion-add-main" onClick={onAddMain}><Icon name="fusionAddImage" size={20}/>{locale === 'zh-CN' ? '添加主图' : locale === 'ja' ? 'メイン画像を追加' : 'Add main image'}</button> : <div className="fusion-main"><ProgressiveImage src={image.url} alt={t.main} width={40} height={40}/><span>{t.main}</span><Button variant="outline" className="fusion-mask" aria-label={t.mask} onClick={onDemo}><Icon name="fusionBrush" size={20}/></Button></div>}
+      {image.nodeOnly ? <button className="fusion-add-main" onClick={onAddMain}><Icon name="fusionAddImage" size={20}/>{lingerie ? lingerieCopy[locale].addMain : locale === 'zh-CN' ? '添加主图' : locale === 'ja' ? 'メイン画像を追加' : 'Add main image'}</button> : <div className="fusion-main"><ProgressiveImage src={image.url} alt={t.main} width={40} height={40}/><span>{t.main}</span>{!lingerie && <Button variant="outline" className="fusion-mask" aria-label={t.mask} onClick={onDemo}><Icon name="fusionBrush" size={20}/></Button>}</div>}
       <Divider />
-      <div className="fusion-field"><span className="fusion-label">{t.reference}<span className="fusion-reference-count">{references.length} / {MAX_FUSION_REFERENCES}</span></span>
+      <div className="fusion-field"><span className="fusion-label">{t.reference}{!lingerie && <span className="fusion-reference-count">{references.length} / {referenceLimit}</span>}</span>
         <div className="fusion-references">
           {references.map((reference, index) => <div className="fusion-reference-wrap" key={reference.url}>
             <div className="fusion-reference"><ProgressiveImage src={reference.url} alt={reference.name} /></div>
             <Button variant="tonal" className="fusion-reference-remove" aria-label={`${t.remove} ${index + 1}`} onClick={() => onChange({ references: references.filter((_, i) => i !== index), reference: undefined })}><Icon name="close" size={16} /></Button>
           </div>)}
-          {references.length < MAX_FUSION_REFERENCES && <ReferenceSourceMenu addLabel={t.add} canvasLabel={t.canvas} onChoose={onReference} />}
+          {references.length < referenceLimit && <ReferenceSourceMenu addLabel={t.add} canvasLabel={t.canvas} onChoose={onReference} />}
         </div>
       </div>
       <div className="fusion-field"><label className="fusion-label" htmlFor={promptId}>{t.prompt}<span className="fusion-required">*</span></label><div className={`fusion-textarea${error ? ' has-error' : ''}`}>

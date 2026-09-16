@@ -85,3 +85,6 @@
 .fusion-node.is-empty .fusion-references { grid-template-columns: repeat(4, 1fr); }
 .fusion-node.is-empty .fusion-reference-wrap:only-child { width: 64px; }
 .fusion-node.is-empty .fusion-textarea { background: var(--control-fill-default); }
+
+/* Lingerie workflow: Figma 136:17371 / 136:17414, one 64px model slot. */
+.fusion-node.lingerie-node .fusion-references { grid-template-columns: 64px; }

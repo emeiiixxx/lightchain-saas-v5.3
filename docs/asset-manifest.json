@@ -1,5 +1,12 @@
 [
   {
+    "name": "lingerieTryOn",
+    "url": "https://www.figma.com/api/mcp/asset/4289b64d-256d-4f6a-9a18-64dba9404584.svg",
+    "path": "/assets/lingerie-try-on.svg",
+    "nodeId": "136:16942",
+    "componentKey": "b36b6656eebc4cfc265f83a70f7822277e98b089"
+  },
+  {
     "name": "imgImageFill",
     "url": "https://www.figma.com/api/mcp/asset/e54f866a-ddd4-4ae6-81f6-bea44f32bf9e.png",
     "path": "/assets/imgImageFill.png"

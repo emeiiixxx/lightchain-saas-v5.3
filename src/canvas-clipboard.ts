@@ -15,7 +15,7 @@ export function copyCanvasSelection(items: CanvasImage[], selected: string[]): C
         id: `${item.id}:fusion`, name: '', url: '', ...position,
         width: FUSION_WIDTH, height: FUSION_HEIGHT, nodeOnly: true,
         fusion: {
-          position, prompt: item.fusion.prompt, ratio: item.fusion.ratio, resolution: item.fusion.resolution,
+          kind: item.fusion.kind, position, prompt: item.fusion.prompt, ratio: item.fusion.ratio, resolution: item.fusion.resolution,
           references: fusionReferences(item.fusion).map(reference => ({ ...reference })),
         },
       });

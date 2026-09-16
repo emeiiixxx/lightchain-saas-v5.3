@@ -2,14 +2,16 @@ import { rememberImagePreview } from './image-previews';
 export type Viewport = { x: number; y: number; zoom: number };
 export type FusionReference = { id: string; name: string; url: string };
 export const MAX_FUSION_REFERENCES = 4;
-export type FusionSettings = { position?: { x: number; y: number }; prompt: string; ratio: string; resolution: string; reference?: FusionReference; references?: FusionReference[] };
+export type WorkflowKind = 'fusion' | 'lingerie';
+export type FusionSettings = { kind?: WorkflowKind; position?: { x: number; y: number }; prompt: string; ratio: string; resolution: string; reference?: FusionReference; references?: FusionReference[] };
 export const fusionReferences = (settings?: FusionSettings): FusionReference[] => settings?.references ?? (settings?.reference ? [settings.reference] : []);
-export const defaultFusion = (): FusionSettings => ({ prompt: '', ratio: 'auto', resolution: '2K' });
+export const workflowReferenceLimit = (settings?: FusionSettings) => settings?.kind === 'lingerie' ? 1 : MAX_FUSION_REFERENCES;
+export const defaultFusion = (kind: WorkflowKind = 'fusion'): FusionSettings => ({ kind, prompt: '', ratio: 'auto', resolution: '2K' });
 export const FUSION_GAP = 80;
 export const GROUP_GAP = 120;
 export const FUSION_WIDTH = 280;
 export const FUSION_HEIGHT = 579;
-export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; nodeOnly?: boolean; editorSourceId?: string; generatedByEditorId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'flat' };
+export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; nodeOnly?: boolean; editorSourceId?: string; generatedByEditorId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'lingerie' | 'flat' };
 export const CANVAS_GRID_SIZE = 32;
 
 // Snap one shared drag delta so multi-selection spacing never changes.
@@ -176,12 +178,12 @@ export function deleteCanvasSelection(items: CanvasImage[], selected: string[]):
     const deleteImage = ids.has(item.id), deleteNode = ids.has(`${item.id}:fusion`);
     if (deleteNode && (item.nodeOnly || deleteImage)) return [];
     if (item.editorSourceId && ids.has(item.editorSourceId) && item.fusion) {
-      return [{...item, editorSourceId: undefined, name: '', url: '', fusion: {...defaultFusion(), position: fusionPosition(item)}}];
+      return [{...item, editorSourceId: undefined, name: '', url: '', fusion: {...defaultFusion(item.fusion.kind), position: fusionPosition(item)}}];
     }
     if (deleteImage) {
       if (!item.fusion) return [];
       return [{...item, nodeOnly: true, name: '', url: '', role: undefined, sourceImageId: undefined,
-        operation: undefined, fusion: {...defaultFusion(), position: fusionPosition(item)}}];
+        operation: undefined, fusion: {...defaultFusion(item.fusion.kind), position: fusionPosition(item)}}];
     }
     return [deleteNode ? {...item, fusion: undefined} : item];
   });
@@ -207,7 +209,7 @@ export function relatedCanvasIds(items: CanvasImage[], selected: string[]): Set<
 }
 
 // Separate editor records share one source image without copying its canvas media.
-export function createFusionEditor(items: CanvasImage[], sourceId: string, id: string): CanvasImage | null {
+export function createFusionEditor(items: CanvasImage[], sourceId: string, id: string, kind: WorkflowKind = 'fusion'): CanvasImage | null {
   const source = items.find(n => n.id === sourceId && !n.nodeOnly);
   if (!source) return null;
   const x = source.x + source.width + FUSION_GAP;
@@ -215,5 +217,5 @@ export function createFusionEditor(items: CanvasImage[], sourceId: string, id: s
   const occupied = canvasNodes(items);
   while (occupied.some(n => x < n.x + n.width + 16 && x + FUSION_WIDTH + 16 > n.x && y < n.y + n.height + 16 && y + FUSION_HEIGHT + 16 > n.y)) y += FUSION_HEIGHT + FUSION_GAP;
   return {id, name: source.name, url: '', x, y, width: FUSION_WIDTH, height: FUSION_HEIGHT,
-    nodeOnly: true, editorSourceId: source.id, fusion: {...defaultFusion(), position: {x,y}}};
+    nodeOnly: true, editorSourceId: source.id, fusion: {...defaultFusion(kind), position: {x,y}}};
 }

@@ -1,7 +1,7 @@
 import { ProgressiveImage } from './components/ProgressiveImage';
 import { notify, ToastHost } from './components/Toast';
 import { CutoutEditor } from './components/CutoutEditor';
-import { fusionReferences, MAX_FUSION_REFERENCES, type FusionReference } from './canvas';
+import { fusionReferences, workflowReferenceLimit, type WorkflowKind, type FusionReference } from './canvas';
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { assets } from './assets';
 import { Button, Dialog, Divider, Icon, type IconName } from './components/ui';
@@ -19,13 +19,14 @@ import { copyCanvasSelection, pasteCanvasSelection } from './canvas-clipboard';
 import { CanvasContextMenu } from './components/CanvasContextMenu';
 
 type Theme = 'dark' | 'light' | 'system';
-type Tool = 'cutout' | 'fusion' | 'directed' | 'flat';
+type Tool = 'cutout' | 'fusion' | 'directed' | 'lingerie' | 'flat';
 type Modal = Tool | 'upload' | 'help' | 'support' | 'credits' | 'project' | null;
 type PendingImage = Omit<CanvasImage, 'x' | 'y'>;
 const tools: { id: Tool; icon: IconName; nodeId: string }[] = [
   { id: 'cutout', icon: 'imgIconImageEditingTool', nodeId: '57:25873' },
   { id: 'fusion', icon: 'imgIconBusinessAi', nodeId: '14:3571' },
   { id: 'directed', icon: 'imgIconBusinessApparelDesign', nodeId: '14:3579' },
+  { id: 'lingerie', icon: 'lingerieTryOn', nodeId: '136:16942' },
   { id: 'flat', icon: 'imgIconBusinessTryOnModel', nodeId: '14:3610' },
 ];
 function saved(key: string, fallback: string) { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } }
@@ -380,7 +381,7 @@ export default function App() {
     if (!item) return;
     const rect = canvas.current!.getBoundingClientRect();
     const v = viewRef.current;
-    const created: CanvasImage = { ...item, fusion: item.operation === 'fusion' ? defaultFusion() : undefined, role: 'main', x: point?.x ?? (rect.width / 2 - v.x) / v.zoom - item.width / 2, y: point?.y ?? (rect.height / 2 - v.y) / v.zoom - item.height / 2 };
+    const created: CanvasImage = { ...item, fusion: item.operation === 'fusion' || item.operation === 'lingerie' ? defaultFusion(item.operation) : undefined, role: 'main', x: point?.x ?? (rect.width / 2 - v.x) / v.zoom - item.width / 2, y: point?.y ?? (rect.height / 2 - v.y) / v.zoom - item.height / 2 };
     remember(imageRef.current); setImages(previous => [...previous.filter(n => n.role !== 'main' || n.nodeOnly), created]); setSelectedIds([created.id]);
     if (created.operation === 'cutout') setCutoutImage(created);
     if (created.fusion) revealFusion(created);
@@ -441,10 +442,10 @@ export default function App() {
       setView(fitImages(canvasNodes([image]), r.width, r.height));
     }
   }
-  function openFusion() {
+  function openFusion(kind: WorkflowKind = 'fusion') {
     const image = imageRef.current.find(n => selectedRef.current.includes(n.id));
     if (!image) return;
-    const next = createFusionEditor(imageRef.current, image.id, crypto.randomUUID());
+    const next = createFusionEditor(imageRef.current, image.id, crypto.randomUUID(), kind);
     if (!next) return;
     remember(imageRef.current);
     setImages(items => [...items, next]);
@@ -472,11 +473,14 @@ export default function App() {
     if ('references' in patch) remember(imageRef.current);
     setImages(items => items.map(n => n.id === id && n.fusion ? { ...n, fusion: { ...n.fusion, ...patch } } : n));
   }
+  function referenceLimitMessage(target: string) {
+    return imageRef.current.find(n => n.id === target)?.fusion?.kind === 'lingerie' ? t.modelImageLimit : t.referenceLimit;
+  }
   function addReferences(target: string, additions: FusionReference[]) {
     const owner = imageRef.current.find(n => n.id === target);
     if (!owner?.fusion) return;
     const references = [...new Map([...fusionReferences(owner.fusion), ...additions].map(n => [n.url, { id: n.id, name: n.name, url: n.url }])).values()];
-    if (references.length > MAX_FUSION_REFERENCES) { announce(t.referenceLimit); return; }
+    if (references.length > workflowReferenceLimit(owner.fusion)) { announce(referenceLimitMessage(target)); return; }
     updateFusion(target, { references, reference: undefined });
   }
   function toggleCanvasReference(id: string) {
@@ -485,7 +489,7 @@ export default function App() {
     const existing = fusionReferences(images.find(n => n.id === canvasReference.target)?.fusion);
     if (!candidate || existing.some(n => n.url === candidate.url)) return;
     const picked = canvasReference.ids.includes(id);
-    if (!picked && canvasReferenceCount >= MAX_FUSION_REFERENCES) { announce(t.referenceLimit); return; }
+    if (!picked && canvasReferenceCount >= workflowReferenceLimit(images.find(n => n.id === canvasReference.target)?.fusion)) { announce(referenceLimitMessage(canvasReference.target)); return; }
     if (!picked && canvasReference.ids.some(other => images.find(n => n.id === other)?.url === candidate.url)) return;
     setCanvasReference({ ...canvasReference, ids: picked ? canvasReference.ids.filter(n => n !== id) : [...canvasReference.ids, id] });
   }
@@ -608,7 +612,7 @@ export default function App() {
           const editorImage = source ? {...source, id: n.id, fusion: n.fusion, nodeOnly: false} : n;
           return <div key={`${n.id}:fusion`}>
           {source && <ImageConnection zoom={view.zoom} image={source} target={{...fusionPosition(n),id:`${n.id}:fusion`,width:280,height:579}} active={selectedIds.includes(source.id) || selectedIds.includes(`${n.id}:fusion`)} />}
-          <div className="fusion-position" data-fusion-id={n.id} data-selected={selectedIds.includes(`${n.id}:fusion`)} tabIndex={0} role="group" aria-label={`${t.fusion} · ${n.name}`}
+          <div className="fusion-position" data-fusion-id={n.id} data-selected={selectedIds.includes(`${n.id}:fusion`)} tabIndex={0} role="group" aria-label={`${n.fusion?.kind === 'lingerie' ? t.lingerie : t.fusion} · ${n.name}`}
             style={{ left: fusionPosition(n).x, top: fusionPosition(n).y, zIndex: foregroundIds.has(`${n.id}:fusion`) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
             onFocus={() => { if (!canvasReference && !selectedRef.current.includes(`${n.id}:fusion`)) setSelectedIds([`${n.id}:fusion`]); }}
             onPointerDownCapture={e => {
@@ -621,7 +625,7 @@ export default function App() {
               }
               beginPointer(e, `${n.id}:fusion`, true);
             }}>
-            <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => generateDemo(n.id)} onNotify={announce} />
+            <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => n.fusion?.kind === 'lingerie' ? announce(t.noBackend) : generateDemo(n.id)} onNotify={announce} />
           </div>
         </div>;})}
       </div>
@@ -632,7 +636,7 @@ export default function App() {
       }}>
         {shownSelection.value.count > 1 && <div className="group-selection-frame" data-selection-count={shownSelection.value.count} />}
         {shownSelection.value.showToolbar && <div className="media-toolbar-anchor" data-overlay inert={shownSelection.phase === 'exit'}>
-          <SelectionToolbar locale={locale} multiple={shownSelection.value.count > 1} onAction={action => action === 'fusion' ? openFusion() : action === 'cutout' ? setCutoutImage(imageRef.current.find(n => selectedRef.current.includes(n.id)) ?? null) : announce(t.noBackend)} onDownload={() => void downloadSelected()} />
+          <SelectionToolbar locale={locale} multiple={shownSelection.value.count > 1} onAction={action => action === 'fusion' || action === 'lingerie' ? openFusion(action) : action === 'cutout' ? setCutoutImage(imageRef.current.find(n => selectedRef.current.includes(n.id)) ?? null) : announce(t.noBackend)} onDownload={() => void downloadSelected()} />
         </div>}
       </div>}
       {shownSnapGuide.value && <div className="canvas-snap-guides" aria-hidden="true" data-phase={shownSnapGuide.phase}>
@@ -645,7 +649,7 @@ export default function App() {
         <Button variant="primary" size="s" onClick={fit}>{t.returnToNodes}</Button>
       </div>}
       {shownCanvasReference.value && <div className="canvas-return-hint canvas-reference-hint" data-overlay data-phase={shownCanvasReference.phase} inert={shownCanvasReference.phase === 'exit'}>
-        <p role="status">{t.referencePickHint} · {fusionReferences(images.find(n => n.id === shownCanvasReference.value!.target)?.fusion).length + shownCanvasReference.value.ids.length} / {MAX_FUSION_REFERENCES}</p>
+        <p role="status">{images.find(n => n.id === shownCanvasReference.value!.target)?.fusion?.kind === 'lingerie' ? t.modelImagePickHint : t.referencePickHint} · {fusionReferences(images.find(n => n.id === shownCanvasReference.value!.target)?.fusion).length + shownCanvasReference.value.ids.length} / {workflowReferenceLimit(images.find(n => n.id === shownCanvasReference.value!.target)?.fusion)}</p>
         <Button variant="secondary" onClick={() => setCanvasReference(null)}>{t.cancel}</Button>
         <Button variant="primary" disabled={!canvasReference?.ids.length} onClick={() => { if (canvasReference) addReferences(canvasReference.target, images.filter(n => canvasReference.ids.includes(n.id))); setCanvasReference(null); }}>{t.confirm}</Button>
       </div>}
@@ -681,10 +685,10 @@ export default function App() {
       setSelectedIds([`${id}:fusion`]); setMainTarget(null);
     }} />}
     {shownReference.value && <AssetPicker key={`reference:${shownReference.value}`} locale={locale} phase={shownReference.phase} uploads={uploads} onUpload={rememberUpload} onClose={() => setReferenceTarget(null)}
-      maxCount={MAX_FUSION_REFERENCES - fusionReferences(images.find(n => n.id === shownReference.value)?.fusion).length}
-      excludedUrls={fusionReferences(images.find(n => n.id === shownReference.value)?.fusion).map(n => n.url)} limitMessage={t.referenceLimit}
+      maxCount={workflowReferenceLimit(images.find(n => n.id === shownReference.value)?.fusion) - fusionReferences(images.find(n => n.id === shownReference.value)?.fusion).length}
+      excludedUrls={fusionReferences(images.find(n => n.id === shownReference.value)?.fusion).map(n => n.url)} limitMessage={referenceLimitMessage(shownReference.value)}
       onConfirm={image => { addReferences(shownReference.value!, [image]); setReferenceTarget(null); }}
-      onConfirmBatch={items => { addReferences(shownReference.value!, items); setReferenceTarget(null); }} />}
+      onConfirmBatch={images.find(n => n.id === shownReference.value)?.fusion?.kind === 'lingerie' ? undefined : items => { addReferences(shownReference.value!, items); setReferenceTarget(null); }} />}
 
     {activeTool && <AssetPicker key={activeTool.id} locale={locale} phase={shownModal.phase} uploads={uploads} onUpload={rememberUpload}
       onClose={closeModal} onConfirm={image => { addImages([{ ...image, operation: activeTool.id }]); closeModal(); }} />}

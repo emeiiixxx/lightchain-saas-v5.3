@@ -1,0 +1,92 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "nodeId": "136:16942",
+  "library": "Lightchain SaaS v5.1 libraries Beta",
+  "button": {
+    "variant": "Outline / L",
+    "referenceState": "hover",
+    "width": 144,
+    "height": 48,
+    "radius": 12,
+    "iconSize": 24,
+    "iconGap": 8,
+    "hoverFill": "Control/fill/hover",
+    "border": "Border/weak",
+    "hoverText": "Text/primary"
+  },
+  "icon": {
+    "name": "Icon/Business/TryOnModel / Name=lingerie-try-on",
+    "key": "b36b6656eebc4cfc265f83a70f7822277e98b089",
+    "asset": "/assets/lingerie-try-on.svg"
+  },
+  "layout": {
+    "order": [
+      "cutout",
+      "fusion",
+      "directed",
+      "lingerie",
+      "flat"
+    ],
+    "desktopGroupWidth": 784,
+    "gap": 16,
+    "uploadWidth": 624,
+    "narrowViewport": "Wrap entries; retain existing two-column mobile layout"
+  },
+  "behavior": "Reuse the single-image AssetPicker; chosen clothing image creates a lingerie workflow node on its right. The node shares canvas selection, dragging, connections, layout, history and clipboard behavior.",
+  "singleImageToolbar": {
+    "nodeId": "136:17032",
+    "actionNodeId": "I136:17032;1675:2981;136:17025",
+    "order": [
+      "cutout",
+      "fusion",
+      "directed",
+      "lingerie",
+      "flat",
+      "editImage"
+    ],
+    "height": 32,
+    "iconSize": 16,
+    "iconGap": 4,
+    "horizontalPadding": 8,
+    "typography": "Typography/UI/Control/S",
+    "icon": "Reuse the same Beta lingerie-try-on artwork as the initialization entry",
+    "behavior": "Create a lingerie editor linked to the selected image without uploading or duplicating the source image."
+  },
+  "validation": "Figma source read; no browser inspection or tests run, per user instruction.",
+  "workflow": {
+    "populatedNodeId": "136:17371",
+    "emptyNodeId": "136:17414",
+    "width": 280,
+    "padding": 12,
+    "gap": 12,
+    "radius": 16,
+    "clothingRowHeight": 56,
+    "clothingThumbnailSize": 40,
+    "modelImageSlotSize": 64,
+    "modelImageLimit": 1,
+    "promptMaxLength": 2000,
+    "textareaHeight": 160,
+    "defaults": {
+      "ratio": "auto",
+      "resolution": "2K"
+    },
+    "components": [
+      "Canvas/WorkflowNode",
+      "Upload/ImageTile XS",
+      "TextArea M",
+      "SettingSelect",
+      "PromptTools",
+      "GenerateTaskButton S"
+    ],
+    "assets": "Reuse existing original Beta tip, upload, prompt-action, settings and generation artwork.",
+    "themes": "Shared semantic tokens for Dark and Light; shared 200ms ease-out transitions.",
+    "behavior": [
+      "A workflow kind stored in the existing editor settings distinguishes lingerie from fusion; legacy editors remain fusion.",
+      "Model images use a single-image asset picker or the existing canvas-selection flow with a one-image limit. Removing a model image allows replacement; changes support undo.",
+      "Clothing-image deletion leaves an empty lingerie node and resets its fields; adding clothing restores its connection and preserves the node position.",
+      "Copying an editor preserves its kind and configuration and pastes it without a clothing image.",
+      "Prompt expansion, prompt library, save, clear and generation settings reuse the existing controls.",
+      "Generation requests require clothing and nonempty description, then display the existing no-backend feedback. No AI request, charge or fabricated try-on result."
+    ]
+  }
+}
