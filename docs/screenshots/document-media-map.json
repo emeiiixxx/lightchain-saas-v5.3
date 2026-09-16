@@ -45,6 +45,13 @@
       "feishu_file_token": "INUmbcLlvohlnLxQxb2c4ndtnwe"
     },
     {
+      "file": "initial-canvas-feishu.png",
+      "feature": "P0 5. 画布初始化样式优化",
+      "caption": "5. 画布初始化样式优化配图",
+      "feishu_block_id": "BfsKdObKQo42BdxDNSxcQQ9fnEe",
+      "feishu_file_token": "B7LtbC23Xo2ieaxjD4NcVpxtnOL"
+    },
+    {
       "feature": "P1 1. 缩放画布及速度优化",
       "file": "09-zoom-100.png",
       "caption": "固定倍率切换前",
@@ -73,6 +80,27 @@
       "feishu_file_token": "W3o6bQN4jocSurxVvEpcVeB6nec"
     },
     {
+      "file": "grid-snap-demo-feishu.png",
+      "feature": "P1 3. 网格吸附开关",
+      "caption": "3. 网格吸附开关配图",
+      "feishu_block_id": "JCE0dipIwoO5rsxW6nPcdDpEnmd",
+      "feishu_file_token": "Ikcob4pXpoi5UTxtjaHccPfbnug"
+    },
+    {
+      "file": "grid-snap-states-feishu.png",
+      "feature": "P1 3. 网格吸附开关",
+      "caption": "3. 网格吸附开关配图",
+      "feishu_block_id": "Y93vd02bQotXX3x8NLwcj4TtnCb",
+      "feishu_file_token": "NO9dbN54tob26jx7TiIcxiLdnBh"
+    },
+    {
+      "file": "model-library-buttons-feishu.png",
+      "feature": "P1 5. 模特企划库底部按钮高度不一致修复",
+      "caption": "5. 模特企划库底部按钮高度不一致修复配图",
+      "feishu_block_id": "K2pCd8Gi8o4AzXx8J9ocCrTAnhd",
+      "feishu_file_token": "X787bWqOAozgrkxXmalcabKsnnd"
+    },
+    {
       "feature": "P2 1. 选中框优化",
       "file": "03-ants-selected.png",
       "caption": "单图选中：自身描边与图片工具栏",
@@ -94,18 +122,25 @@
       "feishu_file_token": "Kw6vbowbWoSR3rxMvy7cYxB8nWe"
     },
     {
+      "file": "prompt-library-detail-feishu.png",
       "feature": "P2 3. 提示词库（待定）",
-      "file": "08-prompt-library.png",
       "caption": "提示词库：详情、关联图片与插入／覆盖操作",
-      "feishu_block_id": "doxcnr87iVR3KkxDZ7U0I3UcKrb",
-      "feishu_file_token": "T4uobiAMhoAWOHxWfpJcezLrnCd"
+      "feishu_block_id": "OVCudoRp9o1R3jx1uvkcx8BOnag",
+      "feishu_file_token": "Oy9BbQnK8oD4ddxnVLLcv7zznWf"
     },
     {
+      "file": "prompt-library-new-feishu.png",
       "feature": "P2 3. 提示词库（待定）",
-      "file": "08-new-prompt.png",
       "caption": "新增提示词：临时卡片与表单实时同步",
-      "feishu_block_id": "doxcnhHmROSdJg0machI8vyP0wd",
-      "feishu_file_token": "WgKJbatBXoJ5AUxxRwqcZNxgnqH"
+      "feishu_block_id": "EIJNd06XHoWaB9xgu83cv3wMnlf",
+      "feishu_file_token": "QLZNbxTPtoRj3ixYSYTckrHQnof"
+    },
+    {
+      "file": "prompt-library-edit-feishu.png",
+      "feature": "P2 3. 提示词库（待定）",
+      "caption": "编辑提示词",
+      "feishu_block_id": "Q0HpdaBd3oD3LUxq9BhcXDeRnhg",
+      "feishu_file_token": "Xw2ubcLtGoj32uxKHVfcj1qunqf"
     }
   ]
 }
