@@ -56,6 +56,8 @@ export const assets = {
   move: "/assets/canvas/move.svg",
   hand: "/assets/canvas/hand.svg",
   canvasUpload: "/assets/canvas/canvasUpload.svg",
+  // 5.1 Beta paste icon, Figma node 120:50.
+  canvasPaste: "/assets/canvas/paste.svg",
   undoIcon: "/assets/canvas/undoIcon.svg",
   redoIcon: "/assets/canvas/redoIcon.svg",
   zoomOutIcon: "/assets/canvas/zoomOutIcon.svg",

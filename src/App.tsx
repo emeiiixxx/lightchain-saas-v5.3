@@ -15,6 +15,8 @@ import { CanvasChrome } from './components/CanvasChrome';
 import { FullImageViewer } from './components/FullImageViewer';
 import { FusionNode } from './components/FusionNode';
 import { ImageConnection } from './components/FusionConnection';
+import { copyCanvasSelection, pasteCanvasSelection } from './canvas-clipboard';
+import { CanvasContextMenu } from './components/CanvasContextMenu';
 
 type Theme = 'dark' | 'light' | 'system';
 type Tool = 'cutout' | 'fusion' | 'directed' | 'flat';
@@ -52,6 +54,8 @@ export default function App() {
   const [systemDark, setSystemDark] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches);
   const [projectName, setProjectName] = useState(() => saved('lc-flow-project-name', 'Untitle'));
   const [menu, setMenu] = useState<'language' | null>(null);
+  const [canvasMenu, setCanvasMenu] = useState<{ x: number; y: number; worldX: number; worldY: number } | null>(null);
+  const closeCanvasMenu = useCallback(() => setCanvasMenu(null), []);
   const [modal, setModal] = useState<Modal>(null);
   const [images, setImages] = useState<CanvasImage[]>([]);
   const [referenceTarget, setReferenceTarget] = useState<string | null>(null);
@@ -113,6 +117,7 @@ export default function App() {
   type Snapshot = { images: CanvasImage[]; selectedIds: string[] };
   const history = useRef<Snapshot[]>([]);
   const future = useRef<Snapshot[]>([]);
+  const canvasClipboard = useRef<{ token: string; items: CanvasImage[]; pastes: number } | null>(null);
   const selectedRef = useRef(selectedIds); selectedRef.current = selectedIds;
   const gesture = useRef<{ pointerId: number; type: 'pan' | 'image' | 'fusion' | 'marquee'; clickedId?: string; ids: string[]; additive: boolean; x: number; y: number; view: Viewport; images: CanvasImage[]; changed: boolean } | null>(null);
   const viewRef = useRef(view); viewRef.current = view;
@@ -221,10 +226,61 @@ export default function App() {
   const removeSelected = useCallback(() => { if (selectedIds.length) { remember(imageRef.current); setImages(items => deleteCanvasSelection(items, selectedIds)); setSelectedIds([]); } }, [selectedIds, remember]);
   const closeModal = useCallback(() => { uploadEpoch.current++; setModal(null); setReading(false); }, []);
 
+  const pasteCopiedItems = useCallback((point?: { x: number; y: number }) => {
+    const clipboard = canvasClipboard.current;
+    if (!clipboard || !canvas.current) return;
+    const v = viewRef.current;
+    const offset = 32 * (clipboard.pastes + 1) / v.zoom;
+    let created = pasteCanvasSelection(clipboard.items, offset, offset);
+    const bounds = boundsOf(canvasNodes(created))!;
+    const area = canvasSafeArea(canvas.current.clientWidth, canvas.current.clientHeight);
+    if (point || bounds.x * v.zoom + v.x > area.x + area.width || (bounds.x + bounds.width) * v.zoom + v.x < area.x
+      || bounds.y * v.zoom + v.y > area.y + area.height || (bounds.y + bounds.height) * v.zoom + v.y < area.y) {
+      const dx = point ? point.x - bounds.x : (area.x + area.width / 2 - v.x) / v.zoom - bounds.width / 2 - bounds.x;
+      const dy = point ? point.y - bounds.y : (area.y + area.height / 2 - v.y) / v.zoom - bounds.height / 2 - bounds.y;
+      created = created.map(item => ({ ...item, x: item.x + dx, y: item.y + dy,
+        fusion: item.fusion ? { ...item.fusion, position: { x: item.x + dx, y: item.y + dy } } : undefined }));
+    }
+    clipboard.pastes++;
+    remember(imageRef.current);
+    const next = [...imageRef.current, ...created];
+    const ids = created.map(item => item.fusion ? `${item.id}:fusion` : item.id);
+    imageRef.current = next; selectedRef.current = ids;
+    setImages(next); setSelectedIds(ids);
+  }, [remember]);
+
+  useEffect(() => {
+    const mime = 'application/x-lightchain-canvas';
+    const blocked = (event: ClipboardEvent) => isField(event.target) || isField(document.activeElement)
+      || !!(modal || referenceTarget || mainTarget || canvasReference || menu || previewImage || cutoutImage)
+      || !!document.querySelector('dialog[open], [popover]:popover-open:not([data-canvas-context-menu])');
+    const copy = (event: ClipboardEvent) => {
+      if (canvasMenu || blocked(event) || !event.clipboardData || window.getSelection()?.toString()) return;
+      const items = copyCanvasSelection(imageRef.current, selectedRef.current);
+      if (!items.length) return;
+      const token = crypto.randomUUID();
+      event.clipboardData.setData(mime, token);
+      event.clipboardData.setData('text/plain', items.map(item => item.fusion ? item.fusion.prompt : item.name).join('\n'));
+      canvasClipboard.current = { token, items, pastes: 0 };
+      event.preventDefault();
+    };
+    const paste = (event: ClipboardEvent) => {
+      const clipboard = canvasClipboard.current;
+      if (blocked(event) || !clipboard || event.clipboardData?.getData(mime) !== clipboard.token || !canvas.current) return;
+      event.preventDefault();
+      pasteCopiedItems(canvasMenu ? { x: canvasMenu.worldX, y: canvasMenu.worldY } : undefined);
+      closeCanvasMenu();
+    };
+    window.addEventListener('copy', copy);
+    window.addEventListener('paste', paste);
+    return () => { window.removeEventListener('copy', copy); window.removeEventListener('paste', paste); };
+  }, [modal, referenceTarget, mainTarget, canvasReference, menu, previewImage, cutoutImage, canvasMenu, closeCanvasMenu, pasteCopiedItems]);
+
   useEffect(() => {
     const down = (event: KeyboardEvent) => {
       // Preserve typing and keyboard activation; mouse-focused controls still allow canvas shortcuts.
       if (event.isComposing || isField(event.target)) return;
+      if (canvasMenu) { if (event.key === 'Escape') { event.preventDefault(); closeCanvasMenu(); } return; }
       if (event.code === 'Space' && document.documentElement.dataset.focusNavigation === 'keyboard' && event.target instanceof Element && event.target.closest('button, [role="button"]')) return;
       if (event.key === 'Alt' || event.key === 'Escape') setSnapGuide(null);
       if (canvasReference) { if (event.key === 'Escape') { setCanvasReference(null); setSpaceDown(false); } else if (event.code === 'Space') { event.preventDefault(); setSpaceDown(true); } return; }
@@ -241,7 +297,7 @@ export default function App() {
     const blur = () => { setSpaceDown(false); gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null); };
     window.addEventListener('keydown', down); window.addEventListener('keyup', up); window.addEventListener('blur', blur);
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); window.removeEventListener('blur', blur); };
-  }, [modal, referenceTarget, canvasReference, menu, previewImage, fit, undo, redo, removeSelected]);
+  }, [modal, referenceTarget, canvasReference, menu, previewImage, canvasMenu, closeCanvasMenu, fit, undo, redo, removeSelected]);
 
   useEffect(() => {
     const element = canvas.current;
@@ -473,7 +529,22 @@ export default function App() {
 
     <main ref={canvas} className={`canvas ${spaceDown || canvasMode === 'hand' ? 'is-panning' : ''} ${dragging ? 'is-dragging' : ''}`} aria-label={t.canvas}
       onPointerDown={e => beginPointer(e)} onPointerMove={movePointer} onPointerUp={endPointer} onPointerCancel={endPointer}
-      onDoubleClick={e => { if (!(e.target instanceof Element) || e.target.closest('[data-overlay], [data-image]')) return; openUpload(); }}
+      onDoubleClick={e => {
+        if (canvasReference || !(e.target instanceof Element) || e.target.closest('[data-overlay], [data-image], .fusion-position, .selection-overlay')) return;
+        e.preventDefault(); closeCanvasMenu();
+        const rect = e.currentTarget.getBoundingClientRect();
+        animateView(zoomAt(viewRef.current, 1.25, e.clientX - rect.left, e.clientY - rect.top));
+      }}
+      onContextMenu={e => {
+        if (canvasReference || !(e.target instanceof Element) || e.target.closest('[data-overlay], [data-image], .fusion-position, .selection-overlay')) return;
+        e.preventDefault();
+        const activeGesture = gesture.current;
+        if (activeGesture && e.currentTarget.hasPointerCapture(activeGesture.pointerId)) e.currentTarget.releasePointerCapture(activeGesture.pointerId);
+        gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null);
+        const rect = e.currentTarget.getBoundingClientRect(), v = viewRef.current;
+        document.dispatchEvent(new CustomEvent('lc-select-open', { detail: 'canvas-context' }));
+        setCanvasMenu({ x: e.clientX, y: e.clientY, worldX: (e.clientX - rect.left - v.x) / v.zoom, worldY: (e.clientY - rect.top - v.y) / v.zoom });
+      }}
       onDragOver={e => { if (e.dataTransfer.types.includes('Files')) { e.preventDefault(); setDropActive(true); } }}
       onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDropActive(false); }}
       onDrop={e => { e.preventDefault(); setDropActive(false); void loadFiles(e.dataTransfer.files); }}>
@@ -588,6 +659,9 @@ export default function App() {
       {reading && !modal && <div className="canvas-message" role="status">{t.reading}</div>}
     </main>
 
+    <CanvasContextMenu point={canvasMenu} canPaste={!!canvasClipboard.current} locale={locale} onClose={closeCanvasMenu}
+      onUpload={() => { closeCanvasMenu(); openUpload(); }}
+      onPaste={() => { if (canvasMenu) pasteCopiedItems({ x: canvasMenu.worldX, y: canvasMenu.worldY }); closeCanvasMenu(); }} />
     <ToastHost />
 
     {shownCutout.value && <CutoutEditor key={shownCutout.value.id} image={shownCutout.value} phase={shownCutout.phase} onClose={() => setCutoutImage(null)} onApply={url => {

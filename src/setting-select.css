@@ -12,6 +12,11 @@
 .lc-select-option > span:first-child { flex: 1; }
 .lc-select-popup .lc-select-option:is(:hover,:focus-visible) { outline: none; background: var(--state-hover); color: var(--text-primary); }
 .lc-select-popup .lc-select-option[aria-checked='true'] { background: var(--state-hover); color: var(--text-brand); }
+.canvas-context-menu .canvas-context-shortcut { margin-left: auto; color: var(--text-tertiary); font-size: 12px; }
+.canvas-context-menu .lc-select-option > .icon { flex: 0 0 auto; }
+.canvas-context-menu .canvas-context-label { flex: 1; }
+.canvas-context-menu .lc-select-option:disabled { background: transparent; color: var(--text-disabled); cursor: not-allowed; }
+.canvas-context-menu .lc-select-option:disabled .canvas-context-shortcut { color: inherit; }
 .lc-select-popup[data-side='bottom'][data-phase='enter'] { animation-name: panel-enter; }
 .lc-select-popup[data-side='bottom'][data-phase='exit'] { animation-name: panel-exit; }
 .lc-select-popup[data-side='top'][data-phase='enter'] { animation-name: select-up-enter; }
