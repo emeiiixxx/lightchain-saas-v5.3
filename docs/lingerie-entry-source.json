@@ -32,7 +32,7 @@
     "uploadWidth": 624,
     "narrowViewport": "Wrap entries; retain existing two-column mobile layout"
   },
-  "behavior": "Reuse the single-image AssetPicker; chosen clothing image creates a lingerie workflow node on its right. The node shares canvas selection, dragging, connections, layout, history and clipboard behavior.",
+  "behavior": "Empty-canvas entry directly loads the lingerie clothing/model/result example with its prompt and NEW badge. Single-image toolbar uses the current clothing image; empty-node replacement uses a single-image AssetPicker. Shared canvas selection, dragging, connections, layout and history remain available.",
   "singleImageToolbar": {
     "nodeId": "136:17032",
     "actionNodeId": "I136:17032;1675:2981;136:17025",
@@ -88,5 +88,6 @@
       "Prompt expansion, prompt library, save, clear and generation settings reuse the existing controls.",
       "User-authorized demo generation requires only a clothing image; description and model image may be empty. Each click adds the user-provided yellow/lavender lingerie model result at width 360 with its original 794:1064 aspect ratio, linked to the editor and labeled as a demo, with undo and arrangement support. Paired product/reference/result assets and prompts are recorded in workflow-example-images.json. No live AI request, charge or generation-history write."
     ]
-  }
+  },
+  "initializationContract": "canvas-initialization.md"
 }

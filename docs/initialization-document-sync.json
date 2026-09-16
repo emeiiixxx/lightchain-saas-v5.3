@@ -1,0 +1,26 @@
+{
+  "document": "https://lightchain.feishu.cn/wiki/WpiswINzhiJLCxkrmZncdhRenxb",
+  "date": "2026-09-16",
+  "revision": 813,
+  "scope": "P0 5. 画布初始化样式优化",
+  "detailItems": 12,
+  "acceptanceItems": [
+    "5. 画布初始化样式优化",
+    "5.1 四种功能示例",
+    "5.2 对应固定示例",
+    "5.3 示例加载与撤销",
+    "5.4 抠图及已有图片入口",
+    "5.5 定向融合限制",
+    "5.6 转3D平铺设置",
+    "5.7 空节点及恢复",
+    "5.8 生成条件与结果",
+    "5.9 上传边界与撤销",
+    "5.10 图片菜单与删除快捷键"
+  ],
+  "preservedImageTokens": [
+    "JtD4b0ZpHoBGAdxoIMyczreCnW2",
+    "RwulbiYWDoYc64xfhWnc6W18neh"
+  ],
+  "verification": "Document write/readback only; acceptance criteria are pending, no browser or functional tests performed.",
+  "exampleSpecification": "展示对应固定示例，示例素材及提示词后补。"
+}

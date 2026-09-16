@@ -95,7 +95,7 @@ button:disabled { cursor: not-allowed; color: var(--text-disabled); }
 .empty-intro { margin: 0; }
 .tool-grid { width: 100%; flex-wrap: wrap; justify-content: center; }
 .entry-tool { position: relative; width: 144px; }
-.entry-tool-badge { position: absolute; top: -8px; right: -4px; display: inline-flex; align-items: center; justify-content: center; height: var(--height-l); padding: 0 var(--spacing-base); border-radius: var(--radius-max); background: var(--brand-gradient-chat); color: var(--text-on-brand-black); font-size: 12px; font-weight: 500; line-height: 16px; white-space: nowrap; pointer-events: none; }
+.entry-tool-badge { position: absolute; top: -12px; right: -4px; display: inline-flex; align-items: center; justify-content: center; height: var(--height-l); padding: 0 var(--spacing-base); border-radius: var(--radius-max); background: var(--brand-gradient-chat); color: var(--text-on-brand-black); font-size: 12px; font-weight: 500; line-height: 16px; white-space: nowrap; pointer-events: none; }
 .entry-tool[data-node-id='136:16942']:lang(en) { padding-inline: 8px; font-size: 14px; }
 .popover { position: absolute; top: calc(100% + 12px); min-width: 180px; padding: 4px; background: var(--surface-default); border: 1px solid var(--border-weak); border-radius: var(--radius-l); box-shadow: 0 12px 28px -4px var(--overlay-weak); }
 .language-menu { left: 0; display: flex; flex-direction: column; gap: 8px; }

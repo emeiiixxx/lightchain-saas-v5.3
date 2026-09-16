@@ -20,7 +20,18 @@
     ],
     "maxFileBytes": 20971520
   },
-  "verified": [
+  "masterComponent": {
+    "fileKey": "FO7bCfBv6NPle8egsVaDvG",
+    "nodeId": "794:8931",
+    "variants": {
+      "default": "State/default fill; Border/weak; Text/tertiary",
+      "hover": "State/hover fill; Border/strong; primary icon/title, tertiary hint",
+      "dragging": "Alpha/brand/20% fill; Border/brand; primary icon/title, tertiary hint",
+      "disabled": "State/default fill; Border/weak; Text/disabled"
+    },
+    "layout": "Product instance remains 624x360; shared master state styles apply to initial and picker dropzones"
+  },
+  "historicalVerification": [
     "TypeScript",
     "624x360 desktop",
     "4 function buttons",
@@ -32,15 +43,21 @@
     "dark/light/mobile",
     "no runtime errors"
   ],
-  "masterComponent": {
-    "fileKey": "FO7bCfBv6NPle8egsVaDvG",
-    "nodeId": "794:8931",
-    "variants": {
-      "default": "State/default fill; Border/weak; Text/tertiary",
-      "hover": "State/hover fill; Border/strong; primary icon/title, tertiary hint",
-      "dragging": "Alpha/brand/20% fill; Border/brand; primary icon/title, tertiary hint",
-      "disabled": "State/default fill; Border/weak; Text/disabled"
+  "verificationScope": "Historical verification predates five-entry example initialization; not a fresh acceptance result.",
+  "entries": {
+    "order": [
+      "cutout",
+      "fusion",
+      "directed",
+      "lingerie",
+      "flat"
+    ],
+    "cutout": "Single-image AssetPicker then local cutout editor",
+    "others": "Direct paired main/editor/result example, arrange and fit, undo as one group",
+    "lingerieBadge": {
+      "nodeId": "136:18786",
+      "label": "NEW"
     },
-    "layout": "Product instance remains 624x360; shared master state styles apply to initial and picker dropzones"
+    "contract": "canvas-initialization.md"
   }
 }
