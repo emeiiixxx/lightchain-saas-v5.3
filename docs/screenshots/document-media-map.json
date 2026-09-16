@@ -101,18 +101,18 @@
       "feishu_file_token": "X787bWqOAozgrkxXmalcabKsnnd"
     },
     {
-      "feature": "P2 1. 选中框优化",
-      "file": "03-ants-selected.png",
-      "caption": "单图选中：自身描边与图片工具栏",
-      "feishu_block_id": "doxcn9KDoYyZjLEgZJG5DgbBjRm",
-      "feishu_file_token": "MrFgbFIZ2o2XiUx7PFbcKQkPnDf"
+      "feature": "P2 1. 选中边框&元素加减选操作优化",
+      "file": "selection-single-zoom-feishu.png",
+      "caption": "单图选中：单选元素边框，画布缩小后展示样式示意",
+      "feishu_block_id": "M5yZdDylOo3ULAxQEbEc5C7ondh",
+      "feishu_file_token": "CC45bWdavozRCuxIK03c6pM2nmc"
     },
     {
-      "feature": "P2 1. 选中框优化",
-      "file": "04-mixed-selection.png",
-      "caption": "混合选区：图片与编辑节点联合边界及蒙版",
-      "feishu_block_id": "doxcnLmdZMvYmoomkwruZN5NM3d",
-      "feishu_file_token": "QxyXbOwneoMsoqxIgSmcNT3bnId"
+      "feature": "P2 1. 选中边框&元素加减选操作优化",
+      "file": "selection-multiple-zoom-feishu.png",
+      "caption": "混合选区：多选选中边框，画布缩小后展示样式示意",
+      "feishu_block_id": "RqDgdnX9nojISPxqPhxcR2fvn7b",
+      "feishu_file_token": "JU0wbyQANo3iQtxyrNIcgeRcn9c"
     },
     {
       "feature": "P2 2. 保存提示词弹窗样式优化",
