@@ -1,3 +1,4 @@
+import { ProgressiveImage } from './ProgressiveImage';
 import { useEffect, useId, useState } from 'react';
 import { Icon } from './ui';
 import { usePresence } from '../usePresence';
@@ -32,7 +33,7 @@ export function CanvasTaskList({ tasks = emptyTasks, locale }: { tasks?: CanvasT
             <div className="task-gradient-green"><img src="/assets/canvas/generatingGreen.svg" alt="" /></div>
             <div className="task-gradient-blue"><img src="/assets/canvas/generatingBlue.svg" alt="" /></div>
             <div className="task-gradient-purple"><img src="/assets/canvas/generatingPurple.svg" alt="" /></div>
-          </div></div> : task.thumbnailUrl ? <img src={task.thumbnailUrl} alt="" /> : null}
+          </div></div> : task.thumbnailUrl ? <ProgressiveImage src={task.thumbnailUrl} alt="" /> : null}
         </div>
         <div className="canvas-task-details"><span>{t[task.status]}</span><time dateTime={task.createdAt}>{new Date(task.createdAt).toLocaleString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</time></div>
       </div>)}

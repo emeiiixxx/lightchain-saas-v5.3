@@ -1,3 +1,4 @@
+import { ProgressiveImage } from './ProgressiveImage';
 import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import { Button, Icon } from './ui';
 import type { CanvasImage } from '../canvas';
@@ -60,7 +61,7 @@ export function FullImageViewer({ image, locale, phase, onClose }: Props) {
     onCancel={event => { event.preventDefault(); onClose(); }}>
     <div ref={stage} className={`full-image-stage${dragging ? ' is-panning' : ''}`} onPointerDown={start} onPointerMove={move} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end}>
       <div className="full-image-center" style={{ width: image.width * fit, height: image.height * fit }}>
-        <img className="full-image-content" src={image.url} alt={image.name} draggable={false} style={{ transform: `translate(${position.x}px, ${position.y}px) scale(${position.zoom})` }} />
+        <ProgressiveImage className="full-image-content" src={image.url} alt={image.name} eager fit="contain" style={{ transform: `translate(${position.x}px, ${position.y}px) scale(${position.zoom})` }} />
       </div>
     </div>
     <div className="full-image-instructions" role="status" data-node-id="68:27757">{t.fullImageInstructions}</div>

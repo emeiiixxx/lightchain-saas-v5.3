@@ -1,3 +1,4 @@
+import { ProgressiveImage } from './ProgressiveImage';
 import { PromptTools } from './PromptTools';
 import { useEffect, useId, useRef, useState } from 'react';
 import { assets } from '../assets';
@@ -37,12 +38,12 @@ export function FusionNode({ image, locale, onChange, onAddMain, onReference, on
   return <section ref={root} className={`fusion-node${image.nodeOnly ? ' is-empty' : ''}`} data-overlay data-node-id={image.nodeOnly ? '107:5118' : '35:6422'} data-source-image={image.id} aria-label={t.title}>
     <header className="fusion-header"><h2>{t.title}</h2><div className="fusion-tip"><img src={assets.fusionTip} alt="" width={20} height={20} /><span>{t.tip}</span></div></header>
     <div className="fusion-content">
-      {image.nodeOnly ? <button className="fusion-add-main" onClick={onAddMain}><Icon name="fusionAddImage" size={20}/>{locale === 'zh-CN' ? '添加主图' : locale === 'ja' ? 'メイン画像を追加' : 'Add main image'}</button> : <div className="fusion-main"><img src={image.url} alt={t.main} width={40} height={40}/><span>{t.main}</span><Button variant="outline" className="fusion-mask" aria-label={t.mask} onClick={onDemo}><Icon name="fusionBrush" size={20}/></Button></div>}
+      {image.nodeOnly ? <button className="fusion-add-main" onClick={onAddMain}><Icon name="fusionAddImage" size={20}/>{locale === 'zh-CN' ? '添加主图' : locale === 'ja' ? 'メイン画像を追加' : 'Add main image'}</button> : <div className="fusion-main"><ProgressiveImage src={image.url} alt={t.main} width={40} height={40}/><span>{t.main}</span><Button variant="outline" className="fusion-mask" aria-label={t.mask} onClick={onDemo}><Icon name="fusionBrush" size={20}/></Button></div>}
       <Divider />
       <div className="fusion-field"><span className="fusion-label">{t.reference}<span className="fusion-reference-count">{references.length} / {MAX_FUSION_REFERENCES}</span></span>
         <div className="fusion-references">
           {references.map((reference, index) => <div className="fusion-reference-wrap" key={reference.url}>
-            <div className="fusion-reference"><img src={reference.url} alt={reference.name} /></div>
+            <div className="fusion-reference"><ProgressiveImage src={reference.url} alt={reference.name} /></div>
             <Button variant="tonal" className="fusion-reference-remove" aria-label={`${t.remove} ${index + 1}`} onClick={() => onChange({ references: references.filter((_, i) => i !== index), reference: undefined })}><Icon name="close" size={16} /></Button>
           </div>)}
           {references.length < MAX_FUSION_REFERENCES && <ReferenceSourceMenu addLabel={t.add} canvasLabel={t.canvas} onChoose={onReference} />}

@@ -1,3 +1,4 @@
+import { ProgressiveImage } from './ProgressiveImage';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Dialog, Divider, Icon } from './ui';
 import { demoAssets, multiDemoAssets, prepareMainImage, type LibraryImage } from '../asset-library';
@@ -107,10 +108,10 @@ export function AssetPicker({ locale, phase, uploads, onUpload, onConfirm, onCon
         <Icon name="upload" size={32} /><span className="asset-upload-title">{busy ? t.reading : dragOver ? t.dropImagesHere : t.localUpload}</span><span className="asset-upload-hint">{dragOver && !busy ? t.releaseToUpload : t.localUploadHint}</span>
       </button>}
       {visible.map(asset => multiple ? <button type="button" key={asset.id} className="asset-card asset-card--multiple" aria-label={asset.name} aria-pressed={chosen.some(item => item.id === asset.id)} disabled={busy} onClick={() => toggleAsset(asset)}>
-        <img src={asset.url} alt="" loading="lazy" draggable={false} />
+        <ProgressiveImage src={asset.url} alt="" />
         <span className="asset-checkbox" aria-hidden="true"><Icon name="selectionCheck" size={24} /></span>
       </button> : <div key={asset.id} className="asset-card" onClick={() => void useAsset(asset)}>
-        <img src={asset.url} alt={asset.name} loading="lazy" draggable={false} />
+        <ProgressiveImage src={asset.url} alt={asset.name} />
         <span className="asset-card-scrim" aria-hidden="true" />
         <div className="asset-card-actions">
           <Button variant="primary" size="m" disabled={busy} aria-label={`${t.useAsset} · ${asset.name}`}>

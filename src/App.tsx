@@ -1,3 +1,4 @@
+import { ProgressiveImage } from './components/ProgressiveImage';
 import { notify, ToastHost } from './components/Toast';
 import { CutoutEditor } from './components/CutoutEditor';
 import { fusionReferences, MAX_FUSION_REFERENCES, type FusionReference } from './canvas';
@@ -520,7 +521,7 @@ export default function App() {
           onFocus={e => { if (!canvasReference && e.target === e.currentTarget && !selectedRef.current.includes(n.id)) setSelectedIds([n.id]); }} onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || (e.key === ' ' && document.documentElement.dataset.focusNavigation === 'keyboard'))) { e.preventDefault(); if (canvasReference) { toggleCanvasReference(n.id); return; } setSelectedIds(e.shiftKey ? selectedIds.includes(n.id) ? selectedIds.filter(id => id !== n.id) : [...selectedIds, n.id] : [n.id]); } }}
           onPointerDown={e => beginPointer(e, n.id)}>
           <Button hidden={!!canvasReference} variant="tonal" className="image-preview-button" aria-label={`${t.viewFull} · ${n.name}`} title={t.viewFull} data-overlay onClick={() => setPreviewImage(n)}><Icon name="viewFull" size={20} /></Button>
-          <img src={n.url} alt={n.name} draggable={false} width={n.width} height={n.height} />
+          <ProgressiveImage src={n.url} alt={n.name} width={n.width} height={n.height} fit="contain" />
         </div>)}
         {images.filter(n => n.fusion).map(n => {
           const source = n.editorSourceId ? images.find(item => item.id === n.editorSourceId && !item.nodeOnly) : !n.nodeOnly ? n : undefined;

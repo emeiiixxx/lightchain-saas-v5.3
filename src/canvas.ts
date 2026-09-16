@@ -1,3 +1,4 @@
+import { rememberImagePreview } from './image-previews';
 export type Viewport = { x: number; y: number; zoom: number };
 export type FusionReference = { id: string; name: string; url: string };
 export const MAX_FUSION_REFERENCES = 4;
@@ -45,6 +46,7 @@ export async function readImage(file: File): Promise<Omit<CanvasImage, 'x' | 'y'
   const url = URL.createObjectURL(file);
   try {
     const image = new Image(); image.src = url; await image.decode();
+    rememberImagePreview(url, image);
     const width = Math.min(360, image.naturalWidth);
     return { id: crypto.randomUUID(), name: file.name, url, width, height: width * image.naturalHeight / image.naturalWidth };
   } catch (error) { URL.revokeObjectURL(url); throw error; }
