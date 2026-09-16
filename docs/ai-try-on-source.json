@@ -1,14 +1,25 @@
 {
   "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
   "pageNode": "136:12198",
-  "modeNodes": { "regular": "136:16116", "lingerie": "136:16144" },
+  "modeNodes": {
+    "regular": "136:16116",
+    "lingerie": "136:16144"
+  },
   "library": "Lightchain SaaS v5.1 libraries Beta",
   "route": "#/ai-try-on",
   "returnRoute": "#/canvas",
-  "garmentCategories": ["上装", "下装", "连身装", "不处理"],
+  "garmentCategories": [
+    "上装",
+    "下装",
+    "连身装",
+    "不处理"
+  ],
   "garmentCategoryPlaceholder": "请选择 is trigger-only placeholder text, not a menu option. 不处理 is a valid explicit selection.",
   "layout": {
-    "referenceViewport": [1920, 1080],
+    "referenceViewport": [
+      1920,
+      1080
+    ],
     "sharedHeaderHeight": 48,
     "sidebarWidth": 432,
     "sidebarHeaderHeight": 48,
@@ -57,5 +68,27 @@
     "The design's internal annotation in the description field is replaced with a product-facing input placeholder.",
     "At narrow widths the form and history stack vertically; short desktop windows scroll the form while keeping generation controls accessible."
   ],
-  "validation": "Read live Figma design context and shared source components. Per user instruction, no browser, test, build or visual verification was run."
+  "validation": "Read live Figma design context and shared source components. Per user instruction, no browser, test, build or visual verification was run.",
+  "announcement": {
+    "pageNode": "136:17833",
+    "sourceNode": "136:17784",
+    "text": "🎉 新增内衣试衣模式，点击试试看吧！",
+    "anchor": "Right edge of mode switch, 1px gap, vertically centered; below the switch when viewport space is insufficient.",
+    "tokens": {
+      "fill": "Primitive Colors / Brand/300",
+      "text": "Text/on-brand-black",
+      "radius": "Radius/L",
+      "shadow": "Shadow/L",
+      "typography": "Typography/UI/Body/M Strong"
+    },
+    "padding": [
+      12,
+      16
+    ],
+    "gap": 8,
+    "closeSize": 20,
+    "iconSize": 16,
+    "arrow": "Original Figma export in public/assets/try-on/announcement-arrow.svg",
+    "behavior": "Show on first regular-mode visit. Click the text to switch to lingerie, or dismiss with Close/Escape. Store dismissal locally; selecting lingerie also acknowledges it. Shared 200ms exit presence, reduced-motion support, resize/scroll repositioning. No browser inspection or tests run."
+  }
 }

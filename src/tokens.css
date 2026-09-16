@@ -142,3 +142,6 @@
 /* Beta State/selected-tab-sliding, live source 136:16116 / 136:16144. */
 [data-theme='dark'] { --state-selected-tab-sliding: rgba(255,255,255,.15); }
 [data-theme='light'] { --state-selected-tab-sliding: #fff; }
+
+/* Beta Primitive Colors / Brand/300, announcement 136:17833. */
+:root { --primitive-brand-300: #70ebde; }

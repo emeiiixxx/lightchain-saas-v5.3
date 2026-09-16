@@ -116,3 +116,14 @@
   .tryon-generate-footer .generate-task-button { flex-basis: 100%; }
   .topbar .purchase-button { display: none; }
 }
+
+/* Latest Figma announcement 136:17833, anchored to the try-on mode switch. */
+.tryon-announcement { position: fixed; z-index: 40; display: flex; align-items: center; width: max-content; max-width: calc(100vw - 24px); filter: drop-shadow(0 12px 14px var(--overlay-weak)); color: var(--text-on-brand-black); }
+.tryon-announcement-arrow { width: 8px; height: 24px; flex-shrink: 0; transform: scaleY(-1); }
+.tryon-announcement-body { display: flex; align-items: flex-start; gap: 8px; min-width: 0; padding: 12px 16px; border-radius: var(--radius-l); background: var(--primitive-brand-300); }
+.tryon-announcement-message { min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font-size: 14px; line-height: 20px; font-weight: 500; text-shadow: 2px 4px 20px rgba(0,119,255,.2); }
+.tryon-announcement .tryon-announcement-close { width: 20px; min-width: 20px; height: 20px; padding: 0; border-radius: 6px; color: var(--text-on-brand-black); flex-shrink: 0; }
+.tryon-announcement .tryon-announcement-close:hover { color: var(--text-on-brand-black); }
+.tryon-announcement[data-side='bottom'] .tryon-announcement-arrow { position: absolute; left: var(--arrow-left); top: -16px; transform: rotate(90deg); transform-origin: center; }
+
+.tryon-announcement[data-side='bottom'] { padding-left: 8px; }

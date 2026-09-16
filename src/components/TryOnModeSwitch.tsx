@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { Icon } from './ui';
+import { TryOnAnnouncement } from './TryOnAnnouncement';
 import type { Locale } from '../i18n';
 
 export type TryOnMode = 'regular' | 'lingerie';
@@ -10,10 +11,11 @@ const labels = {
 };
 
 // The moving indicator belongs to the track; only the selected item has a label.
-export function TryOnModeSwitch({ value, onChange, locale }: { value: TryOnMode; onChange: (mode: TryOnMode) => void; locale: Locale }) {
+export function TryOnModeSwitch({ value, onChange, locale, active = false }: { active?: boolean; value: TryOnMode; onChange: (mode: TryOnMode) => void; locale: Locale }) {
   const t = labels[locale];
+  const anchor = useRef<HTMLDivElement>(null);
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
-  return <div className="tryon-mode-switch" data-mode={value} data-node-id={value === 'regular' ? '136:16116' : '136:16144'} role="tablist" aria-label={t.group}>
+  return <><div ref={anchor} className="tryon-mode-switch" data-mode={value} data-node-id={value === 'regular' ? '136:16116' : '136:16144'} role="tablist" aria-label={t.group}>
     <span className="tryon-mode-indicator" aria-hidden="true" />
     {(['regular', 'lingerie'] as const).map((mode, index) => <button key={mode} ref={element => { buttons.current[index] = element; }} type="button" role="tab" id={`tryon-mode-${mode}`} aria-controls="tryon-form" aria-selected={value === mode} aria-label={t[mode]} data-tooltip={value === mode ? undefined : t[mode]} tabIndex={value === mode ? 0 : -1}
       onClick={() => onChange(mode)} onKeyDown={event => {
@@ -24,5 +26,5 @@ export function TryOnModeSwitch({ value, onChange, locale }: { value: TryOnMode;
       }}>
       <Icon name={mode === 'regular' ? 'aiTryOn' : 'lingerieTryOn'} size={16} /><span className="tryon-mode-label" aria-hidden={value !== mode}>{t[mode]}</span>
     </button>)}
-  </div>;
+  </div><TryOnAnnouncement active={active} mode={value} anchor={anchor} locale={locale} onTry={() => { onChange('lingerie'); buttons.current[1]?.focus({ preventScroll: true }); }} /></>;
 }

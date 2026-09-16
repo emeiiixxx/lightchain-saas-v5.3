@@ -81,7 +81,7 @@ export function AiTryOnPage({ active, locale, uploads, onUpload }: { active: boo
   const categories = ['top', 'bottom', 'one-piece', 'skip'];
   return <section className="tryon-page" hidden={!active} inert={!active} aria-label={t.title} data-node-id="136:12198">
     <aside className="tryon-sidebar">
-      <header className="tryon-sidebar-header"><div className="tryon-heading"><h1>{t.title}</h1><TryOnModeSwitch value={mode} locale={locale} onChange={setMode} /></div>
+      <header className="tryon-sidebar-header"><div className="tryon-heading"><h1>{t.title}</h1><TryOnModeSwitch active={active} value={mode} locale={locale} onChange={setMode} /></div>
         <div className="tryon-task-tabs" role="tablist" aria-label={t.taskMode}>
           {(['single', 'multi'] as const).map(task => <button key={task} type="button" role="tab" aria-selected={draft.task === task} tabIndex={draft.task === task ? 0 : -1} onClick={() => update({ task })} onKeyDown={event => selectTab(event, ['single', 'multi'], task, value => update({ task: value as Draft['task'] }))}>{t[task]}</button>)}
         </div>
