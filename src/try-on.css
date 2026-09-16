@@ -28,7 +28,8 @@
 .tryon-flatten [role='switch'][aria-checked='true'] { background: var(--brand-primary); }
 .tryon-flatten [role='switch'] span { width: 14px; height: 14px; border-radius: 50%; background: var(--text-on-brand-white); transform: translateX(0); box-shadow: 0 1px 2px var(--overlay-weak); }
 .tryon-flatten [role='switch'][aria-checked='true'] span { transform: translateX(14px); }
-.tryon-garment-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; padding: 8px; border-radius: 16px; background: var(--surface-default); }
+.tryon-garment-grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0,1fr); gap: 8px; padding: 8px; border-radius: 16px; background: var(--surface-default); }
+.tryon-garment-grid > .tryon-upload { min-width: 0; overflow-wrap: anywhere; }
 .tryon-garment-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .tryon-garment-image { height: 144px; position: relative; border-radius: 8px; overflow: hidden; background: var(--surface-secondary); }
 .tryon-garment-image > .progressive-image { display: block; width: 100%; height: 100%; }

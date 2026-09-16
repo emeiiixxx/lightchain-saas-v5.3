@@ -5,6 +5,8 @@
   "library": "Lightchain SaaS v5.1 libraries Beta",
   "route": "#/ai-try-on",
   "returnRoute": "#/canvas",
+  "garmentCategories": ["上装", "下装", "连身装", "不处理"],
+  "garmentCategoryPlaceholder": "请选择 is trigger-only placeholder text, not a menu option. 不处理 is a valid explicit selection.",
   "layout": {
     "referenceViewport": [1920, 1080],
     "sharedHeaderHeight": 48,
@@ -13,6 +15,7 @@
     "contentPadding": 16,
     "garmentPreviewHeight": 144,
     "garmentUploadHeight": 184,
+    "garmentLayout": "One equal-width row including the upload entry while below four images; at four images hide the upload entry and show all four cards in one row. Each card retains its category selector.",
     "generationControlsHeight": 40,
     "emptyArtworkSize": 128
   },
