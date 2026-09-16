@@ -68,7 +68,7 @@
 /* Raised related/selected nodes use layers 2/3; active edges stay above both
    within the canvas world, below the separate toolbar and overlay layers. */
 .fusion-connection[data-active='true'] { z-index: 4; }
-.fusion-connection path { stroke: var(--border-medium); stroke-width: calc(1.5px * var(--canvas-inverse-scale, 1)); transition-property: d, stroke; }
+.fusion-connection path { stroke: var(--border-medium); stroke-width: calc(2px * var(--canvas-inverse-scale, 1)); transition-property: d, stroke; }
 .fusion-connection[data-active='true'] .fusion-connection-line { stroke: var(--border-brand); stroke-width: calc(2px * var(--canvas-inverse-scale, 1)); stroke-dasharray: calc(8px * var(--canvas-inverse-scale, 1)) calc(6px * var(--canvas-inverse-scale, 1)); animation: fusion-ants 800ms linear infinite; }
 /* Keep the same dark underlay in both themes for contrast over imagery. */
 .fusion-connection .fusion-connection-backdrop { stroke: #111817; stroke-width: calc(4px * var(--canvas-inverse-scale, 1)); stroke-linecap: round; stroke-linejoin: round; }
