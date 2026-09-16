@@ -47,10 +47,9 @@
     {
       "file": "initial-canvas-feishu.png",
       "feature": "P0 5. 画布初始化样式优化",
-      "caption": "早期布局参考，最新五入口、节点及示例以 Figma 和 Demo 为准",
+      "caption": "5. 画布初始化样式优化配图",
       "feishu_block_id": "BfsKdObKQo42BdxDNSxcQQ9fnEe",
-      "feishu_file_token": "B7LtbC23Xo2ieaxjD4NcVpxtnOL",
-      "status": "historical-reference; not recaptured this update"
+      "feishu_file_token": "B7LtbC23Xo2ieaxjD4NcVpxtnOL"
     },
     {
       "feature": "P1 1. 缩放画布及速度优化",

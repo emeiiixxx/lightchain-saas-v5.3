@@ -344,12 +344,5 @@
     "implementation": "Shared AssetPicker, 5.1 Beta Button and existing exported checkbox check; add-image entry reuses the same exported glyph as Upload/Dropzone",
     "behavior": "File input and drop share selection-cap validation; upload auto-selects successful images, confirmation appends one batch without replacing main; cancel keeps canvas unchanged",
     "singleSelectPreserved": true
-  },
-  "currentEntryRouting": {
-    "initialCutout": "Single picker",
-    "initialFusionDirectedLingerieFlat": "No picker; load workflow examples",
-    "emptyWorkflowMain": "Single picker",
-    "initialUploadAndCanvasUpload": "Multi-select, at most 20 per batch",
-    "source": "canvas-initialization.md"
   }
 }

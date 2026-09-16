@@ -52,16 +52,16 @@
     }
   ],
   "behavior": [
-    "Empty-canvas fusion entry loads the paired main/editor/result example with the user-provided prompt and no preset reference; it arranges/fits the graph and is undone as one operation.",
-    "Image toolbar creates an independent workflow editor using the currently selected source image without duplicating that image.",
+    "Initialization fusion picker creates a main image with a fusion workflow.",
+    "Image toolbar creates or reopens one fusion workflow on the selected image without duplicating it.",
     "Reference entry opens an action menu: Add reference opens a multi-select AssetPicker with remaining capacity; Choose from canvas starts direct image selection with Confirm/Cancel and Escape. Both routes share a 4-reference limit and deduplicate existing URLs. Add/remove is undoable; cancelling keeps references unchanged.",
     "Prompt is capped at 2000 characters; supports clear, expanded editing and local saved prompts.",
     "Default settings are Auto and 2K. Additional ratio/resolution menu choices are demo implementation choices; the supplied frame only specifies the defaults.",
     "Workflow uses an independent world-space position. Drag the header or non-interactive node surface to move it; input fields and buttons keep their normal behavior. Image and workflow can be selected and moved independently; Shift and marquee can select both. Both participate in minimap and view fitting.",
     "Delete/undo restores the source image with its workflow configuration.",
-    "Fusion demo generation requires a main image and nonempty prompt, appends its matching fixed result at width 360 and original ratio, and links to the editor. No AI request, charge or task. Mask editing remains unconnected; cost 999 is a visual placeholder.",
+    "Generation and mask editing use the existing no-backend message; cost 999 is the design placeholder.",
     "Select either connected endpoint to show a brand-colored animated dashed connection. Deselect both to show an idle solid gray connection. Path endpoints update during either drag. Continuous dash travel uses 800ms linear cycles, while selection color transitions use 200ms ease-out. Reduced motion disables dash travel.",
-    "Node moves are undoable; deleting only the workflow keeps the source image. Arrangement follows actual connection depth; see canvas-layout-and-fit.md.",
+    "Node moves are undoable; deleting only the workflow keeps the source image. Arrange canvas explicitly lays out image/workflow pairs again.",
     "SettingSelect uses a viewport-anchored native top-layer popover, outside the transformed canvas. Dedicated styles prevent generic popover and Ghost overrides. Menu width is 228px, padding 8px, option height 32px, gap 8px; flips above when needed. Outside click clears focus; Escape restores trigger focus; keyboard arrows select options. Portal events do not start node dragging."
   ],
   "verification": [
@@ -87,7 +87,7 @@
     "source": "User spacing revision 2026-09-15",
     "imageToEditorGap": 80,
     "groupGap": 120,
-    "arrangedAlignment": "Connection-depth columns; same-source editors share a column; parent vertically centered on downstream bounds.",
+    "arrangedAlignment": "top",
     "contract": "canvas-layout-and-fit.md"
   },
   "generateButton": {
@@ -112,6 +112,5 @@
     "menu": "Shared DropdownMenuContent styling, native top-layer popover with viewport anchoring",
     "thumbnails": "Four equal square columns with 8px gaps; each tile and the add entry use aspect-ratio 1. At the 280px node width each tile is 57.5px square. The row reserves 64px to preserve node geometry.",
     "selection": "Canvas image positions and normal selection are preserved; pending reference selection is committed only on Confirm."
-  },
-  "verificationScope": "Existing verification entries are historical. Current initialization/demo changes are documented, not newly browser-tested."
+  }
 }
