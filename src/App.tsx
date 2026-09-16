@@ -247,13 +247,22 @@ export default function App() {
     const element = canvas.current;
     if (!element) return;
     const wheel = (event: WheelEvent) => {
-      if (event.target instanceof Element && event.target.closest('[data-overlay]')) return;
+      const zooming = event.ctrlKey || event.metaKey || event.altKey;
+      if (event.target instanceof Element) {
+        const target = event.target;
+        // Canvas items are part of the navigable canvas, even when their controls
+        // are marked as overlays. Only real popups and scrollable fields opt out.
+        if (target.closest('dialog, [popover]')) return;
+        if (target.closest('[data-overlay]') && !target.closest('[data-image], .fusion-node')) return;
+        const field = target.closest('textarea');
+        if (!zooming && field && field.scrollHeight > field.clientHeight) return;
+      }
       event.preventDefault(); const rect = element.getBoundingClientRect();
-      setView(v => event.ctrlKey || event.metaKey || event.altKey
+      setView(v => zooming
         ? zoomAt(v, Math.exp(-event.deltaY * 0.005), event.clientX - rect.left, event.clientY - rect.top)
         : { ...v, x: v.x - event.deltaX, y: v.y - event.deltaY });
     };
-    element.addEventListener('wheel', wheel, { passive: false }); return () => element.removeEventListener('wheel', wheel);
+    element.addEventListener('wheel', wheel, { passive: false, capture: true }); return () => element.removeEventListener('wheel', wheel, true);
   }, []);
 
   function beginPointer(event: ReactPointerEvent, id?: string, fusion = false) {

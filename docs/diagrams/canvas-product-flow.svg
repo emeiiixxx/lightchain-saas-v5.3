@@ -1,67 +1,114 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1100" viewBox="0 0 1000 1100">
-<rect x="0" y="0" width="1000" height="1100" fill="#FFFFFF"/>
-<text x="40" y="42" font-family="Noto Sans SC, sans-serif" font-size="26" font-weight="600" fill="#19344B" text-anchor="start">SaaS v5.3 · 画布浏览与整理</text>
-<ellipse cx="500" cy="100" rx="150" ry="27" fill="#EAF7F5" stroke="#238A85" stroke-width="1.6"/>
-<text x="500" y="107" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">进入已有内容的画布</text>
-<polyline points="500,127 500,160" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="500,160 495,151 505,151" fill="#7D91A1"/>
-<polygon points="500,160.0 660.0,216 500,272.0 340.0,216" fill="#FFF8E9" stroke="#BD924B" stroke-width="1.6"/>
-<text x="500" y="210" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">当前视窗内</text>
-<text x="500" y="236" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">是否有节点？</text>
-<polyline points="660,216 732,216" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="732,216 723,211 723,221" fill="#7D91A1"/>
-<text x="696" y="197" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="middle">无</text>
-<rect x="732" y="174" width="240" height="84" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
-<text x="852.0" y="209.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">点击「回到节点」</text>
-<text x="852.0" y="237.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">按全部边界适应视窗</text>
-<polyline points="852,258 852,304 500,304" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polyline points="500,272 500,338" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="500,338 495,329 505,329" fill="#7D91A1"/>
-<text x="468" y="300" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="end">有</text>
-<text x="45" y="194" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">部分可见也视为「有」。</text>
-<text x="45" y="222" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">空画布不显示</text>
-<text x="45" y="250" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">「回到节点」。</text>
-<ellipse cx="500" cy="365" rx="116" ry="27" fill="#EAF7F5" stroke="#367DC4" stroke-width="1.6"/>
-<text x="500" y="372" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">按需选择操作</text>
-<polyline points="384,365 270,365 270,416" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="270,416 265,407 275,407" fill="#7D91A1"/>
-<polyline points="616,365 740,365 740,416" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="740,416 735,407 745,407" fill="#7D91A1"/>
-<text x="270" y="399" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="600" fill="#367DC4" text-anchor="middle">定位浏览</text>
-<text x="740" y="399" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="600" fill="#238A85" text-anchor="middle">整理画布</text>
-<rect x="80" y="416" width="380" height="104" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
-<text x="270.0" y="447.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">小地图定位 / 拖动可视框</text>
-<text x="270.0" y="475.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">选择倍率（含 3%、5%）</text>
-<text x="270.0" y="503.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">滚轮缩放 / 平移画布</text>
-<rect x="560" y="416" width="360" height="64" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
-<text x="740.0" y="455.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">整理全部图片与编辑节点</text>
-<polyline points="740,480 740,524" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="740,524 735,515 745,515" fill="#238A85"/>
-<rect x="560" y="524" width="360" height="76" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
-<text x="740.0" y="555.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">按来源分组排版</text>
-<text x="740.0" y="583.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">组内顶部对齐、分组换行</text>
-<polyline points="740,600 740,644" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="740,644 735,635 745,635" fill="#238A85"/>
-<rect x="560" y="644" width="360" height="64" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
-<text x="740.0" y="683.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">适应屏幕（3%～100%）</text>
-<text x="80" y="575" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">导航与缩放只改变视图，</text>
-<text x="80" y="603" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">不会改变节点坐标。</text>
-<text x="80" y="655" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">视窗若再次移出全部节点，</text>
-<text x="80" y="683" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">仍可通过「回到节点」找回。</text>
-<text x="560" y="746" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#5C7080" text-anchor="start">整理会改变坐标，支持撤销恢复位置。</text>
-<polyline points="270,520 270,540 40,540 40,778 500,778" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polyline points="740,708 740,778 500,778" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polyline points="500,778 500,812" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="500,812 495,803 505,803" fill="#7D91A1"/>
-<rect x="320" y="812" width="360" height="64" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
-<text x="500.0" y="851.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">选择图片或编辑节点</text>
-<polyline points="500,876 500,910" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="500,910 495,901 505,901" fill="#7D91A1"/>
-<rect x="320" y="910" width="360" height="64" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
-<text x="500.0" y="935.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">显示选中框</text>
-<text x="500.0" y="963.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">关联连线切换为流动蚂蚁线</text>
-<polyline points="500,974 500,1018" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
-<polygon points="500,1018 495,1009 505,1009" fill="#7D91A1"/>
-<ellipse cx="500" cy="1045" rx="100" ry="27" fill="#EAF7F5" stroke="#238A85" stroke-width="1.6"/>
-<text x="500" y="1052" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">继续编辑</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1730" viewBox="0 0 1480 1730">
+<rect x="0" y="0" width="1480" height="1730" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.6"/>
+<text x="48" y="52" font-family="Noto Sans SC, sans-serif" font-size="30" font-weight="600" fill="#19344B" text-anchor="start">SaaS v5.3 · 画布浏览与整理</text>
+<ellipse cx="740" cy="118" rx="165" ry="28" fill="#EAF7F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="740" y="125" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">进入已有内容的画布</text>
+<polyline points="740,146 740,186" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="740,186 735,177 745,177" fill="#7D91A1"/>
+<polygon points="740,186 910,244 740,302 570,244" fill="#FFF8E9" stroke="#BD924B" stroke-width="1.6"/>
+<text x="740" y="237" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">当前视窗内</text>
+<text x="740" y="267" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">是否有节点？</text>
+<text x="280" y="226" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#5C7080" text-anchor="middle">部分可见也视为「有」</text>
+<text x="280" y="258" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#5C7080" text-anchor="middle">空画布不显示「回到节点」</text>
+<polyline points="910,244 1020,244" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="1020,244 1011,239 1011,249" fill="#7D91A1"/>
+<text x="965" y="227" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#5C7080" text-anchor="middle">无</text>
+<rect x="1020" y="196" width="370" height="96" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="1205.0" y="236.0" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">点击「回到节点」</text>
+<text x="1205.0" y="266.0" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">按全部节点边界适应视窗</text>
+<polyline points="1205,292 1205,328 740,328" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="740,302 740,360" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="740,360 735,351 745,351" fill="#7D91A1"/>
+<text x="707" y="333" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#5C7080" text-anchor="end">有</text>
+<ellipse cx="740" cy="388" rx="128" ry="28" fill="#EAF7F5" stroke="#367DC4" stroke-width="1.6"/>
+<text x="740" y="395" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">按需选择操作</text>
+<polyline points="612,388 250,388 250,456" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="250,456 245,447 255,447" fill="#7D91A1"/>
+<polyline points="868,388 970,388 970,456" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="970,456 965,447 975,447" fill="#7D91A1"/>
+<text x="250" y="439" font-family="Noto Sans SC, sans-serif" font-size="23" font-weight="600" fill="#367DC4" text-anchor="middle">定位浏览</text>
+<text x="970" y="439" font-family="Noto Sans SC, sans-serif" font-size="23" font-weight="600" fill="#238A85" text-anchor="middle">整理画布</text>
+<rect x="60" y="456" width="380" height="136" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="250.0" y="501.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">小地图定位 / 拖动可视框</text>
+<text x="250.0" y="531.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">选择倍率（含 3%、5%）</text>
+<text x="250.0" y="561.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">滚轮缩放 / 平移 / 适应屏幕</text>
+<text x="80" y="653" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#5C7080" text-anchor="start">浏览只改变视图，不改变节点坐标。</text>
+<text x="80" y="705" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#5C7080" text-anchor="start">视窗再次移出全部节点时，</text>
+<text x="80" y="737" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#5C7080" text-anchor="start">可再次通过「回到节点」找回。</text>
+<text x="80" y="831" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="600" fill="#367DC4" text-anchor="start">窗口尺寸变化</text>
+<text x="80" y="866" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#5C7080" text-anchor="start">保持中心内容与倍率，不自动重排。</text>
+<rect x="530" y="456" width="880" height="100" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="970.0" y="498.0" font-family="Noto Sans SC, sans-serif" font-size="22" font-weight="400" fill="#19344B" text-anchor="middle">纳入全部图片与编辑节点</text>
+<text x="970.0" y="528.0" font-family="Noto Sans SC, sans-serif" font-size="22" font-weight="400" fill="#19344B" text-anchor="middle">包括视窗外内容、未选中内容及空编辑节点</text>
+<polyline points="970,556 970,600" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="970,600 965,591 975,591" fill="#238A85"/>
+<rect x="530" y="600" width="880" height="470" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="970" y="638" font-family="Noto Sans SC, sans-serif" font-size="24" font-weight="600" fill="#238A85" text-anchor="middle">按真实连接逐层整理</text>
+<text x="970" y="671" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">图片与编辑器独立排版；同源编辑器上下同列，下游步骤逐层向右</text>
+<polyline points="678,841 706,841 706,751 738,751" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="738,751 729,746 729,756" fill="#238A85"/>
+<polyline points="858,751 904,751" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="904,751 895,746 895,756" fill="#238A85"/>
+<polyline points="678,841 706,841 706,841 738,841" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="738,841 729,836 729,846" fill="#238A85"/>
+<polyline points="858,841 904,841" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="904,841 895,836 895,846" fill="#238A85"/>
+<polyline points="678,841 706,841 706,931 738,931" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="738,931 729,926 729,936" fill="#238A85"/>
+<polyline points="858,931 904,931" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="904,931 895,926 895,936" fill="#238A85"/>
+<polyline points="1016,841 1054,841" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="1054,841 1045,836 1045,846" fill="#238A85"/>
+<polyline points="1178,841 1214,841" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="1214,841 1205,836 1205,846" fill="#238A85"/>
+<polyline points="1326,841 1372,841" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="1372,841 1363,836 1363,846" fill="#238A85"/>
+<rect x="568" y="813" width="110" height="56" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="623.0" y="848.0" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">主图</text>
+<rect x="738" y="723" width="120" height="56" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="798.0" y="758.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">编辑器 A</text>
+<rect x="904" y="723" width="112" height="56" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="960.0" y="758.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">结果 A</text>
+<rect x="738" y="813" width="120" height="56" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="798.0" y="848.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">编辑器 B</text>
+<rect x="904" y="813" width="112" height="56" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="960.0" y="848.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">结果 B</text>
+<rect x="738" y="903" width="120" height="56" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="798.0" y="938.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">编辑器 C</text>
+<rect x="904" y="903" width="112" height="56" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="960.0" y="938.0" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#19344B" text-anchor="middle">结果 C</text>
+<rect x="1054" y="813" width="124" height="56" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="1116.0" y="848.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">后续编辑器</text>
+<rect x="1214" y="813" width="112" height="56" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="1270.0" y="848.0" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="400" fill="#19344B" text-anchor="middle">后续结果</text>
+<text x="798" y="708" font-family="Noto Sans SC, sans-serif" font-size="18" font-weight="600" fill="#238A85" text-anchor="middle">同一列</text>
+<text x="1360" y="806" font-family="Noto Sans SC, sans-serif" font-size="16" font-weight="400" fill="#5C7080" text-anchor="middle">继续延伸</text>
+<text x="970" y="997" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">同层左对齐 · 列边界间距 80 · 子分支间距 120</text>
+<text x="970" y="1033" font-family="Noto Sans SC, sans-serif" font-size="20" font-weight="400" fill="#19344B" text-anchor="middle">父节点居中于整个后代区域；抠图结果只连直接来源图片</text>
+<polyline points="970,1070 970,1114" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="970,1114 965,1105 975,1105" fill="#238A85"/>
+<rect x="530" y="1114" width="880" height="92" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="970.0" y="1152.0" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">按当前视窗安排不同关联组的外部排列</text>
+<text x="970.0" y="1182.0" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">关联组在左、独立图片在右；组间 120、两区间距 240</text>
+<polyline points="970,1206 970,1250" fill="none" stroke="#238A85" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="970,1250 965,1241 975,1241" fill="#238A85"/>
+<rect x="530" y="1250" width="880" height="82" rx="14" fill="#EDF8F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="970.0" y="1298.0" font-family="Noto Sans SC, sans-serif" font-size="22" font-weight="400" fill="#19344B" text-anchor="middle">记录一次位置历史 → 自动适应屏幕（3%～100%）</text>
+<text x="970" y="1370" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#5C7080" text-anchor="middle">尺寸、配置、连接及选区不变；撤销恢复位置，不恢复旧镜头</text>
+<text x="970" y="1400" font-family="Noto Sans SC, sans-serif" font-size="19" font-weight="400" fill="#5C7080" text-anchor="middle">内容过大时最低保持 3%，可能仍超出视窗</text>
+<polyline points="250,592 250,612 32,612 32,1434 740,1434" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="970,1332 1450,1332 1450,1434 740,1434" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polyline points="740,1434 740,1464" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="740,1464 735,1455 745,1455" fill="#7D91A1"/>
+<rect x="470" y="1464" width="540" height="64" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="740.0" y="1503.0" font-family="Noto Sans SC, sans-serif" font-size="22" font-weight="400" fill="#19344B" text-anchor="middle">选择图片或编辑节点</text>
+<polyline points="740,1528 740,1562" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="740,1562 735,1553 745,1553" fill="#7D91A1"/>
+<rect x="470" y="1562" width="540" height="78" rx="14" fill="#F0F6FD" stroke="#367DC4" stroke-width="1.6"/>
+<text x="740.0" y="1593.0" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">显示选中框</text>
+<text x="740.0" y="1623.0" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">对应连线切换为流动蚂蚁线</text>
+<polyline points="740,1640 740,1671" fill="none" stroke="#7D91A1" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="740,1671 735,1662 745,1662" fill="#7D91A1"/>
+<ellipse cx="740" cy="1699" rx="115" ry="28" fill="#EAF7F5" stroke="#238A85" stroke-width="1.6"/>
+<text x="740" y="1706" font-family="Noto Sans SC, sans-serif" font-size="21" font-weight="400" fill="#19344B" text-anchor="middle">继续编辑</text>
 </svg>
