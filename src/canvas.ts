@@ -74,7 +74,7 @@ export function arrangeImages(items: CanvasImage[], startX = 0, viewport = { wid
     vertices.get(parent)!.children.push(child); parents.set(child, parent);
   };
   for (const item of items) {
-    if (!item.nodeOnly) connect(item.generatedByEditorId ? `${item.generatedByEditorId}:fusion` : item.sourceImageId, item.id);
+    if (!item.nodeOnly) connect(item.sourceImageId ?? (item.generatedByEditorId ? `${item.generatedByEditorId}:fusion` : undefined), item.id);
     if (item.fusion) connect(item.editorSourceId ?? (!item.nodeOnly ? item.id : undefined), `${item.id}:fusion`);
   }
   const moved = (block: Block, x: number, y: number) => block.nodes.map(node => ({...node, x:node.x+x, y:node.y+y}));
@@ -193,8 +193,10 @@ export function relatedCanvasIds(items: CanvasImage[], selected: string[]): Set<
   while (changed) {
     changed = false;
     for (const n of items) {
-      const sourceId = n.generatedByEditorId ?? n.editorSourceId ?? (visible.has(n.id) ? n.sourceImageId : undefined);
-      if (!sourceId || (n.generatedByEditorId ? !items.some(item => item.id === sourceId && item.fusion) : !visible.has(sourceId))) continue;
+      // A cutout's direct image source takes precedence over legacy inherited metadata.
+      const cutoutSourceId = visible.has(n.id) ? n.sourceImageId : undefined;
+      const sourceId = cutoutSourceId ?? n.generatedByEditorId ?? n.editorSourceId;
+      if (!sourceId || (!cutoutSourceId && n.generatedByEditorId ? !items.some(item => item.id === sourceId && item.fusion) : !visible.has(sourceId))) continue;
       if (ids.has(n.id) === ids.has(sourceId)) continue;
       ids.add(n.id); ids.add(sourceId); changed = true;
     }

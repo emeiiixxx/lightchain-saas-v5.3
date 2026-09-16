@@ -61,6 +61,20 @@ export default function App() {
   const [uploads, setUploads] = useState<LibraryImage[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const raisedIds = useMemo(() => relatedCanvasIds(images, canvasReference ? canvasReference.ids : selectedIds), [images, selectedIds, canvasReference]);
+  const foregroundIds = useMemo(() => {
+    const ids = new Set(canvasReference ? canvasReference.ids : selectedIds);
+    if (canvasReference) return ids;
+    const editors = images.filter(item => item.fusion && selectedIds.includes(`${item.id}:fusion`));
+    const editorIds = new Set(editors.map(item => item.id));
+    for (const editor of editors) {
+      const sourceId = editor.editorSourceId ?? (!editor.nodeOnly ? editor.id : undefined);
+      if (sourceId) ids.add(sourceId);
+    }
+    for (const image of images) {
+      if (!image.nodeOnly && !image.sourceImageId && image.generatedByEditorId && editorIds.has(image.generatedByEditorId)) ids.add(image.id);
+    }
+    return ids;
+  }, [images, selectedIds, canvasReference]);
   const [snapToGrid, setSnapToGrid] = useState(() => localStorage.getItem('lc-flow-grid-snap') !== 'off');
   const [canvasMode, setCanvasMode] = useState<'select' | 'hand'>('select');
   const [snapGuide, setSnapGuide] = useState<{ x: number; y: number } | null>(null);
@@ -491,17 +505,17 @@ export default function App() {
       </section>}
 
       <div className="canvas-world" style={{ transform: canvasTransform, '--canvas-inverse-scale': 1 / view.zoom } as React.CSSProperties}>
-        {images.filter(result => !result.nodeOnly && result.generatedByEditorId).map(result => {
+        {images.filter(result => !result.nodeOnly && !result.sourceImageId && result.generatedByEditorId).map(result => {
           const editor = images.find(item => item.id === result.generatedByEditorId && item.fusion);
           if (!editor) return null;
           const sourceId = editor.editorSourceId ?? (!editor.nodeOnly ? editor.id : undefined);
-          return <ImageConnection key={`generation:${result.id}`} image={{...editor, ...fusionPosition(editor), id:`${editor.id}:fusion`, width:280, height:579}} target={result} active={selectedIds.includes(result.id) || selectedIds.includes(`${editor.id}:fusion`) || (!!sourceId && selectedIds.includes(sourceId))} />;
+          return <ImageConnection zoom={view.zoom} key={`generation:${result.id}`} image={{...editor, ...fusionPosition(editor), id:`${editor.id}:fusion`, width:280, height:579}} target={result} active={selectedIds.includes(result.id) || selectedIds.includes(`${editor.id}:fusion`) || (!!sourceId && selectedIds.includes(sourceId))} />;
         })}
         {images.filter(result => !result.nodeOnly && result.sourceImageId).map(result => {
           const source = images.find(item => !item.nodeOnly && item.id === result.sourceImageId);
-          return source ? <ImageConnection key={`cutout:${result.id}`} image={source} target={result} active={selectedIds.includes(source.id) || selectedIds.includes(result.id)} /> : null;
+          return source ? <ImageConnection zoom={view.zoom} key={`cutout:${result.id}`} image={source} target={result} active={selectedIds.includes(source.id) || selectedIds.includes(result.id)} /> : null;
         })}
-        {images.filter(n => !n.nodeOnly).map(n => <div key={n.id} data-image className={`canvas-image ${(canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)) ? 'selected' : ''}`} style={{ left: n.x, top: n.y, width: n.width, height: n.height, zIndex: raisedIds.has(n.id) ? (selectedIds.includes(n.id) ? 3 : 2) : undefined } as React.CSSProperties}
+        {images.filter(n => !n.nodeOnly).map(n => <div key={n.id} data-image className={`canvas-image ${(canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)) ? 'selected' : ''}`} style={{ left: n.x, top: n.y, width: n.width, height: n.height, zIndex: foregroundIds.has(n.id) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
           tabIndex={0} role="button" aria-label={`${t.image}: ${n.name}`} aria-pressed={canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)}
           onFocus={e => { if (!canvasReference && e.target === e.currentTarget && !selectedRef.current.includes(n.id)) setSelectedIds([n.id]); }} onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || (e.key === ' ' && document.documentElement.dataset.focusNavigation === 'keyboard'))) { e.preventDefault(); if (canvasReference) { toggleCanvasReference(n.id); return; } setSelectedIds(e.shiftKey ? selectedIds.includes(n.id) ? selectedIds.filter(id => id !== n.id) : [...selectedIds, n.id] : [n.id]); } }}
           onPointerDown={e => beginPointer(e, n.id)}>
@@ -512,9 +526,9 @@ export default function App() {
           const source = n.editorSourceId ? images.find(item => item.id === n.editorSourceId && !item.nodeOnly) : !n.nodeOnly ? n : undefined;
           const editorImage = source ? {...source, id: n.id, fusion: n.fusion, nodeOnly: false} : n;
           return <div key={`${n.id}:fusion`}>
-          {source && <ImageConnection image={source} target={{...fusionPosition(n),id:`${n.id}:fusion`,width:280,height:579}} active={selectedIds.includes(source.id) || selectedIds.includes(`${n.id}:fusion`)} />}
+          {source && <ImageConnection zoom={view.zoom} image={source} target={{...fusionPosition(n),id:`${n.id}:fusion`,width:280,height:579}} active={selectedIds.includes(source.id) || selectedIds.includes(`${n.id}:fusion`)} />}
           <div className="fusion-position" data-fusion-id={n.id} data-selected={selectedIds.includes(`${n.id}:fusion`)} tabIndex={0} role="group" aria-label={`${t.fusion} · ${n.name}`}
-            style={{ left: fusionPosition(n).x, top: fusionPosition(n).y, zIndex: raisedIds.has(n.id) ? (selectedIds.includes(`${n.id}:fusion`) ? 3 : 2) : undefined } as React.CSSProperties}
+            style={{ left: fusionPosition(n).x, top: fusionPosition(n).y, zIndex: foregroundIds.has(`${n.id}:fusion`) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
             onFocus={() => { if (!canvasReference && !selectedRef.current.includes(`${n.id}:fusion`)) setSelectedIds([`${n.id}:fusion`]); }}
             onPointerDownCapture={e => {
               if (canvasReference) { e.preventDefault(); e.stopPropagation(); return; }
@@ -569,7 +583,7 @@ export default function App() {
     {shownCutout.value && <CutoutEditor key={shownCutout.value.id} image={shownCutout.value} phase={shownCutout.phase} onClose={() => setCutoutImage(null)} onApply={url => {
       const source = shownCutout.value!;
       ownedUrls.current.add(url);
-      const result: CanvasImage = {...source, id: crypto.randomUUID(), name: `${source.name}-cutout.png`, sourceImageId: source.id, url, x: source.x + source.width + 80, role: undefined, fusion: undefined, operation: undefined};
+      const result: CanvasImage = {...source, id: crypto.randomUUID(), name: `${source.name}-cutout.png`, sourceImageId: source.id, generatedByEditorId: undefined, editorSourceId: undefined, url, x: source.x + source.width + 80, role: undefined, fusion: undefined, operation: undefined};
       remember(imageRef.current); setImages(previous => [...previous, result]); setSelectedIds([result.id]); setCutoutImage(null);
     }} />}
     {shownPreview.value && <FullImageViewer key={shownPreview.value.id} image={shownPreview.value} locale={locale} phase={shownPreview.phase} onClose={() => setPreviewImage(null)} />}

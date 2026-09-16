@@ -14,7 +14,7 @@
 
 ## 2. 关联分组与间距
 
-按现存 `sourceImageId`（抠图来源）、`editorSourceId`（编辑节点主图）、`generatedByEditorId`（演示结果所属编辑节点）建立关系。图片和编辑器分别作为可见节点；同一图片自带的旧版编辑器也单独参与排版。不存在的来源不补建虚拟关系。
+按现存 `sourceImageId`（抠图来源）、`editorSourceId`（编辑节点主图）、`generatedByEditorId`（演示结果所属编辑节点）建立关系。图片和编辑器分别作为可见节点；同一图片自带的旧版编辑器也单独参与排版。不存在的来源不补建虚拟关系。抠图结果以 sourceImageId 为唯一直接来源，即使旧记录残留 generatedByEditorId，也不连接生成编辑器。连线高亮与临时置顶详见 [蚂蚁线与图层展示规则](canvas-connections-and-layers.md)。
 
 关联组放左侧，独立图片集中放右侧，两区间距 240。只有一个区时不预留空区。编辑器尺寸 280×579，图片尺寸与比例不变。
 
