@@ -1,0 +1,58 @@
+{
+  "fileKey": "lDDzsXpslev95eZ1ZpAHVt",
+  "pageNode": "136:12198",
+  "modeNodes": { "regular": "136:16116", "lingerie": "136:16144" },
+  "library": "Lightchain SaaS v5.1 libraries Beta",
+  "route": "#/ai-try-on",
+  "returnRoute": "#/canvas",
+  "layout": {
+    "referenceViewport": [1920, 1080],
+    "sharedHeaderHeight": 48,
+    "sidebarWidth": 432,
+    "sidebarHeaderHeight": 48,
+    "contentPadding": 16,
+    "garmentPreviewHeight": 144,
+    "garmentUploadHeight": 184,
+    "generationControlsHeight": 40,
+    "emptyArtworkSize": 128
+  },
+  "modeSwitch": {
+    "width": 104,
+    "height": 32,
+    "padding": 4,
+    "gap": 4,
+    "selectedWidth": 60,
+    "unselectedWidth": 32,
+    "itemHeight": 24,
+    "indicatorRadius": 6,
+    "trackRadius": 8,
+    "trackFill": "Surface/secondary",
+    "indicatorFill": "State/selected-tab-sliding",
+    "indicatorDark": "rgba(255,255,255,0.15)",
+    "indicatorLight": "#ffffff",
+    "behavior": "Only the selected item shows its label. Indicator, item width and label animate together using shared 200ms ease-out; reduced motion disables transitions. Arrow keys and Home/End select and focus a tab."
+  },
+  "assets": {
+    "garment-example.png": "Original imgAsset fill from page 136:12198, retained unmodified",
+    "empty-model.png": "Original EmptyIcon master 8:597 exported from Figma",
+    "ai-try-on.svg": "Original ai-try-on icon from 136:16116",
+    "lingerie-try-on.svg": "Existing original Beta lingerie icon",
+    "image-to-prompt.svg": "Original icon from 136:12277",
+    "copy-prompt.svg": "Original icon from 136:12278",
+    "lightning.svg": "Original icon from 136:12293",
+    "info.svg": "Original icon from 136:12302"
+  },
+  "interaction": [
+    "Hash navigation works locally and on GitHub Pages, including direct opening and browser back/forward.",
+    "The canvas remains mounted; page navigation preserves images, workflows, viewport and undo history. Hidden canvas shortcuts and clipboard interception are suspended.",
+    "Regular and lingerie modes have independent in-memory drafts, preserved when returning to the canvas.",
+    "The regular mode starts with the original Figma garment example. Lingerie starts empty.",
+    "Garments support choosing assets, local batch upload through AssetPicker and direct file drop, at most four images. File types and 20MB limit use the existing readImage validation.",
+    "Clothing category, automatic flat-lay switch, single/multiple task choice, description/reference/model-set tabs, aspect ratio and generation speed retain local selections.",
+    "Descriptions support up to 2000 characters, expanded editing, clear and clipboard copy. Reference mode accepts one model image; model-set mode accepts four.",
+    "Generate validates clothing, categories and the active model input, then explains that the AI service is not connected. No artificial history, generated image, charge or live task is created.",
+    "The design's internal annotation in the description field is replaced with a product-facing input placeholder.",
+    "At narrow widths the form and history stack vertically; short desktop windows scroll the form while keeping generation controls accessible."
+  ],
+  "validation": "Read live Figma design context and shared source components. Per user instruction, no browser, test, build or visual verification was run."
+}

@@ -30,6 +30,9 @@
 /* Reveal only a complete decoded image; placeholders leave after the fade. */
 .progressive-image > .progressive-image-full { transition: opacity var(--motion-duration) var(--motion-easing); }
 .progressive-image > :is(.progressive-image-preview, .progressive-image-placeholder) { transition: opacity var(--motion-duration) var(--motion-easing), visibility 0s linear var(--motion-duration); }
+/* Figma Sliding tabs: the track owns the indicator; labels collapse with it. */
+.tryon-mode-switch button { transition-property: width, gap, color, background-color; }
+.tryon-mode-label { transition-property: max-width, opacity; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

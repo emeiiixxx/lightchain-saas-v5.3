@@ -1,3 +1,4 @@
+import { AiTryOnPage } from './components/AiTryOnPage';
 import { ProgressiveImage } from './components/ProgressiveImage';
 import { notify, ToastHost } from './components/Toast';
 import { CutoutEditor } from './components/CutoutEditor';
@@ -34,6 +35,7 @@ function save(key: string, value: string) { try { localStorage.setItem(key, valu
 const isField = (target: EventTarget | null) => target instanceof HTMLElement && !!target.closest('input, textarea, select, [contenteditable="true"]');
 
 export default function App() {
+  const [page, setPage] = useState<'canvas' | 'tryon'>(() => window.location.hash === '#/ai-try-on' ? 'tryon' : 'canvas');
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.focusNavigation = 'pointer';
@@ -173,6 +175,17 @@ export default function App() {
   const activeTool = tools.find(tool => tool.id === shownModal.value);
 
   useEffect(() => {
+    const route = () => {
+      setPage(window.location.hash === '#/ai-try-on' ? 'tryon' : 'canvas');
+      setMenu(null); setCanvasMenu(null); setSpaceDown(false); setDragging(false); setMarquee(null); setSnapGuide(null); setCanvasReference(null);
+      gesture.current = null;
+      document.dispatchEvent(new CustomEvent('lc-select-open', { detail: 'page-navigation' }));
+    };
+    window.addEventListener('hashchange', route);
+    return () => window.removeEventListener('hashchange', route);
+  }, []);
+
+  useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const listener = () => setSystemDark(media.matches);
     media.addEventListener('change', listener); return () => media.removeEventListener('change', listener);
@@ -184,6 +197,7 @@ export default function App() {
     if (!element) return;
     const update = () => {
       const next = { width: element.clientWidth, height: element.clientHeight };
+      if (!next.width || !next.height) return;
       const previous = measuredCanvasSize.current;
       measuredCanvasSize.current = next;
       if (next.width === previous.width && next.height === previous.height) return;
@@ -252,7 +266,7 @@ export default function App() {
 
   useEffect(() => {
     const mime = 'application/x-lightchain-canvas';
-    const blocked = (event: ClipboardEvent) => isField(event.target) || isField(document.activeElement)
+    const blocked = (event: ClipboardEvent) => page !== 'canvas' || isField(event.target) || isField(document.activeElement)
       || !!(modal || referenceTarget || mainTarget || canvasReference || menu || previewImage || cutoutImage)
       || !!document.querySelector('dialog[open], [popover]:popover-open:not([data-canvas-context-menu])');
     const copy = (event: ClipboardEvent) => {
@@ -275,10 +289,11 @@ export default function App() {
     window.addEventListener('copy', copy);
     window.addEventListener('paste', paste);
     return () => { window.removeEventListener('copy', copy); window.removeEventListener('paste', paste); };
-  }, [modal, referenceTarget, mainTarget, canvasReference, menu, previewImage, cutoutImage, canvasMenu, closeCanvasMenu, pasteCopiedItems]);
+  }, [page, modal, referenceTarget, mainTarget, canvasReference, menu, previewImage, cutoutImage, canvasMenu, closeCanvasMenu, pasteCopiedItems]);
 
   useEffect(() => {
     const down = (event: KeyboardEvent) => {
+      if (page !== 'canvas') return;
       // Preserve typing and keyboard activation; mouse-focused controls still allow canvas shortcuts.
       if (event.isComposing || isField(event.target)) return;
       if (canvasMenu) { if (event.key === 'Escape') { event.preventDefault(); closeCanvasMenu(); } return; }
@@ -298,7 +313,7 @@ export default function App() {
     const blur = () => { setSpaceDown(false); gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null); };
     window.addEventListener('keydown', down); window.addEventListener('keyup', up); window.addEventListener('blur', blur);
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); window.removeEventListener('blur', blur); };
-  }, [modal, referenceTarget, canvasReference, menu, previewImage, canvasMenu, closeCanvasMenu, fit, undo, redo, removeSelected]);
+  }, [page, modal, referenceTarget, canvasReference, menu, previewImage, canvasMenu, closeCanvasMenu, fit, undo, redo, removeSelected]);
 
   useEffect(() => {
     const element = canvas.current;
@@ -502,6 +517,7 @@ export default function App() {
           <img src={assets.imgContainerLightchainLogo01} alt="" width="24" height="24" />
           <Icon name="imgContainerLightchainLogo02" size={113} className="wordmark" />
         </div>
+        <a className="demo-page-link" href={page === 'canvas' ? '#/ai-try-on' : '#/canvas'}><Icon name={page === 'canvas' ? 'aiTryOn' : 'imgIcon1'} size={16} /><span>{page === 'canvas' ? (locale === 'en' ? 'AI try-on' : locale === 'ja' ? 'AI 試着' : 'AI 试衣') : (locale === 'en' ? 'Back to canvas' : locale === 'ja' ? 'キャンバスへ' : '返回画布')}</span></a>
         <div className="flex items-center gap-2">
         <div className="relative" data-menu>
           <button className="language-trigger flex items-center gap-2 h-8 px-2 rounded-lg" aria-label={t.language} aria-expanded={menu === 'language'} onClick={() => setMenu(menu === 'language' ? null : 'language')}>
@@ -531,7 +547,7 @@ export default function App() {
       </div>
     </header>
 
-    <main ref={canvas} className={`canvas ${spaceDown || canvasMode === 'hand' ? 'is-panning' : ''} ${dragging ? 'is-dragging' : ''}`} aria-label={t.canvas}
+    <main hidden={page !== 'canvas'} inert={page !== 'canvas'} ref={canvas} className={`canvas ${spaceDown || canvasMode === 'hand' ? 'is-panning' : ''} ${dragging ? 'is-dragging' : ''}`} aria-label={t.canvas}
       onPointerDown={e => beginPointer(e)} onPointerMove={movePointer} onPointerUp={endPointer} onPointerCancel={endPointer}
       onDoubleClick={e => {
         if (canvasReference || !(e.target instanceof Element) || e.target.closest('[data-overlay], [data-image], .fusion-position, .selection-overlay')) return;
@@ -662,6 +678,8 @@ export default function App() {
       {shownDrop.value && <div className="drop-overlay flex items-center justify-center pointer-events-none" data-phase={shownDrop.phase}><span>{t.drop}</span></div>}
       {reading && !modal && <div className="canvas-message" role="status">{t.reading}</div>}
     </main>
+
+    <AiTryOnPage active={page === 'tryon'} locale={locale} uploads={uploads} onUpload={rememberUpload} />
 
     <CanvasContextMenu point={canvasMenu} canPaste={!!canvasClipboard.current} locale={locale} onClose={closeCanvasMenu}
       onUpload={() => { closeCanvasMenu(); openUpload(); }}

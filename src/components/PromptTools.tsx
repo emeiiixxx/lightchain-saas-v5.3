@@ -2,14 +2,14 @@ import { ProgressiveImage } from './ProgressiveImage';
 import { notify } from './Toast';
 import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { createPortal } from 'react-dom';
-import { Button, Icon } from './ui';
+import { Button, Icon, type IconName } from './ui';
 import { usePresence } from '../usePresence';
 import './prompt-tools.css';
 import { associatedImages, demoPrompts, type PromptEntry as Entry } from '../prompt-associations';
 const KEY='lc-flow-fusion-prompts';
 function readSaved(): Entry[] {try {const raw=JSON.parse(localStorage.getItem(KEY)||'[]');const data: unknown=raw?.version===2?raw.entries:raw;return Array.isArray(data)?data.flatMap((v,i)=>typeof v==='string'?[{id:`legacy-${i}`,name:v.slice(0,50),content:v}]:v && typeof v.name==='string' && typeof v.content==='string'?[{id:v.id||`legacy-${i}`,name:v.name,content:v.content,pinned:v.pinned===true}]:[]):[];}catch{return [];}}
 function read(): Entry[] {const saved=readSaved();try{if(JSON.parse(localStorage.getItem(KEY)||'null')?.version===2)return saved;}catch{}return [...saved,...demoPrompts.filter(d=>!saved.some(e=>e.id===d.id))];}
-export function PromptTools({value,onChange,labels}:{value:string;onChange:(v:string)=>void;labels:{expand:string;save:string;library:string;prompt:string;clear:string;close:string}}){
+export function PromptTools({value,onChange,labels,expandIcon='fusionExpand',expandDisabled=false,hideInlineActions=false,iconSize=16}:{expandIcon?:IconName;expandDisabled?:boolean;hideInlineActions?:boolean;iconSize?:number;value:string;onChange:(v:string)=>void;labels:{expand:string;save:string;library:string;prompt:string;clear:string;close:string}}){
  const [editorOpen,setEditorOpen]=useState(false), editorShown=usePresence(editorOpen?true:null);
  const [libraryOpen,setLibraryOpen]=useState(false), libraryShown=usePresence(libraryOpen?true:null);
  const [anchor,setAnchor]=useState<HTMLElement|null>(null), saveShown=usePresence(anchor);
@@ -19,7 +19,7 @@ export function PromptTools({value,onChange,labels}:{value:string;onChange:(v:st
  const save=(el:HTMLElement)=>{if(!value.trim()){notify('请输入提示词后再保存');return;}setAnchor(el);};
  const openLibrary=()=>{setEntries(read());setLibraryOpen(true);};
  const actions=(large=false)=><><Button className={large?'':'fusion-xs-icon'} aria-label={labels.save} onClick={e=>save(e.currentTarget)}><Icon name="fusionSave" size={large?20:16}/></Button><Button className={large?'':'fusion-xs-icon'} aria-label={labels.library} onClick={openLibrary}><Icon name="fusionPrompts" size={large?20:16}/></Button></>;
- return <><Button className="fusion-xs-icon" aria-label={labels.expand} onClick={()=>setEditorOpen(true)}><Icon name="fusionExpand" size={16}/></Button>{actions()}
+ return <><Button className="fusion-xs-icon" aria-label={labels.expand} disabled={expandDisabled} onClick={()=>setEditorOpen(true)}><Icon name={expandIcon} size={iconSize}/></Button>{!hideInlineActions&&actions()}
  {editorShown.value&&createPortal(<ExpandedPrompt phase={editorShown.phase} title={labels.prompt} value={value} onChange={onChange} onClose={()=>setEditorOpen(false)} actions={actions(true)} clear={labels.clear}/>,document.body)}
  {libraryShown.value&&createPortal(<PromptLibrary phase={libraryShown.phase} entries={entries} onStore={store} onClose={()=>setLibraryOpen(false)} onApply={(text,mode)=>{const next=mode==='append'&&value.trim()?value+(value.endsWith('\n')?'':'\n')+text:text;if(next.length>2000){notify('合并后超过 2000 字，请先精简原文或选择覆盖');return;}onChange(next);setLibraryOpen(false);}}/>,document.body)}
  {saveShown.value&&createPortal(<SavePrompt anchor={saveShown.value} phase={saveShown.phase} onClose={()=>setAnchor(null)} onSave={name=>{if(store([{id:crypto.randomUUID(),name,content:value},...entries]))setAnchor(null);}}/>, saveShown.value.closest('dialog')??document.body)}

@@ -138,3 +138,7 @@
 /* Beta Status/warning, VariableID:31:4; prompt badge 107:5146. */
 [data-theme="dark"] { --status-warning: rgb(252, 167, 59); }
 [data-theme="light"] { --status-warning: rgb(250, 140, 22); }
+
+/* Beta State/selected-tab-sliding, live source 136:16116 / 136:16144. */
+[data-theme='dark'] { --state-selected-tab-sliding: rgba(255,255,255,.15); }
+[data-theme='light'] { --state-selected-tab-sliding: #fff; }
