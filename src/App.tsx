@@ -39,6 +39,12 @@ const tools: { id: Tool; icon: IconName; nodeId: string }[] = [
 function saved(key: string, fallback: string) { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } }
 function save(key: string, value: string) { try { localStorage.setItem(key, value); } catch { /* Storage can be unavailable in private browsing. */ } }
 const isField = (target: EventTarget | null) => target instanceof HTMLElement && !!target.closest('input, textarea, select, [contenteditable="true"]');
+// WebKit can retain a low-resolution composited node when its ancestor is
+// transform-scaled. Use layout zoom there; desktop Chromium keeps its existing
+// transform path. iOS browser wrappers also use WebKit and need this workaround.
+const useCanvasLayoutZoom = CSS.supports('zoom', '1')
+  && /AppleWebKit\//.test(navigator.userAgent)
+  && !/(?:Chrome|Chromium|Edg|OPR)\//.test(navigator.userAgent);
 
 export default function App() {
   const [page, setPage] = useState<'canvas' | 'tryon'>(() => window.location.hash === '#/ai-try-on' ? 'tryon' : 'canvas');
@@ -702,7 +708,13 @@ export default function App() {
         </button>
       </section>}
 
-      <div className="canvas-world" style={{ transform: canvasTransform, '--canvas-inverse-scale': 1 / view.zoom } as React.CSSProperties}>
+      <div className="canvas-world" data-renderer={useCanvasLayoutZoom ? 'layout-zoom' : 'transform'} style={{
+        // Pan stays in screen pixels outside the zoomed layout. All descendants
+        // keep world coordinates: screen = view offset + world position * zoom.
+        transform: useCanvasLayoutZoom ? `translate(${view.x}px, ${view.y}px)` : canvasTransform,
+        '--canvas-inverse-scale': 1 / view.zoom,
+      } as React.CSSProperties}>
+      <div className="canvas-world-content" style={{ zoom: useCanvasLayoutZoom ? view.zoom : undefined }}>
         {images.filter(result => !result.nodeOnly && !result.sourceImageId && result.generatedByEditorId).map(result => {
           const editor = images.find(item => item.id === result.generatedByEditorId && item.fusion);
           if (!editor) return null;
@@ -759,6 +771,7 @@ export default function App() {
               : <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => generateDemo(n.id)} onNotify={announce} />}
           </div>
         </div>;})}
+      </div>
       </div>
 
       {shownSelection.value && !marquee && !canvasReference && <div className="selection-overlay" data-phase={shownSelection.phase} aria-label={t.groupSelection} style={{
