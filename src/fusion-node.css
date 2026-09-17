@@ -1,5 +1,7 @@
 /* Figma 35:6234 / WorkflowNode 35:6422, 5.1 Beta primitives and slots. */
-.fusion-position { animation: ui-enter var(--motion-duration) var(--motion-easing) both; position: absolute; width: 280px; pointer-events: auto; transition-property: left, top, opacity; }
+/* Release the opacity animation after entry so zoom can rasterize node content
+   at the current scale. Keep node stacking independent of animation fill. */
+.fusion-position { animation: ui-enter var(--motion-duration) var(--motion-easing) backwards; isolation: isolate; position: absolute; width: 280px; pointer-events: auto; transition-property: left, top, opacity; }
 .fusion-node { width: 280px; padding: 12px; display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--border-weak); border-radius: 16px; background: var(--surface-default); box-shadow: 0 12px 28px -4px var(--overlay-weak); color: var(--text-primary); }
 .fusion-header { display: flex; flex-direction: column; gap: 4px; }
 .fusion-header h2 { font-size: 14px; font-weight: 500; line-height: 20px; margin: 0; }

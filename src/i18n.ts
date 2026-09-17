@@ -1,5 +1,6 @@
 export type Locale = 'zh-CN' | 'en' | 'ja';
 const zh = {
+  redoHint: '重做：恢复已撤销的操作',
   resultLikeThanks: '🎉感谢您的肯定，我们将持续给您带来更多惊喜', resultDislikeReasons: '请选择不满意的原因（可多选）', resultReasonBody: '身体畸形/错位/叠加', resultReasonGender: '性别不明确/错误', resultReasonProportions: '身体比例失调', resultReasonFace: '面部扭曲/不自然', resultReasonEdges: '边缘模糊/有涂抹感', resultReasonOther: '其他',
   resultFeedbackInput: '改进意见', resultFeedbackPlaceholder: '效果不满意？想要新功能？尽管提，我们做！', resultFeedbackSubmit: '提交', resultFeedbackSaved: '意见已保存（本地演示）', resultFeedbackFailed: '保存失败，请重试',
   resultFeedback: '结果图反馈', resultLike: '赞', resultDislike: '踩', resultImprove: '帮我改进', resultRegenerate: '重新生成', resultEditorUnavailable: '原生成节点或主图已删除，请先恢复后再生成', resultConfigRequired: '请先在原节点补全生成所需内容',
@@ -33,6 +34,7 @@ const zh = {
 };
 type Messages = { [K in keyof typeof zh]: string };
 const en: Messages = {
+  redoHint: 'Redo: restore an undone action',
   resultLikeThanks: '🎉Thank you for your support. More surprises are on the way!', resultDislikeReasons: 'Select issues (multiple allowed)', resultReasonBody: 'Deformed / misaligned / overlapping body', resultReasonGender: 'Unclear / incorrect gender', resultReasonProportions: 'Incorrect body proportions', resultReasonFace: 'Distorted / unnatural face', resultReasonEdges: 'Blurry / smudged edges', resultReasonOther: 'Other',
   resultFeedbackInput: 'Improvement feedback', resultFeedbackPlaceholder: 'Not satisfied? Need a new feature? Tell us!', resultFeedbackSubmit: 'Submit', resultFeedbackSaved: 'Feedback saved locally (demo)', resultFeedbackFailed: 'Could not save. Please try again.',
   resultFeedback: 'Result feedback', resultLike: 'Like', resultDislike: 'Dislike', resultImprove: 'Improve', resultRegenerate: 'Regenerate', resultEditorUnavailable: 'Restore the original editor and source image before regenerating', resultConfigRequired: 'Complete the required inputs in the original editor first',
@@ -66,6 +68,7 @@ const en: Messages = {
 };
 const ja: Messages = {
   ...en,
+  redoHint: 'やり直す：取り消した操作を復元',
   resultLikeThanks: '🎉ご評価ありがとうございます。これからも驚きをお届けします！', resultDislikeReasons: '不満の理由を選択（複数可）', resultReasonBody: '体の変形・ずれ・重なり', resultReasonGender: '性別が不明・不正確', resultReasonProportions: '体の比率が不自然', resultReasonFace: '顔の歪み・不自然さ', resultReasonEdges: '輪郭のぼやけ・にじみ', resultReasonOther: 'その他',
   resultFeedbackInput: '改善のご意見', resultFeedbackPlaceholder: '結果に不満ですか？新機能のご要望もお聞かせください！', resultFeedbackSubmit: '送信', resultFeedbackSaved: 'ご意見をローカルに保存しました（デモ）', resultFeedbackFailed: '保存できませんでした。もう一度お試しください。',
   resultFeedback: '生成結果への評価', resultLike: '高評価', resultDislike: '低評価', resultImprove: '改善する', resultRegenerate: '再生成', resultEditorUnavailable: '元の編集ノードと画像を復元してから再生成してください', resultConfigRequired: '元の編集ノードで必要な項目を入力してください',

@@ -49,7 +49,7 @@ export function CanvasChrome(p: Props) {
       {iconButton(t.handTool, 'hand', () => p.onMode('hand'), { 'aria-pressed': p.mode === 'hand' })}
       {iconButton(t.upload, 'canvasUpload', p.onUpload)}<Divider vertical />
       {iconButton(t.undo, 'undoIcon', p.onUndo, { disabled: !p.canUndo, title: `${t.undo} ${shortcutModifier}+Z`, 'aria-keyshortcuts': `${shortcutKey}+Z` })}
-      {iconButton(t.redo, 'redoIcon', p.onRedo, { disabled: !p.canRedo, title: `${t.redo} ${shortcutModifier}+Shift+Z`, 'aria-keyshortcuts': `${shortcutKey}+Shift+Z` })}
+      {iconButton(t.redo, 'redoIcon', p.onRedo, { disabled: !p.canRedo, title: `${t.redoHint} · ${shortcutModifier}+Shift+Z`, 'aria-keyshortcuts': `${shortcutKey}+Shift+Z` })}
     </div>
     <div className="canvas-side-toolbar" data-overlay role="toolbar" aria-label={t.assetSources}>
       {iconButton(t.platformAssets, 'platformIcon', p.onUpload)}
