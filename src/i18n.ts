@@ -65,10 +65,10 @@ const en: Messages = {
   ready: 'Assets added to canvas', back: 'Back to project', more: 'More tools', changeTool: 'Add assets',
 };
 const ja: Messages = {
+  ...en,
   resultLikeThanks: '🎉ご評価ありがとうございます。これからも驚きをお届けします！', resultDislikeReasons: '不満の理由を選択（複数可）', resultReasonBody: '体の変形・ずれ・重なり', resultReasonGender: '性別が不明・不正確', resultReasonProportions: '体の比率が不自然', resultReasonFace: '顔の歪み・不自然さ', resultReasonEdges: '輪郭のぼやけ・にじみ', resultReasonOther: 'その他',
   resultFeedbackInput: '改善のご意見', resultFeedbackPlaceholder: '結果に不満ですか？新機能のご要望もお聞かせください！', resultFeedbackSubmit: '送信', resultFeedbackSaved: 'ご意見をローカルに保存しました（デモ）', resultFeedbackFailed: '保存できませんでした。もう一度お試しください。',
   resultFeedback: '生成結果への評価', resultLike: '高評価', resultDislike: '低評価', resultImprove: '改善する', resultRegenerate: '再生成', resultEditorUnavailable: '元の編集ノードと画像を復元してから再生成してください', resultConfigRequired: '元の編集ノードで必要な項目を入力してください',
-  ...en,
   gridSnap: 'グリッド吸着', snapOn: 'オン', snapOff: 'オフ', snapBypass: 'ドラッグで一時解除',
   fullImageInstructions: '💡スクロールで拡大・縮小、ドラッグで移動。Escで閉じます。',
   noNodesInView: '表示範囲にノードがありません。コンテンツに戻れます。', returnToNodes: 'ノードに戻る',
