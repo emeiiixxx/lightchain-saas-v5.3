@@ -1,5 +1,8 @@
 export type Locale = 'zh-CN' | 'en' | 'ja';
 const zh = {
+  resultLikeThanks: '🎉感谢您的肯定，我们将持续给您带来更多惊喜', resultDislikeReasons: '请选择不满意的原因（可多选）', resultReasonBody: '身体畸形/错位/叠加', resultReasonGender: '性别不明确/错误', resultReasonProportions: '身体比例失调', resultReasonFace: '面部扭曲/不自然', resultReasonEdges: '边缘模糊/有涂抹感', resultReasonOther: '其他',
+  resultFeedbackInput: '改进意见', resultFeedbackPlaceholder: '效果不满意？想要新功能？尽管提，我们做！', resultFeedbackSubmit: '提交', resultFeedbackSaved: '意见已保存（本地演示）', resultFeedbackFailed: '保存失败，请重试',
+  resultFeedback: '结果图反馈', resultLike: '赞', resultDislike: '踩', resultImprove: '帮我改进', resultRegenerate: '重新生成', resultEditorUnavailable: '原生成节点或主图已删除，请先恢复后再生成', resultConfigRequired: '请先在原节点补全生成所需内容',
   gridSnap: '网格吸附', snapOn: '已开启', snapOff: '已关闭', snapBypass: '拖动时暂时关闭',
   fullImageInstructions: '💡您可通过滚轮缩放和拖动查看，按ESC退出全屏查看',
   noNodesInView: '当前视窗没有节点，可点击按钮快速回到内容区域', returnToNodes: '回到节点',
@@ -30,6 +33,9 @@ const zh = {
 };
 type Messages = { [K in keyof typeof zh]: string };
 const en: Messages = {
+  resultLikeThanks: '🎉Thank you for your support. More surprises are on the way!', resultDislikeReasons: 'Select issues (multiple allowed)', resultReasonBody: 'Deformed / misaligned / overlapping body', resultReasonGender: 'Unclear / incorrect gender', resultReasonProportions: 'Incorrect body proportions', resultReasonFace: 'Distorted / unnatural face', resultReasonEdges: 'Blurry / smudged edges', resultReasonOther: 'Other',
+  resultFeedbackInput: 'Improvement feedback', resultFeedbackPlaceholder: 'Not satisfied? Need a new feature? Tell us!', resultFeedbackSubmit: 'Submit', resultFeedbackSaved: 'Feedback saved locally (demo)', resultFeedbackFailed: 'Could not save. Please try again.',
+  resultFeedback: 'Result feedback', resultLike: 'Like', resultDislike: 'Dislike', resultImprove: 'Improve', resultRegenerate: 'Regenerate', resultEditorUnavailable: 'Restore the original editor and source image before regenerating', resultConfigRequired: 'Complete the required inputs in the original editor first',
   gridSnap: 'Snap to grid', snapOn: 'On', snapOff: 'Off', snapBypass: 'drag to bypass',
   fullImageInstructions: '💡Scroll to zoom and drag to explore. Press Esc to close.',
   noNodesInView: 'No nodes in this view. Return to the content area.', returnToNodes: 'Back to nodes',
@@ -59,6 +65,9 @@ const en: Messages = {
   ready: 'Assets added to canvas', back: 'Back to project', more: 'More tools', changeTool: 'Add assets',
 };
 const ja: Messages = {
+  resultLikeThanks: '🎉ご評価ありがとうございます。これからも驚きをお届けします！', resultDislikeReasons: '不満の理由を選択（複数可）', resultReasonBody: '体の変形・ずれ・重なり', resultReasonGender: '性別が不明・不正確', resultReasonProportions: '体の比率が不自然', resultReasonFace: '顔の歪み・不自然さ', resultReasonEdges: '輪郭のぼやけ・にじみ', resultReasonOther: 'その他',
+  resultFeedbackInput: '改善のご意見', resultFeedbackPlaceholder: '結果に不満ですか？新機能のご要望もお聞かせください！', resultFeedbackSubmit: '送信', resultFeedbackSaved: 'ご意見をローカルに保存しました（デモ）', resultFeedbackFailed: '保存できませんでした。もう一度お試しください。',
+  resultFeedback: '生成結果への評価', resultLike: '高評価', resultDislike: '低評価', resultImprove: '改善する', resultRegenerate: '再生成', resultEditorUnavailable: '元の編集ノードと画像を復元してから再生成してください', resultConfigRequired: '元の編集ノードで必要な項目を入力してください',
   ...en,
   gridSnap: 'グリッド吸着', snapOn: 'オン', snapOff: 'オフ', snapBypass: 'ドラッグで一時解除',
   fullImageInstructions: '💡スクロールで拡大・縮小、ドラッグで移動。Escで閉じます。',

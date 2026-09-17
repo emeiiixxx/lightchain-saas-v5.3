@@ -12,6 +12,8 @@ import { usePresence } from './usePresence';
 import { magneticDragDelta, type DragSnapContext, type SnapGuides } from './canvas-snapping';
 import { AssetPicker } from './components/AssetPicker';
 import type { LibraryImage } from './asset-library';
+import { ResultFeedbackPopover } from './components/ResultFeedbackPopover';
+import { ResultFeedbackToolbar, type ResultFeedback } from './components/ResultFeedbackToolbar';
 import { SelectionToolbar } from './components/SelectionToolbar';
 import { CanvasChrome } from './components/CanvasChrome';
 import { FullImageViewer } from './components/FullImageViewer';
@@ -169,6 +171,16 @@ export default function App() {
     return bounds && (!hasWorkflow || items.length > 1) ? { bounds, count: items.length, showToolbar: !hasWorkflow } : null;
   }, [images, selectedIds]);
   const shownSelection = usePresence(selection);
+  const selectedResult = useMemo(() => selectedIds.length === 1
+    ? images.find(image => image.id === selectedIds[0] && !image.nodeOnly && !image.sourceImageId && image.generatedByEditorId) ?? null
+    : null, [images, selectedIds]);
+  const shownResultFeedback = usePresence(!marquee && !canvasReference ? selectedResult : null);
+  const [improveTarget, setImproveTarget] = useState<{ imageId: string; anchor: HTMLElement; kind: 'improve' | 'dislike' } | null>(null);
+  const shownImprove = usePresence(improveTarget);
+  useEffect(() => {
+    if (improveTarget && (selectedResult?.id !== improveTarget.imageId || canvasReference || marquee || page !== 'canvas')) setImproveTarget(null);
+  }, [selectedResult?.id, canvasReference, marquee, page, improveTarget]);
+  const [resultFeedback, setResultFeedback] = useState<Record<string, ResultFeedback | undefined>>({});
   const shownSnapGuide = usePresence(snapGuide);
   const shownDrop = usePresence(dropActive ? 'drop' : null);
   const navigationNodes = useMemo(() => canvasNodes(images), [images]);
@@ -533,6 +545,18 @@ export default function App() {
     setImages(items => [...items, next]);
     setSelectedIds([image.id]); revealFusion({...image, fusion: next.fusion});
   }
+  function regenerateResult(resultId: string) {
+    const current = imageRef.current;
+    const result = current.find(image => image.id === resultId);
+    const editor = current.find(image => image.id === result?.generatedByEditorId && image.fusion);
+    const source = editor?.editorSourceId ? current.find(image => image.id === editor.editorSourceId && !image.nodeOnly) : editor && !editor.nodeOnly ? editor : undefined;
+    if (!editor?.fusion || !source) { announce(t.resultEditorUnavailable); return; }
+    const settings = editor.fusion;
+    if (((settings.kind ?? 'fusion') === 'fusion' && !settings.prompt.trim()) || (settings.kind === 'directed' && !settings.directedPoints?.length)) {
+      announce(t.resultConfigRequired); return;
+    }
+    generateDemo(editor.id);
+  }
   function generateDemo(editorId: string) {
     const current = imageRef.current;
     const editor = current.find(item => item.id === editorId && item.fusion);
@@ -746,6 +770,25 @@ export default function App() {
           <SelectionToolbar locale={locale} multiple={shownSelection.value.count > 1} onAction={action => action === 'fusion' || action === 'lingerie' || action === 'directed' || action === 'flat' ? openFusion(action) : action === 'cutout' ? setCutoutImage(imageRef.current.find(n => selectedRef.current.includes(n.id)) ?? null) : announce(t.noBackend)} onDownload={() => void downloadSelected()} />
         </div>}
       </div>}
+      {shownResultFeedback.value && <div className="result-feedback-anchor" data-overlay data-phase={shownResultFeedback.phase} inert={shownResultFeedback.phase === 'exit'} style={{
+        left: (shownResultFeedback.value.x + shownResultFeedback.value.width / 2) * view.zoom + view.x,
+        top: (shownResultFeedback.value.y + shownResultFeedback.value.height) * view.zoom + view.y + 16,
+      }}>
+        <ResultFeedbackToolbar locale={locale} value={resultFeedback[shownResultFeedback.value.id]}
+          onFeedback={(value, anchor) => {
+            const id = shownResultFeedback.value!.id;
+            const cancelled = resultFeedback[id] === value;
+            if (value === 'dislike' && !cancelled) {
+              setImproveTarget(previous => previous?.imageId === id && previous.kind === 'dislike' ? null : { imageId: id, anchor, kind: 'dislike' });
+              return;
+            }
+            setResultFeedback(previous => ({ ...previous, [id]: cancelled ? undefined : value }));
+            setImproveTarget(null);
+            if (!cancelled && value === 'like') notify(t.resultLikeThanks);
+          }}
+          onImprove={anchor => setImproveTarget({ imageId: shownResultFeedback.value!.id, anchor, kind: 'improve' })}
+          onRegenerate={() => regenerateResult(shownResultFeedback.value!.id)} />
+      </div>}
       {shownSnapGuide.value && <div className="canvas-snap-guides" aria-hidden="true" data-phase={shownSnapGuide.phase}>
         {shownSnapGuide.value.x !== undefined && <span className="canvas-snap-guide canvas-snap-guide--vertical" style={{ left: shownSnapGuide.value.x * view.zoom + view.x }} />}
         {shownSnapGuide.value.y !== undefined && <span className="canvas-snap-guide canvas-snap-guide--horizontal" style={{ top: shownSnapGuide.value.y * view.zoom + view.y }} />}
@@ -787,6 +830,18 @@ export default function App() {
       const result: CanvasImage = {...source, id: crypto.randomUUID(), name: `${source.name}-cutout.png`, sourceImageId: source.id, generatedByEditorId: undefined, editorSourceId: undefined, url, x: source.x + source.width + 80, role: undefined, fusion: undefined, operation: undefined};
       remember(imageRef.current); setImages(previous => [...previous, result]); setSelectedIds([result.id]); setCutoutImage(null);
     }} />}
+    {shownImprove.value && <ResultFeedbackPopover key={`${shownImprove.value.imageId}:${shownImprove.value.kind}`} kind={shownImprove.value.kind} anchor={shownImprove.value.anchor} locale={locale} phase={shownImprove.phase}
+      onClose={() => setImproveTarget(null)} onSubmit={(text, reasons) => {
+        try {
+          const raw: unknown = JSON.parse(localStorage.getItem('lc-result-feedback') || '[]');
+          const records = Array.isArray(raw) ? raw : [];
+          const imageId = shownImprove.value!.imageId;
+          const editorId = imageRef.current.find(image => image.id === imageId)?.generatedByEditorId;
+          localStorage.setItem('lc-result-feedback', JSON.stringify([...records, { id: crypto.randomUUID(), imageId, editorId, kind: shownImprove.value!.kind, text, reasons, createdAt: new Date().toISOString() }]));
+          if (shownImprove.value!.kind === 'dislike') setResultFeedback(previous => ({ ...previous, [imageId]: 'dislike' }));
+          announce(t.resultFeedbackSaved); return true;
+        } catch { announce(t.resultFeedbackFailed); return false; }
+      }} />}
     {shownPreview.value && <FullImageViewer key={shownPreview.value.id} image={shownPreview.value} locale={locale} phase={shownPreview.phase} onClose={() => setPreviewImage(null)} />}
     {shownMainTarget.value && <AssetPicker key={`main:${shownMainTarget.value}`} locale={locale} phase={shownMainTarget.phase} uploads={uploads} onUpload={rememberUpload} onClose={() => setMainTarget(null)} onConfirm={item => {
       const target = imageRef.current.find(n => n.id === mainTarget && n.nodeOnly && n.fusion);

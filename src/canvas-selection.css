@@ -158,3 +158,27 @@
 .canvas-snap-guide { position: absolute; pointer-events: none; }
 .canvas-snap-guide--vertical { top: 0; bottom: 0; border-left: 1px dashed var(--dodger-blue-400); }
 .canvas-snap-guide--horizontal { left: 0; right: 0; border-top: 1px dashed var(--dodger-blue-400); }
+
+/* Figma 68:27435: screen-space feedback, centered 16px below a result. */
+.result-feedback-anchor {position:absolute;z-index:5;transform:translateX(-50%);pointer-events:auto;}
+.result-feedback-toolbar {position:relative;display:flex;align-items:center;gap:4px;padding:4px;width:max-content;height:40px;background:var(--surface-floating);border-radius:12px;box-shadow:0 12px 28px -4px var(--overlay-weak);}
+.result-feedback-toolbar::after {content:'';position:absolute;inset:0;pointer-events:none;border:1px solid var(--border-weak);border-radius:inherit;}
+.result-feedback-toolbar .divider {height:32px;}
+.result-feedback-toolbar .lc-button {border:0;}
+.result-feedback-toolbar .lc-button[aria-pressed='true'] {background:var(--alpha-brand-20);color:var(--text-brand);}
+
+.result-feedback-popover {position:fixed;margin:0;width:280px;max-width:calc(100vw - 16px);min-height:132px;padding:12px;border:1px solid var(--border-weak);border-radius:var(--radius-l);background:var(--surface-floating);color:var(--text-secondary);box-shadow:0 12px 28px -4px var(--overlay-weak);}
+.result-feedback-popover form {display:flex;flex-direction:column;gap:8px;}
+.result-feedback-popover textarea {display:block;width:100%;min-height:64px;resize:none;border:0;outline:none;padding:0;background:transparent;color:var(--text-secondary);font-size:12px;line-height:20px;}
+/* Integrated input: keep Beta feedback on the shared shell, without an inner box. */
+.result-feedback-popover:has(textarea:hover) {background:var(--control-fill-hover);}
+.result-feedback-popover:has(textarea:focus) {background:var(--control-fill-focus);border-color:var(--brand-primary);}
+.result-feedback-popover textarea::placeholder {color:var(--text-placeholder);opacity:1;}
+.result-feedback-popover footer {display:flex;justify-content:flex-end;}
+
+/* Screenshot-based negative feedback: selectable reasons, Cancel / Submit. */
+.result-dislike-popover {width:368px;padding:16px;min-height:0;}
+.result-dislike-popover form {gap:8px;}
+.result-dislike-reasons {display:flex;flex-wrap:wrap;gap:8px;}
+.result-dislike-reasons .lc-button[aria-pressed='true'] {background:var(--alpha-brand-20);border-color:var(--border-brand);color:var(--text-brand);}
+.result-dislike-popover footer {gap:8px;}
