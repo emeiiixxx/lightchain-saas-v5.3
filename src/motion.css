@@ -18,9 +18,9 @@
 /* Resize the shell immediately with disclosure state; retain content for its exit. */
 .canvas-search-widget { transition-property: width, height, background-color, border-color, box-shadow; }
 .canvas-search-widget button[aria-controls='canvas-smart-search-content'] .icon { transition-property: background-color, rotate; }
-/* Camera updates share one Viewport. WebKit uses layout zoom on the content;
-   other engines and the SVG grid use transforms. Neither may transition alone. */
-.canvas-world, .canvas-world-content, .canvas-grid pattern { transition: none; }
+/* SVG patternTransform participates in CSS transform transitions too.
+   Exclude both camera transforms from the global 200ms state animation. */
+.canvas-world, .canvas-grid pattern { transition: none; }
 /* Node position animations remain separate from camera movement. */
 .canvas.is-dragging, .is-dragging .canvas-world, .is-dragging .canvas-image { transition-duration: 0ms; }
 @keyframes ui-enter { from { opacity: 0; } to { opacity: 1; } }
