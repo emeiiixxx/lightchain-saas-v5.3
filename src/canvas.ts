@@ -13,7 +13,8 @@ export const fusionReferences = (settings?: FusionSettings): FusionReference[] =
 export const workflowReferenceLimit = (settings?: FusionSettings) => settings?.kind === 'lingerie' ? 1 : MAX_FUSION_REFERENCES;
 export const defaultFusion = (kind: WorkflowKind = 'fusion'): FusionSettings => ({ kind, prompt: '', ratio: 'auto', resolution: '2K', ...(kind === 'directed' ? { directedPoints: [] } : {}), ...(kind === 'flat' ? { flatRegion: 'top', flatFace: 'front' } : {}) });
 export const FUSION_GAP = 80;
-export const GROUP_GAP = 120;
+const BRANCH_GAP = 120;
+export const GROUP_GAP = 240;
 export const FUSION_WIDTH = 280;
 export const FUSION_HEIGHT = 579;
 // Figma: 269px with no points, plus 129px card + 12px gap per point.
@@ -129,7 +130,7 @@ export function arrangeImages(items: CanvasImage[], startX = 0, viewport = { wid
       getHeight: data => data.height!,
       // AntV pads BOTH sides: 40+40 = 80 horizontally, 60+60 = 120 vertically.
       getHGap: () => FUSION_GAP / 2,
-      getVGap: () => GROUP_GAP / 2,
+      getVGap: () => BRANCH_GAP / 2,
     });
     const nodes: Placement[] = [];
     let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;

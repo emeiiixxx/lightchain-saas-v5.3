@@ -23,8 +23,8 @@ for (const viewport of [{width:1816,height:1180},{width:1280,height:752},{width:
         const zoneRows=[...new Set(zone.map(n=>n.y))].sort((a,b)=>a-b);
         zoneRows.forEach((y,index)=>{
           const row=zone.filter(n=>n.y===y).sort((a,b)=>a.x-b.x);
-          row.slice(1).forEach((n,i)=>{ const previous=boundsOf(canvasNodes([row[i]]))!; assert.equal(n.x-previous.x-previous.width,120); });
-          if(index+1<zoneRows.length){const b=boundsOf(canvasNodes(row))!;assert.equal(zoneRows[index+1]-b.y-b.height,120);}
+          row.slice(1).forEach((n,i)=>{ const previous=boundsOf(canvasNodes([row[i]]))!; assert.equal(n.x-previous.x-previous.width,240); });
+          if(index+1<zoneRows.length){const b=boundsOf(canvasNodes(row))!;assert.equal(zoneRows[index+1]-b.y-b.height,240);}
         });
       }
       const nodes=canvasNodes(arranged),b=boundsOf(nodes)!,a=canvasSafeArea(viewport.width,viewport.height),v=fitImages(nodes,viewport.width,viewport.height);
@@ -58,6 +58,6 @@ test('source chains stay together and standalone images occupy the right zone',(
  assert.equal(get('grandchild').x,get('child').x+180);
  assert.equal(get('child').y,get('root').y);
  const group=boundsOf(canvasNodes(arranged.filter(n=>['root','child','grandchild'].includes(n.id))))!;
- for(const id of ['solo','orphan']) assert(get(id).x>=group.x+group.width+240);
+ for(const id of ['solo','orphan']) assert(get(id).x>=group.x+group.width+480);
  assert.deepEqual(arrangeImages(arranged,50),arranged);
 });
