@@ -1,3 +1,4 @@
+import { compactBox, type HierarchyData } from '@antv/hierarchy';
 import { rememberImagePreview } from './image-previews';
 export type Viewport = { x: number; y: number; zoom: number };
 export type FusionReference = { id: string; name: string; url: string };
@@ -26,14 +27,6 @@ export function workflowHeight(settings?: FusionSettings) {
 export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; nodeOnly?: boolean; editorSourceId?: string; generatedByEditorId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'lingerie' | 'flat' };
 export const CANVAS_GRID_SIZE = 32;
 
-// Snap one shared drag delta so multi-selection spacing never changes.
-export function gridDragDelta(anchor: { x: number; y: number }, dx: number, dy: number, zoom: number, enabled: boolean) {
-  const x = dx / zoom, y = dy / zoom;
-  return enabled
-    ? { x: Math.round((anchor.x + x) / CANVAS_GRID_SIZE) * CANVAS_GRID_SIZE - anchor.x,
-        y: Math.round((anchor.y + y) / CANVAS_GRID_SIZE) * CANVAS_GRID_SIZE - anchor.y }
-    : { x, y };
-}
 export const DEFAULT_VIEW: Viewport = { x: 0, y: 0, zoom: 1 };
 export function zoomAt(view: Viewport, factor: number, x: number, y: number): Viewport {
   const zoom = Math.min(4, Math.max(0.03, view.zoom * factor));
@@ -87,63 +80,70 @@ export function arrangeImages(items: CanvasImage[], startX = 0, viewport = { wid
   const parents = new Map<string, string>();
   const connect = (parent: string | undefined, child: string) => {
     if (!parent || !vertices.has(parent) || !vertices.has(child) || parent === child) return;
-    vertices.get(parent)!.children.push(child); parents.set(child, parent);
+    parents.set(child, parent);
   };
   for (const item of items) {
     if (!item.nodeOnly) connect(item.sourceImageId ?? (item.generatedByEditorId ? `${item.generatedByEditorId}:fusion` : undefined), item.id);
     if (item.fusion) connect(item.editorSourceId ?? (!item.nodeOnly ? item.id : undefined), `${item.id}:fusion`);
   }
-  const moved = (block: Block, x: number, y: number) => block.nodes.map(node => ({...node, x:node.x+x, y:node.y+y}));
-  const emitted = new Set<string>();
-  function branch(id: string): Block {
-    const vertex = vertices.get(id)!;
-    emitted.add(id);
-    const rows: Block[] = [];
-    for (const childId of vertex.children) {
-      if (emitted.has(childId)) continue;
-      // Images, editors and continuing workflows all participate individually;
-      // no pre-grouping into fixed two-column result rows.
-      rows.push(branch(childId));
+  // Normalize only the layout graph. Missing sources become roots; malformed
+  // cycles lose one deterministic layout edge without changing saved relations.
+  const resolved = new Set<string>();
+  for (const id of vertices.keys()) {
+    const path = new Set<string>();
+    let current: string | undefined = id;
+    while (current !== undefined && !resolved.has(current)) {
+      if (path.has(current)) { parents.delete(current); break; }
+      path.add(current);
+      current = parents.get(current);
     }
-    // Siblings share a semantic column. Only a real downstream edge advances
-    // the workflow; fitting the viewport must never turn siblings into stages.
-    const children = pack(rows,1);
-    const height = Math.max(vertex.height,children.height);
-    const nodes: Placement[] = [{id, x:0, y:(height-vertex.height)/2},
-      ...moved(children,vertex.width+FUSION_GAP,(height-children.height)/2)];
-    return {nodes, height, width:vertex.width+(rows.length ? FUSION_GAP+children.width : 0)};
-
+    for (const member of path) resolved.add(member);
   }
+  // Map insertion order is the stable sibling order, independent of dragged positions.
+  for (const [child, parent] of parents) vertices.get(parent)!.children.push(child);
+  const moved = (block: Block, x: number, y: number) => block.nodes.map(node => ({...node, x:node.x+x, y:node.y+y}));
   const related: Block[] = [], independent: Block[] = [];
-  const roots = [...vertices.keys()].filter(id=>!parents.has(id));
-  // The second pass also keeps malformed cyclic legacy records visible.
-  for (const id of [...roots,...vertices.keys()]) {
-    if (emitted.has(id)) continue;
-    const block = branch(id);
-    const members = new Set(block.nodes.map(node=>node.id));
-    const depths = new Map<string,number>([[id,0]]);
-    const queue = [id];
-    for (let index=0;index<queue.length;index++) {
-      const parent = queue[index];
-      for (const child of vertices.get(parent)!.children) {
-        if (!members.has(child) || depths.has(child)) continue;
-        depths.set(child,depths.get(parent)!+1); queue.push(child);
-      }
-    }
+  for (const root of vertices.values()) {
+    if (parents.has(root.id)) continue;
+    const queue = [{ id: root.id, depth: 0 }];
     const widths: number[] = [];
-    for (const node of block.nodes) {
-      const depth = depths.get(node.id) ?? 0;
-      widths[depth] = Math.max(widths[depth] ?? 0, vertices.get(node.id)!.width);
+    const tree = new Map<string, HierarchyData>();
+    for (let index = 0; index < queue.length; index++) {
+      const { id, depth } = queue[index];
+      const vertex = vertices.get(id)!;
+      widths[depth] = Math.max(widths[depth] ?? 0, vertex.width);
+      tree.set(id, { id, height: vertex.height, children: [] });
+      for (const child of vertex.children) queue.push({ id: child, depth: depth + 1 });
     }
-    const columns: number[] = [];
-    let offset = 0;
-    for (let depth=0;depth<widths.length;depth++) {
-      columns[depth] = offset; offset += widths[depth]+FUSION_GAP;
+    for (const { id, depth } of queue) {
+      const data = tree.get(id)!;
+      // Reserve the widest node at each depth BEFORE contour compaction.
+      // Shifting columns afterwards would invalidate the computed separation.
+      data.width = widths[depth];
+      data.children = vertices.get(id)!.children.map(child => tree.get(child)!);
     }
-    // Different image aspect ratios still share the same next-stage column.
-    block.nodes = block.nodes.map(node=>({...node,x:columns[depths.get(node.id) ?? 0]}));
-    block.width = Math.max(0,offset-FUSION_GAP);
-    (block.nodes.length>1 || vertices.get(id)!.editor ? related : independent).push(block);
+    const layout = compactBox(tree.get(root.id)!, {
+      direction: 'LR', fixedRoot: false,
+      getId: data => data.id!,
+      getWidth: data => data.width!,
+      getHeight: data => data.height!,
+      // AntV pads BOTH sides: 40+40 = 80 horizontally, 60+60 = 120 vertically.
+      getHGap: () => FUSION_GAP / 2,
+      getVGap: () => GROUP_GAP / 2,
+    });
+    const nodes: Placement[] = [];
+    let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
+    layout.eachNode(node => {
+      const x = node.x + node.hgap, y = node.y + node.vgap;
+      const vertex = vertices.get(node.id)!;
+      nodes.push({ id: node.id, x, y });
+      left = Math.min(left, x); top = Math.min(top, y);
+      right = Math.max(right, x + vertex.width); bottom = Math.max(bottom, y + vertex.height);
+    });
+    // Outer packing uses actual rendered bounds, without phantom padding.
+    const block: Block = { width: right - left, height: bottom - top,
+      nodes: nodes.map(node => ({ ...node, x: node.x - left, y: node.y - top })) };
+    (nodes.length > 1 || root.editor ? related : independent).push(block);
   }
   function pack(blocks: Block[], columns: number): Block {
     const nodes: Placement[] = [];
