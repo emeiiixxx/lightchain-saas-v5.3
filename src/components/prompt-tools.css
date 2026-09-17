@@ -54,17 +54,20 @@
 .prompt-library-body input::placeholder,.prompt-library-body textarea::placeholder,.prompt-name-input input::placeholder,.prompt-library-search input::placeholder {color:var(--text-placeholder);opacity:1;}
 .prompt-empty {color:var(--text-tertiary);font-size:14px;padding:12px;}
 @media(max-width:680px){.prompt-library aside{width:38%;}.prompt-library h2{font-size:16px;}.prompt-library nav{padding:8px;}.prompt-library-search .icon{display:none;}}
-/* Figma 107:5136: prompt content 280px; 160px image grid with 8px gaps. */
+/* Figma 107:5136 / 107:5226: 160px images, 8px image gaps, separated main/result groups. */
 .prompt-library-body.has-related {overflow:hidden;}
 
 
 .prompt-related {display:flex;flex-direction:column;gap:8px;flex:1;min-height:0;padding:16px;border-radius:16px;background:transparent;}
 .prompt-related h3 {margin:0;line-height:24px;}
-.prompt-related-scroll {flex:1;min-height:0;overflow:auto;}
+.prompt-related-scroll {flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;}
+.prompt-related-group {display:flex;flex-direction:column;gap:8px;}
+.prompt-related-group + .prompt-related-group {margin-top:10px;padding-top:10px;border-top:1px solid var(--border-weak);}
+.prompt-related-history {align-self:flex-start;padding:4px 8px;border-radius:6px;background:var(--state-default);color:var(--text-tertiary);font-size:12px;line-height:16px;}
 .prompt-related-grid {display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;}
 .prompt-related-grid figure {position:relative;flex:none;width:160px;height:160px;margin:0;background:var(--surface-secondary);overflow:hidden;}
 .prompt-related-grid img {width:100%;height:100%;object-fit:cover;}
-.prompt-related-grid figcaption {position:absolute;top:4px;right:4px;height:24px;padding:0 8px;display:flex;align-items:center;border-radius:6px;background:var(--overlay-scrim);color:white;font-size:12px;font-weight:500;line-height:16px;}
+.prompt-related-grid figcaption {position:absolute;top:4px;right:4px;height:24px;padding:0 8px;display:flex;align-items:center;border-radius:6px;background:var(--overlay-scrim);color:var(--text-on-brand-white);font-size:12px;font-weight:500;line-height:16px;}
 @media(max-height:750px){.prompt-library-body.has-related{overflow:auto;}.prompt-related{min-height:176px;}}
 
 .prompt-library footer .prompt-delete {margin-right:auto;height:40px;padding-inline:24px;gap:4px;line-height:22px;}
@@ -107,6 +110,6 @@
 .prompt-card-title {min-width:0;flex:1;}
 .prompt-library nav .prompt-pinned-tag {flex-shrink:0;display:inline-flex;align-items:center;height:20px;padding:0 4px;border-radius:4px;background:var(--status-warning);color:var(--fill-on-brand);font-size:12px;font-weight:500;line-height:16px;text-overflow:clip;}
 
-/* Prompt footer: outline edit/append, secondary cancel, primary save/replace. */
+/* Prompt footer: outline edit/append, secondary cancel/save-as, primary save/replace. */
 .prompt-library > section > footer {flex-wrap:wrap;}
 .prompt-library > section > footer > .lc-button {padding-inline:24px;gap:4px;line-height:22px;white-space:nowrap;}

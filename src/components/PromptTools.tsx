@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { Button, Icon, type IconName } from './ui';
 import { usePresence } from '../usePresence';
 import './prompt-tools.css';
-import { associatedImages, demoPrompts, type PromptEntry as Entry } from '../prompt-associations';
+import { associatedImageGroups, demoPrompts, type PromptEntry as Entry } from '../prompt-associations';
 const KEY='lc-flow-fusion-prompts';
 function readSaved(): Entry[] {try {const raw=JSON.parse(localStorage.getItem(KEY)||'[]');const data: unknown=raw?.version===2?raw.entries:raw;return Array.isArray(data)?data.flatMap((v,i)=>typeof v==='string'?[{id:`legacy-${i}`,name:v.slice(0,50),content:v}]:v && typeof v.name==='string' && typeof v.content==='string'?[{id:v.id||`legacy-${i}`,name:v.name,content:v.content,pinned:v.pinned===true}]:[]):[];}catch{return [];}}
 function read(): Entry[] {const saved=readSaved();try{if(JSON.parse(localStorage.getItem(KEY)||'null')?.version===2)return saved;}catch{}return [...saved,...demoPrompts.filter(d=>!saved.some(e=>e.id===d.id))];}
@@ -55,7 +55,25 @@ function PromptLibrary({phase,entries,onStore,onApply,onClose}:{phase:'enter'|'e
  const cancelDraft=()=>{if(isNew)setSelected(entries.some(e=>e.id===previousSelection.current)?previousSelection.current:(entries[0]?.id??''));setDraft(null);};
  const addPrompt=()=>{setQuery('');if(isNew)return;previousSelection.current=selected;const entry={id:crypto.randomUUID(),name:'',content:''};setDraft(entry);setSelected(entry.id);};
  useEffect(()=>{if(isNew){ref.current?.querySelector('nav')?.scrollTo({top:0});ref.current?.querySelector<HTMLInputElement>('[aria-label="编辑提示词名称"]')?.focus({preventScroll:true});}},[isNew]);
- const related=associatedImages(entries.find(e=>e.id===selected));
+ const related=associatedImageGroups(entries.find(e=>e.id===selected));
+ const commitDraft=(saveAs=false)=>{
+   if(!draft||!draft.name.trim()||!draft.content.trim())return;
+   const name=draft.name.trim();
+   const original=entries.find(entry=>entry.id===draft.id);
+   // Keep the automatic suffix inside the 50-character title limit.
+   const savedName=saveAs&&name===original?.name.trim()
+     ? `${name.slice(0,47).replace(/[\uD800-\uDBFF]$/,'')}_副本`:name;
+   // Save As deliberately copies text fields only: no ownership, pin or gallery state.
+   const entry:Entry=saveAs
+     ? {id:crypto.randomUUID(),name:savedName,content:draft.content}
+     : {...draft,name:savedName};
+   const next=saveAs?[entry,...entries]:entries.some(e=>e.id===entry.id)
+     ? entries.map(e=>e.id===entry.id?entry:e):[entry,...entries];
+   if(!onStore(next))return;
+   setQuery('');setSelected(entry.id);setDraft(null);
+   requestAnimationFrame(()=>ref.current?.querySelector('[data-selected="true"]')?.scrollIntoView({block:'nearest'}));
+ };
+
  const sorted=[...entries].sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned));
  const listed=isNew?[draft!,...sorted]:sorted;
  const removeEntry=(id:string)=>{const next=entries.filter(e=>e.id!==id);if(onStore(next)){if(selected===id){setSelected([...next].sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned))[0]?.id??'');setDraft(null);}setMenu(null);}};
@@ -84,8 +102,13 @@ function PromptLibrary({phase,entries,onStore,onApply,onClose}:{phase:'enter'|'e
  {menu&&<PromptCardMenu anchor={menu.anchor} pinned={!!menu.entry.pinned} onClose={()=>setMenu(null)} onPin={togglePin} onDelete={()=>removeEntry(menu.entry.id)}/>}
 
  <section><header><h2>{isNew?'新增提示词':'提示词详情'}</h2><Button aria-label="关闭" onClick={onClose}><Icon name="close"/></Button></header>
- <div className={`prompt-library-body ${!draft&&related.length?'has-related':''}`}>{draft?<><label><span>提示词标题 <em className="prompt-required">*</em></span><div className="prompt-edit-title"><input aria-label="编辑提示词名称" placeholder="请输入名称" required maxLength={50} value={draft.name} onChange={e=>setDraft({...draft,name:e.target.value})}/><span>{draft.name.length}/50</span></div></label><label className="prompt-content-edit"><span>提示词内容 <em className="prompt-required">*</em></span><div className="prompt-edit-content"><textarea aria-label="编辑提示词内容" placeholder="请输入提示词内容..." required maxLength={2000} value={draft.content} onChange={e=>setDraft({...draft,content:e.target.value})}/><span>{draft.content.length}/2000</span></div></label></>:current?<><div className="prompt-detail-card" data-node-id="111:5494"><h3>{current.name}</h3><p className="prompt-detail-content">{current.content}</p></div>{related.length>0&&<div className="prompt-related" data-node-id="107:5226"><h3>关联图片</h3><div className="prompt-related-scroll"><div className="prompt-related-grid">{related.map(image=><figure key={image.id}><ProgressiveImage src={image.url} alt={image.name}/><figcaption>{image.role}</figcaption></figure>)}</div></div></div>}</>:<p className="prompt-empty">选择或新增一条提示词</p>}</div>
- <footer>{draft?<>{<Button variant="outline" className="prompt-delete" size="m" onClick={()=>{if(isNew){cancelDraft();return;}const next=entries.filter(entry=>entry.id!==draft.id);if(onStore(next)){setSelected(next[0]?.id??'');setDraft(null);}}}><Icon name="promptTrash" size={20}/>删除</Button>}<Button variant="secondary" size="m" onClick={cancelDraft}>取消</Button><Button variant="primary" size="m" disabled={!draft.name.trim()||!draft.content.trim()} onClick={()=>{const entry={...draft,name:draft.name.trim()};if(onStore([entry,...entries.filter(e=>e.id!==entry.id)])){setSelected(entry.id);setDraft(null);}}}>保存</Button></>:<><Button variant="outline" size="m" disabled={!current} onClick={()=>setDraft(current??null)}><Icon name="promptEdit" size={20}/>编辑</Button><Button variant="outline" size="m" disabled={!current} onClick={()=>{if(current)onApply(current.content,'append');}}>在已有输入后插入</Button><Button variant="primary" size="m" disabled={!current} onClick={()=>{if(current)onApply(current.content,'replace');}}>应用并覆盖原文</Button></>}</footer></section></dialog>;
+ <div className={`prompt-library-body ${!draft&&related.length?'has-related':''}`}>{draft?<><label><span>提示词标题 <em className="prompt-required">*</em></span><div className="prompt-edit-title"><input aria-label="编辑提示词名称" placeholder="请输入名称" required maxLength={50} value={draft.name} onChange={e=>setDraft({...draft,name:e.target.value})}/><span>{draft.name.length}/50</span></div></label><label className="prompt-content-edit"><span>提示词内容 <em className="prompt-required">*</em></span><div className="prompt-edit-content"><textarea aria-label="编辑提示词内容" placeholder="请输入提示词内容..." required maxLength={2000} value={draft.content} onChange={e=>setDraft({...draft,content:e.target.value})}/><span>{draft.content.length}/2000</span></div></label></>:current?<><div className="prompt-detail-card" data-node-id="111:5494"><h3>{current.name}</h3><p className="prompt-detail-content">{current.content}</p></div>{related.length>0&&<div className="prompt-related" data-node-id="107:5226"><h3>关联图片</h3><div className="prompt-related-scroll">{related.map((group,index)=><div className="prompt-related-group" key={group.id} role="group" aria-label={`第 ${index+1} 组 · ${group.main.name}${group.historical?' · 修改前生成':''}`}>
+ {group.historical&&<span className="prompt-related-history">修改前生成</span>}
+ <div className="prompt-related-grid">
+ <figure><ProgressiveImage src={group.main.url} alt={group.main.name}/><figcaption>主图</figcaption></figure>
+ {group.results.map(result=><figure key={result.id}><ProgressiveImage src={result.url} alt={result.name}/><figcaption>AI生成</figcaption></figure>)}
+ </div></div>)}</div></div>}</>:<p className="prompt-empty">选择或新增一条提示词</p>}</div>
+ <footer>{draft?<>{!isNew&&<Button variant="outline" className="prompt-delete" size="m" onClick={()=>removeEntry(draft.id)}><Icon name="promptTrash" size={20}/>删除</Button>}<Button variant="secondary" size="m" onClick={cancelDraft}>取消</Button>{!isNew&&<Button variant="secondary" size="m" disabled={!draft.name.trim()||!draft.content.trim()} onClick={()=>commitDraft(true)}>另存为</Button>}<Button variant="primary" size="m" disabled={!draft.name.trim()||!draft.content.trim()} onClick={()=>commitDraft()}>保存</Button></>:<><Button variant="outline" size="m" disabled={!current} onClick={()=>setDraft(current??null)}><Icon name="promptEdit" size={20}/>编辑</Button><Button variant="outline" size="m" disabled={!current} onClick={()=>{if(current)onApply(current.content,'append');}}>在已有输入后插入</Button><Button variant="primary" size="m" disabled={!current} onClick={()=>{if(current)onApply(current.content,'replace');}}>应用并覆盖原文</Button></>}</footer></section></dialog>;
 }
 
 function PromptCardMenu({anchor,pinned,onClose,onPin,onDelete}:{anchor:HTMLElement;pinned:boolean;onClose:()=>void;onPin:()=>void;onDelete:()=>void}){
