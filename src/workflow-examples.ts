@@ -31,14 +31,15 @@ const examples = {
     result: { name: '黄紫拼色内衣上身 · 试衣演示', url: '/assets/workflow-examples/lingerie-result.png' },
     prompt: '将主图中的黄紫拼色内衣套装穿到参考模特身上，保留淡黄色蕾丝、浅紫色罩杯、黑色肩带与包边，以及配套高腰内裤的拼色和侧边镂空细节。保留模特的金色长发、双臂抬起的姿势，搭配暖桃色背景与粉色球形布景，呈现自然贴合、柔和光影的内衣产品大片。',
   },
-} satisfies Record<WorkflowKind, unknown>;
+} satisfies Record<Exclude<WorkflowKind, 'merge'>, unknown>;
 
 // Preserve each supplied result image’s original aspect ratio.
 export function workflowExampleResult(kind: WorkflowKind) {
+  if (kind === 'merge') return { ...examples.fusion.result, name: '合拼生图结果 · 演示', width: 360, height: 360 * 2400 / 1792 };
   return { ...examples[kind].result, width: 360, height: kind === 'lingerie' ? 360 * 1064 / 794 : kind === 'fusion' || kind === 'flat' ? 360 * 2400 / 1792 : 540 };
 }
 
-export async function createWorkflowExample(kind: WorkflowKind): Promise<CanvasImage[]> {
+export async function createWorkflowExample(kind: Exclude<WorkflowKind, 'merge'>): Promise<CanvasImage[]> {
   const example = examples[kind];
   const [main, reference, output] = await Promise.all([
     prepareMainImage({ id: 'example-main', ...example.main }),

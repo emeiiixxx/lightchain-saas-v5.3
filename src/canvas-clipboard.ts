@@ -1,8 +1,9 @@
-import { workflowHeight, FUSION_WIDTH, fusionPosition, fusionReferences, type CanvasImage } from './canvas';
+import { isMultiInputWorkflow, workflowHeight, FUSION_WIDTH, fusionPosition, fusionReferences, type CanvasImage } from './canvas';
 
 // Snapshot visible vertices independently, including legacy image/editor pairs.
 // Relationships in this snapshot use snapshot IDs (editor IDs end in :fusion).
 // Keep only edges whose two endpoints are copied; never attach to the originals.
+// Merge editor copies always start with empty inputs, retaining their prompt/settings.
 export function copyCanvasSelection(items: CanvasImage[], selected: string[]): CanvasImage[] {
   const ids = new Set(selected);
   const imageIds = new Set(items.filter(item => !item.nodeOnly && ids.has(item.id)).map(item => item.id));
@@ -16,7 +17,7 @@ export function copyCanvasSelection(items: CanvasImage[], selected: string[]): C
       const generatedByEditorId = item.sourceImageId == null && item.generatedByEditorId && editorIds.has(item.generatedByEditorId)
         ? `${item.generatedByEditorId}:fusion` : undefined;
       copies.push({ id: item.id, name: item.name, url: item.url, x: item.x, y: item.y, width: item.width, height: item.height,
-        sourceImageId, generatedByEditorId });
+        sourceImageId, generatedByEditorId, generatedFromReferenceId: item.generatedFromReferenceId && imageIds.has(item.generatedFromReferenceId) ? item.generatedFromReferenceId : undefined });
     }
     if (item.fusion && editorIds.has(item.id)) {
       const position = { ...fusionPosition(item) };
@@ -24,11 +25,12 @@ export function copyCanvasSelection(items: CanvasImage[], selected: string[]): C
       copies.push({
         id: `${item.id}:fusion`, name: '', url: '', ...position,
         width: FUSION_WIDTH, height: workflowHeight(item.fusion), nodeOnly: true,
-        editorSourceId: sourceId && imageIds.has(sourceId) ? sourceId : undefined,
+        editorSourceId: !isMultiInputWorkflow(item.fusion) && sourceId && imageIds.has(sourceId) ? sourceId : undefined,
         fusion: {
           kind: item.fusion.kind, position, prompt: item.fusion.prompt, ratio: item.fusion.ratio, resolution: item.fusion.resolution,
-          flatRegion: item.fusion.flatRegion, flatFace: item.fusion.flatFace,
-          references: fusionReferences(item.fusion).map(reference => ({ ...reference })),
+          batchFlat: item.fusion.batchFlat, flatRegion: item.fusion.flatRegion, flatFace: item.fusion.flatFace,
+          references: isMultiInputWorkflow(item.fusion) ? [] : fusionReferences(item.fusion).map(reference => ({ ...reference,
+            sourceImageId: reference.sourceImageId && imageIds.has(reference.sourceImageId) ? reference.sourceImageId : undefined })),
           directedPoints: item.fusion.directedPoints?.map(point => ({ ...point, reference: { ...point.reference } })),
         },
       });
@@ -49,12 +51,16 @@ export function pasteCanvasSelection(items: CanvasImage[], dx: number, dy: numbe
     const position = { x: item.x + dx, y: item.y + dy };
     return {
       ...item, id: newIds.get(item.id)!, ...position,
-      editorSourceId: remapImage(item.editorSourceId),
+      editorSourceId: isMultiInputWorkflow(item.fusion) ? undefined : remapImage(item.editorSourceId),
       sourceImageId: remapImage(item.sourceImageId),
+      generatedFromReferenceId: remapImage(item.generatedFromReferenceId),
       generatedByEditorId: item.sourceImageId == null ? remapEditor(item.generatedByEditorId) : undefined,
       fusion: item.fusion ? {
-        ...item.fusion, position,
-        references: fusionReferences(item.fusion).map(reference => ({ ...reference })),
+        ...item.fusion, position, reference: undefined,
+        references: isMultiInputWorkflow(item.fusion) ? [] : fusionReferences(item.fusion).map(reference => {
+          const sourceImageId = remapImage(reference.sourceImageId);
+          return { ...reference, id: sourceImageId ?? reference.id, sourceImageId };
+        }),
         directedPoints: item.fusion.directedPoints?.map(point => ({ ...point, id: crypto.randomUUID(), reference: { ...point.reference } })),
       } : undefined,
     };

@@ -91,6 +91,27 @@
 /* Lingerie workflow: Figma 136:17371 / 136:17414, one 64px model slot. */
 .fusion-node.lingerie-node .fusion-references { grid-template-columns: 64px; }
 
+/* Figma 177:6100 / 177:7186 / 177:6191: one 280×492 shell in all states. */
+.merge-node { position: relative; border: 0; height: 492px; }
+.merge-node::before { content: ''; position: absolute; inset: 0; border: 1px solid var(--border-weak); border-radius: inherit; pointer-events: none; }
+.fusion-position[data-selected='true'] .merge-node::before { opacity: 0; }
+.merge-node .fusion-content > .fusion-field:first-child { margin-bottom: 4px; }
+.merge-node .fusion-label { gap: 8px; }
+.merge-node .fusion-required { margin-left: -4px; }
+.merge-count-divider { width: 1px; height: 12px; background: var(--border-weak); }
+.merge-reference-count { color: var(--text-tertiary); font-size: 12px; line-height: 16px; white-space: nowrap; }
+.merge-reference-count > span { color: var(--text-brand); }
+.merge-node .fusion-references { display: flex; gap: 8px; min-height: 56px; height: 56px; }
+.merge-node .fusion-references > * { width: 56px; height: 56px; flex: 0 0 56px; }
+.merge-node .fusion-reference-wrap .fusion-reference { position: relative; overflow: hidden; border-radius: 8px; background: var(--control-fill-hover); }
+.merge-node .fusion-reference > .progressive-image,
+.merge-node .fusion-reference img { border-radius: 0; }
+.merge-node .fusion-reference-wrap .fusion-reference-remove { width: 16px; min-width: 16px; height: 16px; border-radius: 999px; top: 4px; right: 4px; }
+.merge-node .fusion-reference-wrap:hover .fusion-reference::after { content: ''; position: absolute; inset: 0; border-radius: 8px; background: var(--overlay-weak); pointer-events: none; }
+.merge-node .fusion-textarea:hover { background: var(--control-fill-hover); border-color: var(--border-weak); }
+.merge-node .fusion-textarea:focus-within { background: var(--control-fill-focus); border-color: var(--brand-primary); }
+.merge-node .fusion-textarea.has-error { border-color: var(--status-danger); }
+
 /* Figma 136:18488 / 136:18657: 280×417, inside stroke and Beta ChoiceChip. */
 .flat-lay-node { position: relative; border: 0; }
 .flat-lay-node::before { content: ''; position: absolute; inset: 0; border: 1px solid var(--border-weak); border-radius: inherit; pointer-events: none; }
@@ -123,3 +144,13 @@
 .directed-mask-preview--reference[data-image-state='ready']::after { background: var(--status-danger); left: 43%; top: 28%; }
 .directed-mask-preview--point-1[data-image-state='ready']::after { top: 23%; left: 39%; height: 32%; rotate: -12deg; }
 .directed-mask-preview--point-2[data-image-state='ready']::after { top: 52%; left: 36%; height: 28%; rotate: 15deg; }
+
+/* Figma 177:7383 / 177:7583: up to 20 inputs, four 56px tiles per row. */
+.batch-flat-node .fusion-content { gap: 16px; }
+.batch-flat-node .fusion-label { gap: 8px; }
+.batch-flat-images { display: grid; grid-template-columns: repeat(4, 56px); gap: 8px; min-height: 56px; max-height: 208px; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; }
+.batch-flat-images > * { width: 56px; height: 56px; min-width: 0; }
+.batch-flat-images .fusion-reference-wrap .fusion-reference { position: relative; border-radius: 8px; background: var(--control-fill-hover); }
+.batch-flat-images .fusion-reference > .progressive-image,
+.batch-flat-images .fusion-reference img { border-radius: 0; }
+.batch-flat-images .fusion-reference-remove { width: 16px; min-width: 16px; height: 16px; top: 4px; right: 4px; border-radius: 999px; }
