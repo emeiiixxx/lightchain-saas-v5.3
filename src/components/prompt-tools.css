@@ -114,3 +114,13 @@
 /* Prompt footer: outline edit, secondary append/cancel/save-as, primary save/replace. */
 .prompt-library > section > footer {flex-wrap:wrap;}
 .prompt-library > section > footer > .lc-button {padding-inline:24px;gap:4px;line-height:22px;white-space:nowrap;}
+
+/* Figma 171:4312 — library with no saved entries. */
+.prompt-library > .prompt-library-initial {padding:24px;gap:24px;overflow-y:auto;}
+.prompt-library > .prompt-library-initial > header {padding:0;justify-content:flex-end;}
+.prompt-library-initial .prompt-library-body {padding:0;align-items:center;justify-content:center;min-height:216px;overflow:visible;}
+.prompt-library-empty-state {display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;max-width:100%;}
+.prompt-library-empty-content {display:flex;flex-direction:column;align-items:center;}
+.prompt-library-empty-content img {display:block;width:128px;height:128px;object-fit:contain;flex-shrink:0;}
+.prompt-library-empty-content h3 {margin:0;color:var(--text-tertiary);font-size:16px;font-weight:500;line-height:24px;}
+.prompt-library-empty-content p {margin:4px 0 0;color:var(--text-placeholder);font-size:12px;line-height:16px;}

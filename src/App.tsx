@@ -552,7 +552,6 @@ export default function App() {
     setImages(imageRef.current);
     setSelectedIds(selectedRef.current);
     canvas.current?.focus({ preventScroll: true });
-    announce('已添加示例图，可点击整理查看连接布局');
   }
 
   function updateFusion(id: string, patch: Partial<FusionSettings>) {
