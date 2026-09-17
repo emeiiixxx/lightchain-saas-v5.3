@@ -40,7 +40,8 @@ function saved(key: string, fallback: string) { try { return localStorage.getIte
 function save(key: string, value: string) { try { localStorage.setItem(key, value); } catch { /* Storage can be unavailable in private browsing. */ } }
 const isField = (target: EventTarget | null) => target instanceof HTMLElement && !!target.closest('input, textarea, select, [contenteditable="true"]');
 // WebKit can retain a low-resolution composited node when its ancestor is
-// transform-scaled. Use layout zoom there; desktop Chromium keeps its existing
+// transform-scaled. Refresh layout zoom only after zooming settles; doing that
+// on every wheel frame forces expensive layout. Desktop Chromium keeps its
 // transform path. iOS browser wrappers also use WebKit and need this workaround.
 const useCanvasLayoutZoom = CSS.supports('zoom', '1')
   && /AppleWebKit\//.test(navigator.userAgent)
@@ -107,6 +108,14 @@ export default function App() {
   const shownCutout = usePresence(cutoutImage);
   const [previewImage, setPreviewImage] = useState<CanvasImage | null>(null);
   const [view, commitView] = useState<Viewport>(DEFAULT_VIEW);
+  const [canvasRasterZoom, setCanvasRasterZoom] = useState(DEFAULT_VIEW.zoom);
+  useEffect(() => {
+    if (!useCanvasLayoutZoom || view.zoom === canvasRasterZoom) return;
+    // While the camera moves, only the outer transform changes. Once wheel /
+    // trackpad momentum or the zoom animation stops, repaint at its final scale.
+    const settle = window.setTimeout(() => setCanvasRasterZoom(view.zoom), 150);
+    return () => window.clearTimeout(settle);
+  }, [view.zoom, canvasRasterZoom]);
   const cameraFrame = useRef<number | null>(null);
   const setView = useCallback((next: Viewport | ((previous: Viewport) => Viewport)) => {
     if (cameraFrame.current !== null) cancelAnimationFrame(cameraFrame.current);
@@ -708,13 +717,14 @@ export default function App() {
         </button>
       </section>}
 
-      <div className="canvas-world" data-renderer={useCanvasLayoutZoom ? 'layout-zoom' : 'transform'} style={{
-        // Pan stays in screen pixels outside the zoomed layout. All descendants
-        // keep world coordinates: screen = view offset + world position * zoom.
-        transform: useCanvasLayoutZoom ? `translate(${view.x}px, ${view.y}px)` : canvasTransform,
+      <div className="canvas-world" data-renderer={useCanvasLayoutZoom ? 'adaptive-layout-zoom' : 'transform'} style={{
+        // Both factors update in the same commit when settling, so the effective
+        // scale remains (view.zoom / canvasRasterZoom) * canvasRasterZoom.
+        // Translation stays in screen pixels; hit testing keeps world coordinates.
+        transform: useCanvasLayoutZoom ? `matrix(${view.zoom / canvasRasterZoom}, 0, 0, ${view.zoom / canvasRasterZoom}, ${view.x}, ${view.y})` : canvasTransform,
         '--canvas-inverse-scale': 1 / view.zoom,
       } as React.CSSProperties}>
-      <div className="canvas-world-content" style={{ zoom: useCanvasLayoutZoom ? view.zoom : undefined }}>
+      <div className="canvas-world-content" style={{ zoom: useCanvasLayoutZoom ? canvasRasterZoom : undefined }}>
         {images.filter(result => !result.nodeOnly && !result.sourceImageId && result.generatedByEditorId).map(result => {
           const editor = images.find(item => item.id === result.generatedByEditorId && item.fusion);
           if (!editor) return null;
