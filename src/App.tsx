@@ -843,7 +843,7 @@ export default function App() {
       }}>
         {shownSelection.value.count > 1 && <div className="group-selection-frame" data-selection-count={shownSelection.value.count} />}
         {shownSelection.value.showToolbar && <div className="media-toolbar-anchor" data-overlay inert={shownSelection.phase === 'exit'}>
-          <SelectionToolbar locale={locale} multiple={shownSelection.value.count > 1} onAction={action => action === 'fusion' || action === 'lingerie' || action === 'directed' || action === 'flat' ? openFusion(action) : action === 'cutout' ? setCutoutImage(imageRef.current.find(n => selectedRef.current.includes(n.id)) ?? null) : action === 'removeBackground' ? removeSelectedBackgrounds() : action === 'mergeImages' ? openMerge() : announce(t.noBackend)} onDownload={() => void downloadSelected()} />
+          <SelectionToolbar locale={locale} multiple={shownSelection.value.count > 1} onAction={action => action === 'multiFlat' ? openMerge(true) : action === 'fusion' || action === 'lingerie' || action === 'directed' || action === 'flat' ? openFusion(action) : action === 'cutout' ? setCutoutImage(imageRef.current.find(n => selectedRef.current.includes(n.id)) ?? null) : action === 'removeBackground' ? removeSelectedBackgrounds() : action === 'mergeImages' ? openMerge() : announce(t.noBackend)} onDownload={() => void downloadSelected()} />
         </div>}
       </div>}
       {shownResultFeedback.value && <div className="result-feedback-anchor" data-overlay data-phase={shownResultFeedback.phase} inert={shownResultFeedback.phase === 'exit'} style={{
