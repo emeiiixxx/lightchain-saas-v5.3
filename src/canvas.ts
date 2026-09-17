@@ -1,4 +1,5 @@
 import { compactBox, type HierarchyData } from '@antv/hierarchy';
+import { groupTaskBlocks } from './canvas-task-layout';
 import { rememberImagePreview } from './image-previews';
 import { mergeGroupStages, MERGE_GROUP_GAP, MERGE_OUTPUT_GAP } from './canvas-merge-layout';
 export { MERGE_OUTPUT_GAP } from './canvas-merge-layout';
@@ -34,7 +35,7 @@ export function workflowHeight(settings?: FusionSettings) {
   const count = Math.min(MAX_DIRECTED_POINTS, settings.directedPoints?.length ?? 0);
   return 269 + count * 141 - (count === MAX_DIRECTED_POINTS ? 68 : 0);
 }
-export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; nodeOnly?: boolean; editorSourceId?: string; generatedByEditorId?: string; generatedFromReferenceId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'lingerie' | 'flat' };
+export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; layoutTaskId?: string; nodeOnly?: boolean; editorSourceId?: string; generatedByEditorId?: string; generatedFromReferenceId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'lingerie' | 'flat' };
 export const CANVAS_GRID_SIZE = 32;
 
 export function workflowSources(items: CanvasImage[], editor: CanvasImage): CanvasImage[] {
@@ -192,6 +193,7 @@ export function arrangeImages(items: CanvasImage[], startX = 0, viewport = { wid
     const connected = nodes.length > 1 || nodes.some(node => crossGroupMembers.has(node.id));
     (!connected ? independent : mergeRoots.has(root.id) ? mergeBlocks : related).push(block);
   }
+  groupTaskBlocks(items, related, mergeBlocks);
   function pack(blocks: Block[], columns: number): Block {
     const nodes: Placement[] = [];
     let width = 0, y = 0;

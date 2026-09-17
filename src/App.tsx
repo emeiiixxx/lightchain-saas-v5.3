@@ -24,6 +24,7 @@ import { createWorkflowExample, workflowExampleResult } from './workflow-example
 import { ImageConnection } from './components/FusionConnection';
 import { copyCanvasSelection, pasteCanvasSelection } from './canvas-clipboard';
 import { CanvasContextMenu } from './components/CanvasContextMenu';
+import { standaloneTaskInputs } from './canvas-task-layout';
 import { createImageResults } from './canvas-image-results';
 
 type Theme = 'dark' | 'light' | 'system';
@@ -495,7 +496,10 @@ export default function App() {
     })));
     if (!results.length) return;
     remember(current);
-    imageRef.current = [...current, ...results];
+    const independent = standaloneTaskInputs(current);
+    const taskId = crypto.randomUUID();
+    const owned = new Set(sources.filter(source => independent.has(source.id)).map(source => source.id));
+    imageRef.current = [...current.map(item => owned.has(item.id) ? { ...item, layoutTaskId: taskId } : item), ...results];
     selectedRef.current = results.map(result => result.id);
     setImages(imageRef.current);
     setSelectedIds(selectedRef.current);
@@ -632,7 +636,16 @@ export default function App() {
 
   function updateFusion(id: string, patch: Partial<FusionSettings>) {
     if ('references' in patch || 'directedPoints' in patch || imageRef.current.find(n => n.id === id)?.fusion?.kind === 'flat') remember(imageRef.current);
-    imageRef.current = imageRef.current.map(n => n.id === id && n.fusion ? { ...n, fusion: { ...n.fusion, ...patch } } : n);
+    const owner = imageRef.current.find(item => item.id === id);
+    const multiInputs = isMultiInputWorkflow(owner?.fusion) && 'references' in patch;
+    const independent = multiInputs ? standaloneTaskInputs(imageRef.current) : new Set<string>();
+    const nextInputs = new Set((patch.references ?? []).flatMap(ref => ref.sourceImageId ? [ref.sourceImageId] : []));
+    imageRef.current = imageRef.current.map(item => {
+      if (item.id === id && item.fusion) return { ...item, fusion: { ...item.fusion, ...patch } };
+      if (multiInputs && nextInputs.has(item.id) && independent.has(item.id)) return { ...item, layoutTaskId: id };
+      if (multiInputs && item.layoutTaskId === id && !nextInputs.has(item.id)) return { ...item, layoutTaskId: undefined };
+      return item;
+    });
     setImages(imageRef.current);
   }
   function openMerge(batchFlat = false) {
@@ -642,7 +655,9 @@ export default function App() {
     const editor = createMergeEditor(current, selectedRef.current, crypto.randomUUID(), batchFlat);
     if (!editor) return;
     remember(current);
-    imageRef.current = [...current, editor]; selectedRef.current = [`${editor.id}:fusion`];
+    const independent = standaloneTaskInputs(current);
+    const owned = new Set(inputs.filter(input => independent.has(input.id)).map(input => input.id));
+    imageRef.current = [...current.map(item => owned.has(item.id) ? { ...item, layoutTaskId: editor.id } : item), editor]; selectedRef.current = [`${editor.id}:fusion`];
     setImages(imageRef.current); setSelectedIds(selectedRef.current);
     const rect = canvas.current?.getBoundingClientRect();
     if (rect) setView(fitImages(canvasNodes([...inputs, editor]), rect.width, rect.height));
