@@ -1,4 +1,6 @@
 /* Live Figma 5.1 Beta variables. Sources: docs/figma-source.json and docs/button-theme-states.json. */
+/* Secondary/500: the pattern source in Figma 206:3615 keeps its Dark mode. */
+:root { --secondary-500: #798386; }
 [data-theme="dark"] {
   --background-canvas: rgba(10, 11, 11, 1);
   --spacing-none: 0px;

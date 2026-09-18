@@ -4,9 +4,6 @@ import { usePresence } from '../usePresence';
 import type { Locale } from '../i18n';
 import { Button, Icon } from './ui';
 
-// Previous dismissals also included mode changes and Escape, so they cannot
-// establish that the user explicitly closed the announcement.
-const storageKey = 'lc-tryon-lingerie-announcement-closed';
 const copy = {
   'zh-CN': { text: '🎉 新增内衣试衣模式，点击试试看吧！', close: '关闭提示' },
   en: { text: '🎉 New lingerie try-on mode. Give it a try!', close: 'Dismiss announcement' },
@@ -14,16 +11,15 @@ const copy = {
 };
 
 export function TryOnAnnouncement({ active, anchor, locale, onTry }: { active: boolean; anchor: RefObject<HTMLDivElement | null>; locale: Locale; onTry: () => void }) {
-  const [dismissed, setDismissed] = useState(() => {
-    try { return localStorage.getItem(storageKey) === 'true'; } catch { return false; }
-  });
+  // Demo dismissal lasts only until a page reload. Ignore old saved dismissals
+  // so users can replay the announcement without clearing browser storage.
+  const [dismissed, setDismissed] = useState(false);
   const shown = usePresence(active && !dismissed ? true : null);
   const popup = useRef<HTMLDivElement>(null);
   const t = copy[locale];
   function dismiss() {
     setDismissed(true);
     if (popup.current?.contains(document.activeElement)) anchor.current?.querySelector<HTMLButtonElement>('[aria-selected="true"]')?.focus({ preventScroll: true });
-    try { localStorage.setItem(storageKey, 'true'); } catch { /* Keep the session dismissal. */ }
   }
   useLayoutEffect(() => {
     if (!shown.value || !popup.current || !anchor.current) return;

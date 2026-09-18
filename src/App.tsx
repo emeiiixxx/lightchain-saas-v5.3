@@ -697,7 +697,7 @@ export default function App() {
 
       <svg className="canvas-grid" aria-hidden="true" width="100%" height="100%">
         <defs><pattern id={gridPatternId} width={CANVAS_GRID_SIZE} height={CANVAS_GRID_SIZE} patternUnits="userSpaceOnUse" patternTransform={canvasTransform}>
-          <circle cx="2" cy="2" r="2" fill="var(--canvas-dot)" />
+          <circle cx="1" cy="1" r="1" fill="var(--canvas-dot)" />
         </pattern></defs>
         <rect width="100%" height="100%" fill={`url(#${gridPatternId})`} />
       </svg>
