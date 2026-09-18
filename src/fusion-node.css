@@ -41,6 +41,8 @@
 .fusion-error { margin: 0; font-size: 12px; line-height: 16px; }
 .fusion-settings { display: flex; gap: 8px; }
 .fusion-setting { position: relative; flex: 1; min-width: 0; }
+/* WorkflowNode Action: full-width Border/weak divider, 12px button inset. */
+.fusion-node-action { display: flex; flex-shrink: 0; margin: 0 -12px -12px; padding: 12px; border-top: 1px solid var(--border-weak); }
 .fusion-generate { width: 100%; }
 /* Figma Button/GenerateTask S: default 88:32168, hover 88:32171. */
 .generate-task-button { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 16px; gap: 4px; border: 0; border-radius: var(--radius-base); background: var(--brand-primary); color: var(--text-on-brand-black); font-size: 12px; line-height: 16px; font-weight: 500; }
@@ -91,8 +93,8 @@
 /* Lingerie workflow: Figma 136:17371 / 136:17414, one 64px model slot. */
 .fusion-node.lingerie-node .fusion-references { grid-template-columns: 64px; }
 
-/* Figma 177:6100 / 177:7186 / 177:6191: one 280×492 shell in all states. */
-.merge-node { position: relative; border: 0; height: 492px; }
+/* Figma 177:6100 / 177:7186 / 177:6191: one shell in all states, including the shared action divider. */
+.merge-node { position: relative; border: 0; height: 505px; }
 .merge-node::before { content: ''; position: absolute; inset: 0; border: 1px solid var(--border-weak); border-radius: inherit; pointer-events: none; }
 .fusion-position[data-selected='true'] .merge-node::before { opacity: 0; }
 .merge-node .fusion-content > .fusion-field:first-child { margin-bottom: 4px; }
@@ -112,7 +114,7 @@
 .merge-node .fusion-textarea:focus-within { background: var(--control-fill-focus); border-color: var(--brand-primary); }
 .merge-node .fusion-textarea.has-error { border-color: var(--status-danger); }
 
-/* Figma 136:18488 / 136:18657: 280×417, inside stroke and Beta ChoiceChip. */
+/* Figma 136:18488 / 136:18657: inside stroke and Beta ChoiceChip. */
 .flat-lay-node { position: relative; border: 0; }
 .flat-lay-node::before { content: ''; position: absolute; inset: 0; border: 1px solid var(--border-weak); border-radius: inherit; pointer-events: none; }
 .fusion-position[data-selected='true'] .flat-lay-node::before { opacity: 0; }
@@ -121,7 +123,7 @@
 .flat-lay-face:hover { background: var(--state-hover); color: var(--text-primary); }
 .flat-lay-face[aria-pressed='true'] { border-color: var(--border-brand); background: var(--alpha-brand-20); color: var(--text-primary); }
 
-/* Figma 136:17846 / 136:17987: inside stroke, 269px / 410px shells. */
+/* Figma 136:17846 / 136:17987: inside stroke; shared action divider included in workflowHeight. */
 .directed-node { position: relative; border: 0; }
 .directed-node::before { content: ''; position: absolute; inset: 0; border: 1px solid var(--border-weak); border-radius: inherit; pointer-events: none; }
 .fusion-position[data-selected='true'] .directed-node::before { opacity: 0; }

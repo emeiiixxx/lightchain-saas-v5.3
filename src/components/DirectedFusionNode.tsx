@@ -47,6 +47,8 @@ export function DirectedFusionNode({ image, locale, onChange, onAddMain, onChoos
       </div>)}
       {points.length < MAX_DIRECTED_POINTS && <button type="button" className="fusion-add-main" onClick={() => image.nodeOnly ? onAddMain() : onChoosePoint()}><Icon name="directedAdd" size={20} />{t.add}</button>}
     </div>
-    <GenerateTaskButton label={t.generate} cost="999" className="fusion-generate" disabled={points.length === 0} onClick={() => image.nodeOnly ? onAddMain() : onGenerate()} />
+    <footer className="fusion-node-action">
+      <GenerateTaskButton label={t.generate} cost="999" className="fusion-generate" disabled={points.length === 0} onClick={() => image.nodeOnly ? onAddMain() : onGenerate()} />
+    </footer>
   </section>;
 }

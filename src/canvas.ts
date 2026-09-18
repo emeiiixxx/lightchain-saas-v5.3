@@ -20,20 +20,21 @@ export const FUSION_GAP = 80;
 const BRANCH_GAP = 120;
 export const GROUP_GAP = 240;
 export const FUSION_WIDTH = 280;
-export const FUSION_HEIGHT = 579;
-// Figma: 269px with no points, plus 129px card + 12px gap per point.
+// Shared action footer adds a 1px divider and 12px spacing above the button.
+export const FUSION_HEIGHT = 592;
+// Directed: 282px including the action footer, plus 129px card + 12px gap per point.
 // The 56px add entry and its 12px gap disappear at the three-point limit.
 export function workflowHeight(settings?: FusionSettings) {
-  if (settings?.kind === 'merge') return 492;
+  if (settings?.kind === 'merge') return 505;
   if (settings?.kind === 'flat' && settings.batchFlat) {
     const count = fusionReferences(settings).length;
     const rows = Math.ceil(Math.max(1, count + (count < 20 ? 1 : 0)) / 4);
-    return 388 + Math.min(208, rows * 64 - 8);
+    return 401 + Math.min(208, rows * 64 - 8);
   }
-  if (settings?.kind === 'flat') return 417;
+  if (settings?.kind === 'flat') return 430;
   if (settings?.kind !== 'directed') return FUSION_HEIGHT;
   const count = Math.min(MAX_DIRECTED_POINTS, settings.directedPoints?.length ?? 0);
-  return 269 + count * 141 - (count === MAX_DIRECTED_POINTS ? 68 : 0);
+  return 282 + count * 141 - (count === MAX_DIRECTED_POINTS ? 68 : 0);
 }
 export type CanvasImage = { id: string; name: string; url: string; x: number; y: number; width: number; height: number; role?: 'main'; layoutTaskId?: string; nodeOnly?: boolean; editorSourceId?: string; generatedByEditorId?: string; generatedFromReferenceId?: string; sourceImageId?: string; fusion?: FusionSettings; operation?: 'cutout' | 'fusion' | 'directed' | 'lingerie' | 'flat' };
 export const CANVAS_GRID_SIZE = 32;

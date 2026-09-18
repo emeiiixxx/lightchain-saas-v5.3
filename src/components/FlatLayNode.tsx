@@ -55,6 +55,8 @@ export function FlatLayNode({ image, locale, onChange, onAddMain, onReference, o
         <SettingSelect label={t.resolution} value={settings.resolution} icon="fusionHd" options={['1K', '2K', '4K'].map(value => ({ value, label: value }))} onChange={resolution => onChange({ resolution })} />
       </div></div>
     </div>
-    <GenerateTaskButton label={t.generate} cost="999" className="fusion-generate" onClick={() => batch ? references.length ? onGenerate() : onReference('upload') : image.nodeOnly ? onAddMain() : onGenerate()} />
+    <footer className="fusion-node-action">
+      <GenerateTaskButton label={t.generate} cost="999" className="fusion-generate" onClick={() => batch ? references.length ? onGenerate() : onReference('upload') : image.nodeOnly ? onAddMain() : onGenerate()} />
+    </footer>
   </section>;
 }
