@@ -9,13 +9,14 @@ import { Button, Dialog, Divider, Icon, type IconName } from './components/ui';
 import { DEFAULT_VIEW, createFusionEditor, relatedCanvasIds, deleteCanvasSelection, CANVAS_GRID_SIZE, canvasSafeArea, GROUP_GAP, canvasNodes, defaultFusion, fusionPosition, arrangeImages, boundsOf, fitImages, readImage, zoomAt, type CanvasImage, type FusionSettings, type Viewport } from './canvas';
 import { locales, messages, type Locale } from './i18n';
 import { usePresence } from './usePresence';
-import { magneticDragDelta, type DragSnapContext, type SnapGuides } from './canvas-snapping';
+import { type SnapGuides } from './canvas-snapping';
 import { AssetPicker } from './components/AssetPicker';
 import type { LibraryImage } from './asset-library';
 import { ResultFeedbackPopover } from './components/ResultFeedbackPopover';
 import { ResultFeedbackToolbar, type ResultFeedback } from './components/ResultFeedbackToolbar';
 import { SelectionToolbar } from './components/SelectionToolbar';
 import { CanvasChrome } from './components/CanvasChrome';
+import { ReactFlowCanvas } from './components/ReactFlowCanvas';
 import { FullImageViewer } from './components/FullImageViewer';
 import { FusionNode } from './components/FusionNode';
 import { DirectedFusionNode } from './components/DirectedFusionNode';
@@ -32,7 +33,6 @@ type Tool = 'cutout' | 'fusion' | 'directed' | 'lingerie' | 'flat';
 type Modal = Tool | 'upload' | 'help' | 'support' | 'credits' | 'project' | null;
 type PendingImage = Omit<CanvasImage, 'x' | 'y'>;
 const tools: { id: Tool; icon: IconName; nodeId: string }[] = [
-  { id: 'cutout', icon: 'imgIconImageEditingTool', nodeId: '57:25873' },
   { id: 'fusion', icon: 'imgIconBusinessAi', nodeId: '14:3571' },
   { id: 'directed', icon: 'imgIconBusinessApparelDesign', nodeId: '14:3579' },
   { id: 'lingerie', icon: 'lingerieTryOn', nodeId: '136:16942' },
@@ -93,7 +93,7 @@ export default function App() {
   const [snapToGrid, setSnapToGrid] = useState(() => localStorage.getItem('lc-flow-grid-snap') !== 'off');
   const [canvasMode, setCanvasMode] = useState<'select' | 'hand'>('select');
   const [snapGuide, setSnapGuide] = useState<SnapGuides | null>(null);
-  const [marquee, setMarquee] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
+  const [selecting, setSelecting] = useState(false);
   const [mainTarget, setMainTarget] = useState<string | null>(null);
   const shownMainTarget = usePresence(mainTarget);
   const [directedTarget, setDirectedTarget] = useState<{ editorId: string; pointId?: string } | null>(null);
@@ -131,7 +131,6 @@ export default function App() {
   const future = useRef<Snapshot[]>([]);
   const canvasClipboard = useRef<{ token: string; items: CanvasImage[]; pastes: number } | null>(null);
   const selectedRef = useRef(selectedIds); selectedRef.current = selectedIds;
-  const gesture = useRef<{ pointerId: number; type: 'pan' | 'image' | 'fusion' | 'marquee'; clickedId?: string; ids: string[]; additive: boolean; x: number; y: number; view: Viewport; images: CanvasImage[]; changed: boolean; snap?: DragSnapContext } | null>(null);
   const viewRef = useRef(view); viewRef.current = view;
   const animateView = useCallback((target: Viewport) => {
     if (cameraFrame.current !== null) cancelAnimationFrame(cameraFrame.current);
@@ -175,12 +174,12 @@ export default function App() {
   const selectedResult = useMemo(() => selectedIds.length === 1
     ? images.find(image => image.id === selectedIds[0] && !image.nodeOnly && !image.sourceImageId && image.generatedByEditorId) ?? null
     : null, [images, selectedIds]);
-  const shownResultFeedback = usePresence(!marquee && !canvasReference ? selectedResult : null);
+  const shownResultFeedback = usePresence(!selecting && !canvasReference ? selectedResult : null);
   const [improveTarget, setImproveTarget] = useState<{ imageId: string; anchor: HTMLElement; kind: 'improve' | 'dislike' } | null>(null);
   const shownImprove = usePresence(improveTarget);
   useEffect(() => {
-    if (improveTarget && (selectedResult?.id !== improveTarget.imageId || canvasReference || marquee || page !== 'canvas')) setImproveTarget(null);
-  }, [selectedResult?.id, canvasReference, marquee, page, improveTarget]);
+    if (improveTarget && (selectedResult?.id !== improveTarget.imageId || canvasReference || selecting || page !== 'canvas')) setImproveTarget(null);
+  }, [selectedResult?.id, canvasReference, selecting, page, improveTarget]);
   const [resultFeedback, setResultFeedback] = useState<Record<string, ResultFeedback | undefined>>({});
   const shownSnapGuide = usePresence(snapGuide);
   const shownDrop = usePresence(dropActive ? 'drop' : null);
@@ -196,8 +195,7 @@ export default function App() {
   useEffect(() => {
     const route = () => {
       setPage(window.location.hash === '#/ai-try-on' ? 'tryon' : 'canvas');
-      setMenu(null); setCanvasMenu(null); setDirectedTarget(null); setSpaceDown(false); setDragging(false); setMarquee(null); setSnapGuide(null); setCanvasReference(null);
-      gesture.current = null;
+      setMenu(null); setCanvasMenu(null); setDirectedTarget(null); setSpaceDown(false); setDragging(false); setSelecting(false); setSnapGuide(null); setCanvasReference(null);
       document.dispatchEvent(new CustomEvent('lc-select-open', { detail: 'page-navigation' }));
     };
     window.addEventListener('hashchange', route);
@@ -250,6 +248,21 @@ export default function App() {
 
   const announce = notify;
   const remember = useCallback((previous: CanvasImage[], selection = selectedRef.current) => { history.current = [...history.current.slice(-39), {images: previous, selectedIds: selection}]; future.current = []; setCanUndo(true); setCanRedo(false); }, []);
+  const selectFlowNodes = useCallback((ids: string[]) => { selectedRef.current = ids; setSelectedIds(ids); }, []);
+  const moveFlowNodes = useCallback((positions: Map<string, { x: number; y: number }>) => {
+    const next = imageRef.current.map(image => {
+      const point = positions.get(image.id), editor = positions.get(`${image.id}:fusion`);
+      if (!point && !editor) return image;
+      return { ...image, ...(point ?? (image.nodeOnly ? editor : undefined)), ...(image.fusion ? { fusion: { ...image.fusion, position: editor ?? fusionPosition(image) } } : {}) };
+    });
+    imageRef.current = next; setImages(next);
+  }, []);
+  const flowDragging = useRef(false);
+  const startFlowDrag = useCallback(() => {
+    if (!flowDragging.current) remember(imageRef.current);
+    flowDragging.current = true; setDragging(true);
+  }, [remember]);
+  const finishFlowDrag = useCallback(() => { flowDragging.current = false; setDragging(false); setSnapGuide(null); }, []);
   const undo = useCallback(() => { const previous = history.current.pop(); if (previous) { future.current.push({ images: imageRef.current, selectedIds: selectedRef.current }); setImages(previous.images); setSelectedIds(previous.selectedIds); } setCanUndo(history.current.length > 0); setCanRedo(future.current.length > 0); }, []);
   const redo = useCallback(() => { const next = future.current.pop(); if (next) { history.current.push({ images: imageRef.current, selectedIds: selectedRef.current }); setImages(next.images); setSelectedIds(next.selectedIds); } setCanUndo(history.current.length > 0); setCanRedo(future.current.length > 0); }, []);
   const fit = useCallback(() => { const rect = canvas.current?.getBoundingClientRect(); if (rect) setView(fitImages(canvasNodes(imageRef.current), rect.width, rect.height)); }, []);
@@ -342,7 +355,7 @@ export default function App() {
       if (event.isComposing || isField(event.target)) return;
       if (canvasMenu) { if (event.key === 'Escape') { event.preventDefault(); closeCanvasMenu(); } return; }
       if (event.code === 'Space' && document.documentElement.dataset.focusNavigation === 'keyboard' && event.target instanceof Element && event.target.closest('button, [role="button"]')) return;
-      if (event.key === 'Alt' || event.key === 'Escape') { setSnapGuide(null); if (gesture.current?.snap) gesture.current.snap.locks = {}; }
+      if (event.key === 'Alt' || event.key === 'Escape') { setSnapGuide(null); }
       if (canvasReference) { if (event.key === 'Escape') { setCanvasReference(null); setSpaceDown(false); } else if (event.code === 'Space') { event.preventDefault(); setSpaceDown(true); } return; }
       if (event.key === 'Escape') { if (previewImage) {setPreviewImage(null); return;} if (modal || referenceTarget || document.querySelector('dialog[open]')) return; setSelectedIds([]); setMenu(null); setSpaceDown(false); return; }
       if (isField(event.target) || (event.target instanceof Element && event.target.closest('.fusion-node')) || modal || referenceTarget || menu || previewImage || document.querySelector('dialog[open]')) return;
@@ -355,94 +368,17 @@ export default function App() {
       if (event.key === '0') { event.preventDefault(); fit(); }
     };
     const up = (event: KeyboardEvent) => { if (event.code === 'Space') setSpaceDown(false); };
-    const blur = () => { setSpaceDown(false); gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null); };
+    const blur = () => { setSpaceDown(false); setDragging(false); setSelecting(false); setSnapGuide(null); };
     window.addEventListener('keydown', down); window.addEventListener('keyup', up); window.addEventListener('blur', blur);
     return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); window.removeEventListener('blur', blur); };
   }, [page, modal, referenceTarget, mainTarget, cutoutImage, canvasReference, menu, previewImage, canvasMenu, closeCanvasMenu, fit, undo, redo, removeSelected, duplicateSelected]);
 
-  useEffect(() => {
-    const element = canvas.current;
-    if (!element) return;
-    const wheel = (event: WheelEvent) => {
-      const zooming = event.ctrlKey || event.metaKey || event.altKey;
-      if (event.target instanceof Element) {
-        const target = event.target;
-        // Canvas items are part of the navigable canvas, even when their controls
-        // are marked as overlays. Only real popups and scrollable fields opt out.
-        if (target.closest('dialog, [popover]')) return;
-        if (target.closest('[data-overlay]') && !target.closest('[data-image], .fusion-node')) return;
-        const field = target.closest('textarea, [data-canvas-scroll]');
-        if (!zooming && field && field.scrollHeight > field.clientHeight) return;
-      }
-      event.preventDefault(); const rect = element.getBoundingClientRect();
-      setView(v => zooming
-        ? zoomAt(v, Math.exp(-event.deltaY * 0.005), event.clientX - rect.left, event.clientY - rect.top)
-        : { ...v, x: v.x - event.deltaX, y: v.y - event.deltaY });
-    };
-    element.addEventListener('wheel', wheel, { passive: false, capture: true }); return () => element.removeEventListener('wheel', wheel, true);
-  }, []);
-
-  function beginPointer(event: ReactPointerEvent, id?: string, fusion = false) {
-    if (event.button !== 0 && event.button !== 1) return;
-    if (!fusion && event.target instanceof Element && event.target.closest('[data-overlay]')) return;
-    event.preventDefault(); event.stopPropagation();
-    if (canvasReference && !spaceDown && canvasMode !== 'hand' && event.button === 0 && id && !fusion) { toggleCanvasReference(id); return; }
-    // Pointer gestures suppress native focus transfer. Give keyboard shortcuts
-    // back to the canvas instead of leaving focus in the previous node control.
-    canvas.current?.focus({ preventScroll: true });
-    const pan = !!canvasReference || spaceDown || canvasMode === 'hand' || event.button === 1 || !images.length;
-    let ids = selectedRef.current;
-    if (!pan && id) {
-      if (event.shiftKey) ids = ids.includes(id) ? ids.filter(n => n !== id) : [...ids, id];
-      else if (!ids.includes(id)) ids = [id];
-      setSelectedIds(ids);
-      if (!ids.includes(id)) return;
-    } else if (!pan && !event.shiftKey) { ids = []; setSelectedIds([]); }
-    setSnapGuide(null);
-    const dragNodes = !pan && id ? canvasNodes(images) : [];
-    const movingIds = new Set(ids);
-    const movingBounds = boundsOf(dragNodes.filter(node => movingIds.has(node.id)));
-    const anchor = dragNodes.find(node => node.id === id);
-    const snap: DragSnapContext | undefined = movingBounds && anchor
-      ? { bounds: movingBounds, anchor, targets: dragNodes.filter(node => !movingIds.has(node.id)), locks: {} } : undefined;
-    gesture.current = { pointerId: event.pointerId, type: pan ? 'pan' : fusion ? 'fusion' : id ? 'image' : 'marquee', clickedId: id, ids, additive: event.shiftKey, x: event.clientX, y: event.clientY, view, images, changed: false, snap };
-    event.currentTarget.setPointerCapture(event.pointerId); setDragging(true);
-  }
-  function movePointer(event: ReactPointerEvent) {
-    const g = gesture.current; if (!g || event.pointerId !== g.pointerId) return;
-    const dx = event.clientX - g.x, dy = event.clientY - g.y;
-    if (Math.abs(dx) + Math.abs(dy) < 3 && !g.changed) return;
-    g.changed = true;
-    if (g.type === 'pan') setView({ ...g.view, x: g.view.x + dx, y: g.view.y + dy });
-    else if (g.type === 'image' || g.type === 'fusion') {
-      if (!g.snap) return;
-      const delta = magneticDragDelta(g.snap, dx, dy, g.view.zoom, snapToGrid && !event.altKey);
-      setSnapGuide(delta.guides);
-      setImages(g.images.map(n => {
-      const imageSelected = g.ids.includes(n.id), nodeSelected = g.ids.includes(`${n.id}:fusion`);
-      if (!imageSelected && !nodeSelected) return n;
-      const position = fusionPosition(n);
-      return { ...n, x: n.x + (imageSelected ? delta.x : 0), y: n.y + (imageSelected ? delta.y : 0),
-        fusion: n.fusion ? { ...n.fusion, position: { x: position.x + (nodeSelected ? delta.x : 0), y: position.y + (nodeSelected ? delta.y : 0) } } : undefined };
-    }));
-    } else {
-      const r = canvas.current!.getBoundingClientRect();
-      const box = { x: Math.min(g.x, event.clientX) - r.left, y: Math.min(g.y, event.clientY) - r.top, width: Math.abs(dx), height: Math.abs(dy) };
-      setMarquee(box);
-      const picked = canvasNodes(g.images).filter(n => {
-        const x = n.x * g.view.zoom + g.view.x, y = n.y * g.view.zoom + g.view.y;
-        return x < box.x + box.width && x + n.width * g.view.zoom > box.x && y < box.y + box.height && y + n.height * g.view.zoom > box.y;
-      }).map(n => n.id);
-      setSelectedIds([...new Set([...(g.additive ? g.ids : []), ...picked])]);
+  function selectReferenceImage(event: ReactPointerEvent, id: string) {
+    if (canvasReference && !spaceDown && canvasMode !== 'hand' && event.button === 0 && !(event.target instanceof Element && event.target.closest('[data-overlay]'))) {
+      event.preventDefault(); event.stopPropagation(); toggleCanvasReference(id);
     }
   }
-  function endPointer(event: ReactPointerEvent) {
-    const g = gesture.current; if (!g || event.pointerId !== g.pointerId) return;
-    if ((g.type === 'image' || g.type === 'fusion') && g.changed) remember(g.images, g.ids);
-    if ((g.type === 'image' || g.type === 'fusion') && !g.changed && !g.additive && g.clickedId) setSelectedIds([g.clickedId]);
-    gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null);
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-  }
+
   function addImages(items: PendingImage[], point?: { x: number; y: number } | null) {
     const item = items[0];
     if (!item) return;
@@ -734,7 +670,6 @@ export default function App() {
     </header>
 
     <main hidden={page !== 'canvas'} inert={page !== 'canvas'} ref={canvas} tabIndex={-1} className={`canvas ${spaceDown || canvasMode === 'hand' ? 'is-panning' : ''} ${dragging ? 'is-dragging' : ''}`} aria-label={t.canvas}
-      onPointerDown={e => beginPointer(e)} onPointerMove={movePointer} onPointerUp={endPointer} onPointerCancel={endPointer}
       onDoubleClick={e => {
         if (canvasReference || !(e.target instanceof Element) || e.target.closest('[data-overlay], [data-image], .fusion-position, .selection-overlay')) return;
         e.preventDefault(); closeCanvasMenu();
@@ -744,9 +679,7 @@ export default function App() {
       onContextMenu={e => {
         if (canvasReference || !(e.target instanceof Element) || e.target.closest('[data-overlay], [data-image], .fusion-position, .selection-overlay')) return;
         e.preventDefault();
-        const activeGesture = gesture.current;
-        if (activeGesture && e.currentTarget.hasPointerCapture(activeGesture.pointerId)) e.currentTarget.releasePointerCapture(activeGesture.pointerId);
-        gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null);
+        setDragging(false); setSelecting(false); setSnapGuide(null);
         const rect = e.currentTarget.getBoundingClientRect(), v = viewRef.current;
         document.dispatchEvent(new CustomEvent('lc-select-open', { detail: 'canvas-context' }));
         setCanvasMenu({ x: e.clientX, y: e.clientY, worldX: (e.clientX - rect.left - v.x) / v.zoom, worldY: (e.clientY - rect.top - v.y) / v.zoom });
@@ -794,7 +727,9 @@ export default function App() {
         </button>
       </section>}
 
-      <div className="canvas-world" style={{ transform: canvasTransform, '--canvas-inverse-scale': 1 / view.zoom } as React.CSSProperties}>
+      <ReactFlowCanvas view={view} selectedIds={selectedIds} hand={spaceDown || canvasMode === 'hand'} referenceMode={!!canvasReference}
+        snap={snapToGrid} onView={setView} onSelection={selectFlowNodes} onPositions={moveFlowNodes}
+        onDragStart={startFlowDrag} onDragEnd={finishFlowDrag} onGuides={setSnapGuide} onSelecting={setSelecting}>
         {images.filter(result => !result.nodeOnly && !result.sourceImageId && result.generatedByEditorId).map(result => {
           const editor = images.find(item => item.id === result.generatedByEditorId && item.fusion);
           if (!editor) return null;
@@ -804,10 +739,10 @@ export default function App() {
           const source = images.find(item => !item.nodeOnly && item.id === result.sourceImageId);
           return source ? <ImageConnection zoom={view.zoom} key={`cutout:${result.id}`} image={source} target={result} active={selectedIds.includes(source.id) || selectedIds.includes(result.id)} /> : null;
         })}
-        {images.filter(n => !n.nodeOnly).map(n => <div key={n.id} data-image className={`canvas-image ${(canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)) ? 'selected' : ''}`} style={{ left: n.x, top: n.y, width: n.width, height: n.height, zIndex: foregroundIds.has(n.id) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
+        {images.filter(n => !n.nodeOnly).map(n => <div key={n.id} data-image data-canvas-id={n.id} className={`canvas-image ${(canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)) ? 'selected' : ''}`} style={{ left: n.x, top: n.y, width: n.width, height: n.height, zIndex: foregroundIds.has(n.id) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
           tabIndex={0} role="button" aria-label={`${t.image}: ${n.name}`} aria-pressed={canvasReference ? canvasReference.ids.includes(n.id) : selectedIds.includes(n.id)}
-          onFocus={e => { if (!canvasReference && e.target === e.currentTarget && !selectedRef.current.includes(n.id)) setSelectedIds([n.id]); }} onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || (e.key === ' ' && document.documentElement.dataset.focusNavigation === 'keyboard'))) { e.preventDefault(); if (canvasReference) { toggleCanvasReference(n.id); return; } setSelectedIds(e.shiftKey ? selectedIds.includes(n.id) ? selectedIds.filter(id => id !== n.id) : [...selectedIds, n.id] : [n.id]); } }}
-          onPointerDown={e => beginPointer(e, n.id)}
+          onFocus={e => { if (document.documentElement.dataset.focusNavigation === 'keyboard' && !canvasReference && e.target === e.currentTarget && !selectedRef.current.includes(n.id)) setSelectedIds([n.id]); }} onKeyDown={e => { if (e.target === e.currentTarget && (e.key === 'Enter' || (e.key === ' ' && document.documentElement.dataset.focusNavigation === 'keyboard'))) { e.preventDefault(); if (canvasReference) { toggleCanvasReference(n.id); return; } setSelectedIds(e.shiftKey ? selectedIds.includes(n.id) ? selectedIds.filter(id => id !== n.id) : [...selectedIds, n.id] : [n.id]); } }}
+          onPointerDown={e => selectReferenceImage(e, n.id)}
           onContextMenu={e => {
             e.preventDefault(); e.stopPropagation();
             if (canvasReference || !canvas.current) return;
@@ -815,9 +750,7 @@ export default function App() {
               ? [...selectedRef.current]
               : [n.id];
             selectedRef.current = ids; setSelectedIds(ids);
-            const activeGesture = gesture.current;
-            if (activeGesture && canvas.current.hasPointerCapture(activeGesture.pointerId)) canvas.current.releasePointerCapture(activeGesture.pointerId);
-            gesture.current = null; setDragging(false); setMarquee(null); setSnapGuide(null);
+            setDragging(false); setSelecting(false); setSnapGuide(null);
             const rect = canvas.current.getBoundingClientRect(), v = viewRef.current;
             document.dispatchEvent(new CustomEvent('lc-select-open', { detail: 'canvas-context' }));
             setCanvasMenu({ kind: 'image', x: e.clientX, y: e.clientY, worldX: (e.clientX - rect.left - v.x) / v.zoom, worldY: (e.clientY - rect.top - v.y) / v.zoom });
@@ -831,18 +764,9 @@ export default function App() {
           return <div key={`${n.id}:fusion`}>
           {sources.map(input => <ImageConnection key={input.id} zoom={view.zoom} image={input} target={{...fusionPosition(n),id:`${n.id}:fusion`,width:280,height:workflowHeight(n.fusion)}} active={selectedIds.includes(input.id) || selectedIds.includes(`${n.id}:fusion`)} />)}
           <div className="fusion-position" data-fusion-id={n.id} data-selected={selectedIds.includes(`${n.id}:fusion`)} tabIndex={0} role="group" aria-label={`${n.fusion?.kind === 'directed' ? t.directed : n.fusion?.kind === 'lingerie' ? t.lingerie : n.fusion?.kind === 'flat' ? t.flat : n.fusion?.kind === 'merge' ? t.mergeImages : t.fusion} · ${n.name}`}
-            style={{ left: fusionPosition(n).x, top: fusionPosition(n).y, zIndex: foregroundIds.has(`${n.id}:fusion`) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
-            onFocus={() => { if (!canvasReference && !selectedRef.current.includes(`${n.id}:fusion`)) setSelectedIds([`${n.id}:fusion`]); }}
-            onPointerDownCapture={e => {
-              if (canvasReference) { e.preventDefault(); e.stopPropagation(); return; }
-              if (e.button !== 0 && e.button !== 1) return;
-              if (e.target instanceof Element && e.target.closest('[data-select-popup]')) return;
-              if (e.target instanceof Element && e.target.closest('button, input, textarea, select, dialog, [data-canvas-scroll]')) {
-                if (e.button === 0 && !selectedRef.current.includes(`${n.id}:fusion`)) setSelectedIds([`${n.id}:fusion`]);
-                return;
-              }
-              beginPointer(e, `${n.id}:fusion`, true);
-            }}>
+            style={{ left: fusionPosition(n).x, top: fusionPosition(n).y, width: 280, height: workflowHeight(n.fusion), zIndex: foregroundIds.has(`${n.id}:fusion`) ? 3 : raisedIds.has(n.id) ? 2 : undefined } as React.CSSProperties}
+            onFocus={() => { if (document.documentElement.dataset.focusNavigation === 'keyboard' && !canvasReference && !selectedRef.current.includes(`${n.id}:fusion`)) setSelectedIds([`${n.id}:fusion`]); }}
+            >
             {n.fusion?.kind === 'flat'
               ? <FlatLayNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onChange={patch => updateFusion(n.id, patch)} onGenerate={() => generateDemo(n.id)} />
               : n.fusion?.kind === 'directed'
@@ -850,9 +774,9 @@ export default function App() {
               : <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => generateDemo(n.id)} onNotify={announce} />}
           </div>
         </div>;})}
-      </div>
+      </ReactFlowCanvas>
 
-      {shownSelection.value && !marquee && !canvasReference && <div className="selection-overlay" data-phase={shownSelection.phase} aria-label={t.groupSelection} style={{
+      {shownSelection.value && !selecting && !canvasReference && <div className="selection-overlay" data-phase={shownSelection.phase} aria-label={t.groupSelection} style={{
         left: shownSelection.value.bounds.x * view.zoom + view.x, top: shownSelection.value.bounds.y * view.zoom + view.y,
         width: shownSelection.value.bounds.width * view.zoom, height: shownSelection.value.bounds.height * view.zoom,
       }}>
@@ -884,7 +808,6 @@ export default function App() {
         {shownSnapGuide.value.x !== undefined && <span className="canvas-snap-guide canvas-snap-guide--vertical" style={{ left: shownSnapGuide.value.x * view.zoom + view.x }} />}
         {shownSnapGuide.value.y !== undefined && <span className="canvas-snap-guide canvas-snap-guide--horizontal" style={{ top: shownSnapGuide.value.y * view.zoom + view.y }} />}
       </div>}
-      {marquee && <div className="selection-marquee" style={{left: marquee.x, top: marquee.y, width: marquee.width, height: marquee.height}} />}
       {shownReturnToNodes.value && !canvasReference && <div className="canvas-return-hint" data-overlay data-phase={shownReturnToNodes.phase} inert={shownReturnToNodes.phase === 'exit'}>
         <p role="status">{t.noNodesInView}</p>
         <Button variant="primary" size="s" onClick={fit}>{t.returnToNodes}</Button>
@@ -895,7 +818,7 @@ export default function App() {
         <Button variant="primary" disabled={!canvasReference?.ids.length} onClick={() => { if (canvasReference) addReferences(canvasReference.target, images.filter(n => canvasReference.ids.includes(n.id))); setCanvasReference(null); }}>{t.confirm}</Button>
       </div>}
       {images.length > 0 && <CanvasChrome locale={locale} mode={spaceDown ? 'hand' : canvasMode} onMode={setCanvasMode} zoom={view.zoom} view={view} canvasSize={canvasSize} images={navigationNodes}
-        snapToGrid={snapToGrid} onToggleSnap={() => { setSnapGuide(null); if (gesture.current?.snap) gesture.current.snap.locks = {}; setSnapToGrid(current => { localStorage.setItem('lc-flow-grid-snap', current ? 'off' : 'on'); return !current; }); }}
+        snapToGrid={snapToGrid} onToggleSnap={() => { setSnapGuide(null); setSnapToGrid(current => { localStorage.setItem('lc-flow-grid-snap', current ? 'off' : 'on'); return !current; }); }}
         onNavigateMinimap={navigateMinimap} onMinimapInteraction={setDragging}
         canUndo={canUndo && !canvasReference} canRedo={canRedo && !canvasReference} onUndo={() => { if (!canvasReference) undo(); }} onRedo={() => { if (!canvasReference) redo(); }} onUpload={() => { if (!canvasReference) openUpload(); }} onZoom={changeZoom} onFit={fit} onArrange={() => { if (!canvasReference) arrange(); }}
         onHelp={() => setModal('help')} onDemo={() => announce(t.noBackend)} />}

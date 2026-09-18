@@ -1,0 +1,18 @@
+.lc-react-flow { position: absolute; inset: 0; }
+.lc-react-flow .react-flow { background: transparent; --xy-node-background-color: transparent; --xy-node-border: none; --xy-selection-background-color: var(--selection-blue-fill); --xy-selection-border: 2px dashed var(--selection-blue); }
+.lc-react-flow .react-flow__viewport,
+.lc-react-flow .react-flow__node,
+.lc-react-flow .react-flow__nodesselection,
+.lc-react-flow .react-flow__nodesselection-rect { transition: none; }
+.lc-react-flow .react-flow__node-lightchain { padding: 0; border: 0; background: transparent; box-shadow: none; border-radius: 16px; }
+.lc-react-flow .react-flow__node:focus { outline: none; }
+.lc-react-flow .lc-flow-handle { opacity: 0; pointer-events: none; width: 1px; height: 1px; min-width: 0; min-height: 0; border: 0; }
+.lc-react-flow .react-flow__nodesselection-rect { border: 0; background: transparent; }
+.lc-react-flow .react-flow__selection { transition: none; }
+.lc-react-flow .react-flow__edge { pointer-events: none; }
+.lc-flow-connection path { fill: none; transition-property: stroke; }
+.lc-flow-edge-line { stroke: var(--border-medium); stroke-width: calc(2px * var(--canvas-inverse-scale, 1)); }
+.lc-flow-connection[data-active='true'] .lc-flow-edge-line { stroke: var(--border-brand); stroke-dasharray: calc(8px * var(--canvas-inverse-scale, 1)) calc(6px * var(--canvas-inverse-scale, 1)); animation: lc-flow-ants 800ms linear infinite; }
+.lc-flow-edge-underlay { stroke: #111817; stroke-width: calc(4px * var(--canvas-inverse-scale, 1)); stroke-linecap: round; }
+@keyframes lc-flow-ants { to { stroke-dashoffset: calc(-14px * var(--canvas-inverse-scale, 1)); } }
+@media (prefers-reduced-motion: reduce) { .lc-flow-connection path { animation: none !important; } }
