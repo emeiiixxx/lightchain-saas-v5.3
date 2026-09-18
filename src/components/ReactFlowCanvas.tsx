@@ -3,6 +3,7 @@ import { Handle, Position, ReactFlow, SelectionMode, type Edge, type EdgeProps, 
 import { boundsOf, type CanvasImage, type Viewport } from '../canvas';
 import { magneticDragDelta, type DragSnapContext, type SnapGuides } from '../canvas-snapping';
 import { ImageConnection } from './FusionConnection';
+import { flowNodeGeometry } from '../react-flow-geometry';
 import './react-flow-canvas.css';
 
 type ContentProps = { children?: ReactNode; style?: CSSProperties; className?: string; 'data-canvas-id'?: string; 'data-fusion-id'?: string; image?: CanvasImage; target?: CanvasImage; active?: boolean; zoom?: number };
@@ -60,7 +61,7 @@ export function ReactFlowCanvas(props: Props) {
         const id = p['data-canvas-id'] ?? `${p['data-fusion-id']}:fusion`;
         const style = p.style ?? {};
         nodes.push({ id, type: 'lightchain', position: { x: Number(style.left), y: Number(style.top) },
-          width: Number(style.width) || 280, height: Number(style.height) || undefined,
+          ...flowNodeGeometry(Number(style.width) || 280, Number(style.height) || 400),
           selected: props.selectedIds.includes(id), zIndex: Number(style.zIndex) || 1,
           data: { content: cloneElement(child, { style: { ...style, left: 0, top: 0, position: 'relative', zIndex: undefined } }) } });
       } else visit(p.children);
