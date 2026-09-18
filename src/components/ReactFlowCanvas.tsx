@@ -130,7 +130,9 @@ export function ReactFlowCanvas(props: Props) {
       onSelectionDragStart={(e, nodes) => { if (nodes[0]) beginDrag(e, nodes[0], nodes); }} onSelectionDragStop={endDrag}
       nodeDragThreshold={0}
       nodesDraggable={!props.hand && !props.referenceMode} elementsSelectable={!props.hand && !props.referenceMode}
-      selectionOnDrag={!props.hand && !props.referenceMode} selectionMode={SelectionMode.Partial} selectionKeyCode="Shift" multiSelectionKeyCode="Shift"
+      // Blank-space dragging already enables marquee selection. Binding Shift
+      // to it too makes Pane capture node clicks before additive selection.
+      selectionOnDrag={!props.hand && !props.referenceMode} selectionMode={SelectionMode.Partial} selectionKeyCode={null} multiSelectionKeyCode="Shift"
       panOnDrag={props.hand || props.referenceMode ? true : [1]} panActivationKeyCode="Space"
       panOnScroll panOnScrollSpeed={1} zoomOnScroll={false} zoomOnPinch zoomActivationKeyCode={['Alt','Meta','Control']}
       proOptions={{ hideAttribution: true }}
