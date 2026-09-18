@@ -129,6 +129,10 @@
 [data-theme='dark'] { --overlay-toast: rgba(36, 48, 50, .8); }
 [data-theme='light'] { --overlay-toast: rgba(61, 72, 75, .6); }
 
+/* Beta Surface/danger: Alpha/Danger/dark and Alpha/Danger/light. */
+[data-theme='dark'] { --surface-danger: rgba(66, 36, 36, .8); }
+[data-theme='light'] { --surface-danger: rgba(255, 232, 232, .8); }
+
 /* BackgroundBlur/S: Figma radius 20, design-context CSS blur 10px. */
 :root { --background-blur-s: 10px; }
 

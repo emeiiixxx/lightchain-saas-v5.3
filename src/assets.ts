@@ -1,5 +1,6 @@
 // Figma node 12:3127 assets; theme icons reuse the existing 5.2 TopBar artwork.
 export const assets = {
+  toastExclamation: '/assets/prompts/toast-exclamation.svg',
   aiTryOn: '/assets/try-on/ai-try-on.svg',
   tryOnImagePrompt: '/assets/try-on/image-to-prompt.svg',
   tryOnCopyPrompt: '/assets/try-on/copy-prompt.svg',

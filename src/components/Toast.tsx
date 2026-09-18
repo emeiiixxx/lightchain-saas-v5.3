@@ -1,22 +1,25 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { usePresence } from '../usePresence';
+import { Icon } from './ui';
 import './toast.css';
 
-export function notify(message: string) {
-  window.dispatchEvent(new CustomEvent('lc-toast', { detail: message }));
+type ToastNotice = { message: string; tone?: 'default' | 'error' };
+
+export function notify(message: string, tone: ToastNotice['tone'] = 'default') {
+  window.dispatchEvent(new CustomEvent<ToastNotice>('lc-toast', { detail: { message, tone } }));
 }
 
 export function ToastHost() {
-  const [notice, setNotice] = useState<{ message: string } | null>(null);
+  const [notice, setNotice] = useState<ToastNotice | null>(null);
   const shown = usePresence(notice);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     const receive = (event: Event) => {
-      const message = (event as CustomEvent<string>).detail;
+      const detail = (event as CustomEvent<ToastNotice | string>).detail;
       clearTimeout(timer);
-      setNotice({ message });
+      setNotice(typeof detail === 'string' ? { message: detail } : detail);
       timer = setTimeout(() => setNotice(null), 5000);
     };
     window.addEventListener('lc-toast', receive);
@@ -29,5 +32,5 @@ export function ToastHost() {
       ref.current.showPopover();
     }
   }, [notice]);
-  return shown.value ? createPortal(<div ref={ref} popover="manual" className="lc-toast" data-phase={shown.phase} role="status" aria-live="polite">{shown.value.message}</div>, document.body) : null;
+  return shown.value ? createPortal(<div ref={ref} popover="manual" className="lc-toast" data-tone={shown.value.tone} data-phase={shown.phase} role={shown.value.tone === 'error' ? 'alert' : 'status'} aria-live={shown.value.tone === 'error' ? 'assertive' : 'polite'}>{shown.value.tone === 'error' && <Icon name="toastExclamation" size={16} />}<span>{shown.value.message}</span></div>, document.body) : null;
 }

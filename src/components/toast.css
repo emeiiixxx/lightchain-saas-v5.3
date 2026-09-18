@@ -1,3 +1,7 @@
 /* Figma 38:13501, Beta Toast. Viewport anchored and above native dialogs. */
 .lc-toast { position: fixed; inset: 56px auto auto 50%; transform: translateX(-50%); margin: 0; width: max-content; max-width: calc(100vw - 32px); padding: 8px 16px; border: 1px solid var(--border-weak); border-radius: 8px; background: var(--overlay-toast); backdrop-filter: blur(10px); color: var(--text-on-brand-white); font-size: 14px; font-weight: 400; line-height: 20px; text-align: center; overflow-wrap: anywhere; pointer-events: none; }
 .lc-toast::backdrop { background: transparent; pointer-events: none; }
+/* Figma 237:6392, Beta Toast / Error. */
+.lc-toast[data-tone='error'] { display: flex; align-items: center; gap: 4px; background: var(--surface-danger); color: var(--status-danger); text-align: left; }
+.lc-toast[data-tone='error'] > .icon { flex-shrink: 0; }
+.lc-toast[data-tone='error'] > span:last-child { min-width: 0; }
