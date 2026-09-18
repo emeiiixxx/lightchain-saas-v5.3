@@ -1,4 +1,7 @@
 .lc-react-flow { position: absolute; inset: 0; }
+.lc-react-flow .react-flow__pane { cursor: default; }
+.lc-react-flow[data-hand='true'] .react-flow__pane { cursor: grab; }
+.lc-react-flow .react-flow__pane.dragging { cursor: grabbing; }
 .lc-react-flow .react-flow { background: transparent; --xy-node-background-color: transparent; --xy-node-border: none; --xy-selection-background-color: var(--selection-blue-fill); --xy-selection-border: 2px dashed var(--selection-blue); }
 .lc-react-flow .react-flow__viewport,
 .lc-react-flow .react-flow__node,

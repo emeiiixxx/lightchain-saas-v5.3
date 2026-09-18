@@ -105,7 +105,7 @@ export function ReactFlowCanvas(props: Props) {
     // feed back into App, so its preset-zoom animation is not cancelled by echo.
     if (v.x !== current.x || v.y !== current.y || v.zoom !== current.zoom) latest.current.onView(v);
   }, []);
-  return <div className="lc-react-flow" style={{ '--canvas-inverse-scale': 1 / props.view.zoom } as CSSProperties}
+  return <div className="lc-react-flow" data-hand={props.hand} style={{ '--canvas-inverse-scale': 1 / props.view.zoom } as CSSProperties}
     onPointerMoveCapture={e => { bypass.current = e.altKey; }}
     onPointerDownCapture={e => {
       if (e.target instanceof Element) {
@@ -127,6 +127,7 @@ export function ReactFlowCanvas(props: Props) {
       onSelectionStart={() => latest.current.onSelecting(true)} onSelectionEnd={() => latest.current.onSelecting(false)}
       onNodeDragStart={beginDrag} onNodeDragStop={endDrag}
       onSelectionDragStart={(e, nodes) => { if (nodes[0]) beginDrag(e, nodes[0], nodes); }} onSelectionDragStop={endDrag}
+      nodeDragThreshold={0}
       nodesDraggable={!props.hand && !props.referenceMode} elementsSelectable={!props.hand && !props.referenceMode}
       selectionOnDrag={!props.hand && !props.referenceMode} selectionMode={SelectionMode.Partial} selectionKeyCode="Shift" multiSelectionKeyCode="Shift"
       panOnDrag={props.hand || props.referenceMode ? true : [1]} panActivationKeyCode="Space"

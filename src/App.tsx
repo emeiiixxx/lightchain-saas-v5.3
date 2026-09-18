@@ -249,19 +249,26 @@ export default function App() {
   const announce = notify;
   const remember = useCallback((previous: CanvasImage[], selection = selectedRef.current) => { history.current = [...history.current.slice(-39), {images: previous, selectedIds: selection}]; future.current = []; setCanUndo(true); setCanRedo(false); }, []);
   const selectFlowNodes = useCallback((ids: string[]) => { selectedRef.current = ids; setSelectedIds(ids); }, []);
+  const flowDragging = useRef(false);
+  const flowDragRecorded = useRef(false);
   const moveFlowNodes = useCallback((positions: Map<string, { x: number; y: number }>) => {
     const next = imageRef.current.map(image => {
       const point = positions.get(image.id), editor = positions.get(`${image.id}:fusion`);
       if (!point && !editor) return image;
       return { ...image, ...(point ?? (image.nodeOnly ? editor : undefined)), ...(image.fusion ? { fusion: { ...image.fusion, position: editor ?? fusionPosition(image) } } : {}) };
     });
+    const changed = next.some((image, index) => {
+      const previous = imageRef.current[index];
+      return image.x !== previous.x || image.y !== previous.y || (image.fusion && previous.fusion &&
+        (fusionPosition(image).x !== fusionPosition(previous).x || fusionPosition(image).y !== fusionPosition(previous).y));
+    });
+    if (!changed) return;
+    if (flowDragging.current && !flowDragRecorded.current) { remember(imageRef.current); flowDragRecorded.current = true; }
     imageRef.current = next; setImages(next);
-  }, []);
-  const flowDragging = useRef(false);
-  const startFlowDrag = useCallback(() => {
-    if (!flowDragging.current) remember(imageRef.current);
-    flowDragging.current = true; setDragging(true);
   }, [remember]);
+  const startFlowDrag = useCallback(() => {
+    flowDragRecorded.current = false; flowDragging.current = true; setDragging(true);
+  }, []);
   const finishFlowDrag = useCallback(() => { flowDragging.current = false; setDragging(false); setSnapGuide(null); }, []);
   const undo = useCallback(() => { const previous = history.current.pop(); if (previous) { future.current.push({ images: imageRef.current, selectedIds: selectedRef.current }); setImages(previous.images); setSelectedIds(previous.selectedIds); } setCanUndo(history.current.length > 0); setCanRedo(future.current.length > 0); }, []);
   const redo = useCallback(() => { const next = future.current.pop(); if (next) { history.current.push({ images: imageRef.current, selectedIds: selectedRef.current }); setImages(next.images); setSelectedIds(next.selectedIds); } setCanUndo(history.current.length > 0); setCanRedo(future.current.length > 0); }, []);
