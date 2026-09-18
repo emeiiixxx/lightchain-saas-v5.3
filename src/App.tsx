@@ -762,7 +762,7 @@ export default function App() {
             document.dispatchEvent(new CustomEvent('lc-select-open', { detail: 'canvas-context' }));
             setCanvasMenu({ kind: 'image', x: e.clientX, y: e.clientY, worldX: (e.clientX - rect.left - v.x) / v.zoom, worldY: (e.clientY - rect.top - v.y) / v.zoom });
           }}>
-          <Button hidden={!!canvasReference} variant="tonal" className="image-preview-button" aria-label={`${t.viewFull} · ${n.name}`} title={t.viewFull} data-overlay onClick={() => setPreviewImage(n)}><Icon name="viewFull" size={20} /></Button>
+          <Button hidden={!!canvasReference} variant="tonal" className="image-preview-button nodrag nopan" aria-label={`${t.viewFull} · ${n.name}`} title={t.viewFull} data-overlay onClick={event => { event.stopPropagation(); setPreviewImage(n); }}><Icon name="viewFull" size={20} /></Button>
           <ProgressiveImage src={n.url} alt={n.name} width={n.width} height={n.height} fit="contain" />
         </div>)}
         {images.filter(n => n.fusion).map(n => {

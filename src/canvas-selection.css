@@ -7,7 +7,10 @@
 .canvas-image::after { content: ''; position: absolute; inset: 0; border: calc(2px * var(--canvas-inverse-scale, 1)) solid var(--border-brand); border-radius: inherit; opacity: 0; pointer-events: none; }
 .canvas-image.selected::after { opacity: 1; }
 .canvas-image:focus-visible { outline: none; }
-.canvas-image .image-preview-button { position: absolute; top: 8px; right: 8px; width: 32px; min-width: 32px; height: 32px; padding: 0; }
+/* Keep the action above ProgressiveImage's isolated loading/image layers.
+   The canvas-image stacking context confines it to this image. */
+.canvas-image .image-preview-button { position: absolute; z-index: 1; top: 8px; right: 8px; width: 32px; min-width: 32px; height: 32px; padding: 0; }
+.canvas-image .image-preview-button[hidden] { display: none; }
 .canvas-image .image-preview-button:focus-visible { outline: none; }
 .selection-overlay { position: absolute; pointer-events: none; z-index: 5; transition-property: opacity; }
 .group-selection-frame, .selection-marquee { position: absolute; border: 2px dashed var(--selection-blue); background: var(--selection-blue-fill); pointer-events: none; }
