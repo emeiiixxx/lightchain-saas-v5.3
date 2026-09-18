@@ -16,8 +16,8 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  /* Exact primitive from the source pattern; tile is rendered at 50%. */
-  --canvas-dot: rgba(61, 72, 75, .36);
+  /* Theme-aware contrast keeps the small grid dots visible on both canvases. */
+  --canvas-dot: color-mix(in srgb, var(--border-medium) 65%, transparent);
 }
 [data-theme='dark'] { --purchase-base: #171c1c; --purchase-hover: #0a0b0b; }
 [data-theme='light'] { --purchase-base: #effefb; --purchase-hover: #c9fef6; }
