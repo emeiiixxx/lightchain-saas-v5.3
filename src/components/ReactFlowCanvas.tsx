@@ -32,6 +32,7 @@ const LightchainEdge = memo(({ data }: EdgeProps<ConnectionEdge>) => {
 });
 const nodeTypes = { lightchain: LightchainNode };
 const edgeTypes = { lightchain: LightchainEdge };
+const controlSelector = 'button,input,textarea,select,[contenteditable="true"],[data-select-popup]';
 
 type Props = {
   children: ReactNode; view: Viewport; selectedIds: string[]; hand: boolean; referenceMode: boolean; snap: boolean;
@@ -44,6 +45,13 @@ type Props = {
 // Business operations and their history continue to use the shared canvas model.
 export function ReactFlowCanvas(props: Props) {
   const latest = useRef(props); latest.current = props;
+  const selectionRef = useRef(props.selectedIds); selectionRef.current = props.selectedIds;
+  const shiftClick = useRef(false);
+  const setSelection = useCallback((ids: string[]) => {
+    // React Flow can emit several changes before the controlled props render.
+    selectionRef.current = ids;
+    latest.current.onSelection(ids);
+  }, []);
   const drag = useRef<{ anchor: string; start: Map<string, {x: number; y: number}>; snap: DragSnapContext } | null>(null);
   const bypass = useRef(false);
   const graph = useMemo(() => {
@@ -75,9 +83,9 @@ export function ReactFlowCanvas(props: Props) {
     if (!p.referenceMode) {
       const selection = changes.filter(change => change.type === 'select');
       if (selection.length) {
-        const ids = new Set(p.selectedIds);
+        const ids = new Set(selectionRef.current);
         for (const change of selection) change.selected ? ids.add(change.id) : ids.delete(change.id);
-        p.onSelection([...ids]);
+        setSelection([...ids]);
       }
     }
     const positions = new Map<string, {x: number; y: number}>();
@@ -89,7 +97,7 @@ export function ReactFlowCanvas(props: Props) {
       for (const [id, initial] of g.start) positions.set(id, { x: initial.x + delta.x, y: initial.y + delta.y });
     }
     if (positions.size) p.onPositions(positions);
-  }, []);
+  }, [setSelection]);
   const beginDrag = useCallback((event: MouseEvent | TouchEvent | React.MouseEvent, node: ContentNode, selected?: ContentNode[]) => {
     bypass.current = event.altKey;
     const all = graphRef.current.nodes.map(n => ({ id: n.id, ...n.position, width: n.width ?? 280, height: n.height ?? 400 })) as CanvasImage[];
@@ -110,12 +118,32 @@ export function ReactFlowCanvas(props: Props) {
     onPointerMoveCapture={e => { bypass.current = e.altKey; }}
     onPointerDownCapture={e => {
       if (e.target instanceof Element) {
-        const control = e.target.closest('button,input,textarea,select,[contenteditable="true"],[data-select-popup]');
+        const control = e.target.closest(controlSelector);
         control?.classList.add('nodrag');
         if (!control) e.currentTarget.closest<HTMLElement>('main')?.focus({ preventScroll: true });
         const field = e.target.closest('textarea,[data-canvas-scroll]');
         field?.classList.add('nodrag');
       }
+    }}
+    onMouseDownCapture={e => {
+      shiftClick.current = false;
+      if (!e.shiftKey || e.button !== 0 || props.hand || props.referenceMode || !(e.target instanceof Element)) return;
+      if (e.target.closest(controlSelector)) return;
+      const id = e.target.closest('.react-flow__node')?.getAttribute('data-id');
+      if (!id) return;
+      // Handle additive clicks before XYDrag's native mousedown listener.
+      // A deselected node would otherwise still become the drag anchor. Reading
+      // the mouse modifier also works if Shift was held before canvas focus.
+      e.preventDefault();
+      e.stopPropagation();
+      shiftClick.current = true;
+      const ids = selectionRef.current;
+      setSelection(ids.includes(id) ? ids.filter(selected => selected !== id) : [...ids, id]);
+    }}
+    onClickCapture={e => {
+      if (!shiftClick.current) return;
+      shiftClick.current = false;
+      e.stopPropagation();
     }}
     onWheelCapture={e => {
       if (!e.ctrlKey && !e.metaKey && !e.altKey && e.target instanceof Element) {
@@ -139,6 +167,6 @@ export function ReactFlowCanvas(props: Props) {
       minZoom={0.03} maxZoom={2} zoomOnDoubleClick={false} deleteKeyCode={null}
       nodesConnectable={false} edgesReconnectable={false} elevateNodesOnSelect={false} elevateEdgesOnSelect={false}
       autoPanOnNodeDrag={false} autoPanOnSelection={false} disableKeyboardA11y
-      onPaneClick={() => { if (!latest.current.referenceMode && !latest.current.hand) latest.current.onSelection([]); }} />
+      onPaneClick={() => { if (!latest.current.referenceMode && !latest.current.hand) setSelection([]); }} />
   </div>;
 }
