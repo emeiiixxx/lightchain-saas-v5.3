@@ -28,8 +28,8 @@ const mergeCopy = {
   ja: { title: '結合して生成', tip: '複数の参考画像を結合して新しい画像を生成', uploaded: '最大4枚、追加済み' },
 };
 
-type Props = { image: CanvasImage; locale: Locale; onChange: (patch: Partial<FusionSettings>) => void; onAddMain: () => void; onReference: (source: 'upload' | 'canvas') => void; onDemo: () => void; onGenerate: () => void; onNotify: (message: string) => void };
-export function FusionNode({ image, locale, onChange, onAddMain, onReference, onDemo, onGenerate, onNotify }: Props) {
+type Props = { image: CanvasImage; locale: Locale; onChange: (patch: Partial<FusionSettings>) => void; onAddMain: () => void; onReference: (source: 'upload' | 'canvas') => void; onDemo: () => void; onGenerate: () => void };
+export function FusionNode({ image, locale, onChange, onAddMain, onReference, onDemo, onGenerate }: Props) {
   const settings = image.fusion!;
   const lingerie = settings.kind === 'lingerie';
   const merge = settings.kind === 'merge';

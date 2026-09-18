@@ -2,7 +2,7 @@ import { Children, cloneElement, isValidElement, memo, useCallback, useMemo, use
 import { Handle, Position, ReactFlow, SelectionMode, type Edge, type EdgeProps, type Node, type NodeChange, type NodeProps } from '@xyflow/react';
 import { boundsOf, type CanvasImage, type Viewport } from '../canvas';
 import { magneticDragDelta, type DragSnapContext, type SnapGuides } from '../canvas-snapping';
-import { ImageConnection } from './FusionConnection';
+import { ImageConnection } from './ImageConnection';
 import { flowNodeGeometry } from '../react-flow-geometry';
 import './react-flow-canvas.css';
 

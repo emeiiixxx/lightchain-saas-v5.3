@@ -7,12 +7,12 @@
 .tryon-sidebar-header { display: flex; align-items: center; gap: 8px; padding: 4px 8px 4px 16px; height: 48px; flex-shrink: 0; border-bottom: 1px solid var(--border-weak); }
 .tryon-heading { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
 .tryon-heading h1, .tryon-history h2 { font-size: 16px; line-height: 24px; font-weight: 500; color: var(--text-primary); margin: 0; white-space: nowrap; }
-.tryon-mode-switch { --selected-width: 60px; position: relative; display: flex; align-items: center; gap: 4px; width: calc(var(--selected-width) + 44px); height: 32px; padding: 4px; border-radius: 8px; flex-shrink: 0; background: var(--surface-secondary); }
+.tryon-mode-switch { --selected-width: 60px; position: relative; display: flex; align-items: center; gap: 4px; width: calc(var(--selected-width) + 46px); height: 34px; padding: 4px; border: 1px solid var(--border-weak); border-radius: 8px; flex-shrink: 0; background: var(--surface-secondary); }
 .tryon-mode-switch:lang(en) { --selected-width: 82px; }
-.tryon-mode-indicator { position: absolute; left: 4px; top: 4px; width: var(--selected-width); height: 24px; border-radius: 6px; background: var(--state-selected-tab-sliding); transform: translateX(0); pointer-events: none; }
+.tryon-mode-indicator { position: absolute; left: 4px; top: 4px; width: var(--selected-width); height: 24px; border-radius: 6px; background: var(--state-selected-brand); transform: translateX(0); pointer-events: none; }
 .tryon-mode-switch[data-mode='lingerie'] .tryon-mode-indicator { transform: translateX(36px); }
-.tryon-mode-switch button { position: relative; display: flex; align-items: center; justify-content: center; gap: 0; width: 32px; height: 24px; padding: 4px 8px; border: 0; border-radius: 6px; color: var(--text-tertiary); background: transparent; font-size: 12px; line-height: 16px; font-weight: 500; }
-.tryon-mode-switch button[aria-selected='true'] { width: var(--selected-width); color: var(--text-primary); gap: 4px; }
+.tryon-mode-switch button { position: relative; display: flex; align-items: center; justify-content: center; gap: 0; width: 32px; height: 24px; padding: 4px 8px; border: 0; border-radius: 6px; color: var(--text-secondary); background: transparent; font-size: 12px; line-height: 16px; font-weight: 500; }
+.tryon-mode-switch button[aria-selected='true'] { width: var(--selected-width); color: var(--text-on-brand-black); gap: 4px; }
 .tryon-mode-switch button[aria-selected='false']:hover { background: var(--state-hover); color: var(--text-primary); }
 .tryon-mode-label { display: inline-block; overflow: hidden; max-width: 0; opacity: 0; white-space: nowrap; }
 .tryon-mode-switch [aria-selected='true'] .tryon-mode-label { max-width: 100px; opacity: 1; }
@@ -117,13 +117,14 @@
   .topbar .purchase-button { display: none; }
 }
 
-/* Latest Figma announcement 136:17833, anchored to the try-on mode switch. */
+/* Figma announcement 136:17784, anchored to the try-on mode switch. */
 .tryon-announcement { position: fixed; z-index: 40; display: flex; align-items: center; width: max-content; max-width: calc(100vw - 24px); filter: drop-shadow(0 12px 14px var(--overlay-weak)); color: var(--text-on-brand-black); }
-.tryon-announcement-arrow { width: 8px; height: 24px; flex-shrink: 0; transform: scaleY(-1); }
-.tryon-announcement-body { display: flex; align-items: flex-start; gap: 8px; min-width: 0; padding: 12px 16px; border-radius: var(--radius-l); background: var(--primitive-brand-300); }
-.tryon-announcement-message { min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font-size: 14px; line-height: 20px; font-weight: 500; text-shadow: 2px 4px 20px rgba(0,119,255,.2); }
+.tryon-announcement-arrow { position: relative; width: 6px; height: 20px; flex-shrink: 0; transform: scaleY(-1); }
+.tryon-announcement-arrow img { position: absolute; top: 0; left: 17.99%; width: 82.01%; height: 100%; }
+.tryon-announcement-body { display: flex; align-items: flex-start; gap: 8px; min-width: 0; padding: 8px; border-radius: var(--radius-l); background: var(--primitive-brand-300); }
+.tryon-announcement-message { min-width: 0; padding: 0 4px; border: 0; background: transparent; color: inherit; text-align: left; font-size: 14px; line-height: 20px; font-weight: 500; text-shadow: 2px 4px 20px rgba(0,119,255,.2); }
 .tryon-announcement .tryon-announcement-close { width: 20px; min-width: 20px; height: 20px; padding: 0; border-radius: 6px; color: var(--text-on-brand-black); flex-shrink: 0; }
 .tryon-announcement .tryon-announcement-close:hover { color: var(--text-on-brand-black); }
-.tryon-announcement[data-side='bottom'] .tryon-announcement-arrow { position: absolute; left: var(--arrow-left); top: -16px; transform: rotate(90deg); transform-origin: center; }
+.tryon-announcement[data-side='bottom'] .tryon-announcement-arrow { position: absolute; left: var(--arrow-left); top: -13px; transform: rotate(90deg); transform-origin: center; }
 
-.tryon-announcement[data-side='bottom'] { padding-left: 8px; }
+.tryon-announcement[data-side='bottom'] { padding-left: 6px; }

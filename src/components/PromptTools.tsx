@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { Button, Icon, type IconName } from './ui';
 import { usePresence } from '../usePresence';
 import './prompt-tools.css';
-import type { PromptEntry as Entry } from '../prompt-associations';
+import type { PromptEntry as Entry } from '../prompt-types';
 const KEY='lc-flow-fusion-prompts';
 function readSaved(): Entry[] {try {const raw=JSON.parse(localStorage.getItem(KEY)||'[]');const data: unknown=raw?.version===2?raw.entries:raw;return Array.isArray(data)?data.flatMap((v,i)=>typeof v==='string'?[{id:`legacy-${i}`,name:v.slice(0,50),content:v}]:v && typeof v.name==='string' && typeof v.content==='string'?[{id:v.id||`legacy-${i}`,name:v.name,content:v.content,pinned:v.pinned===true}]:[]):[];}catch{return [];}}
 function read(): Entry[] {return readSaved();}

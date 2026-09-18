@@ -158,3 +158,6 @@
 
 /* Beta Primitive Colors / Brand/300, announcement 136:17833. */
 :root { --primitive-brand-300: #70ebde; }
+
+/* Figma 254:7720 result-image toolbars stay dark over photography in both themes. */
+[data-theme] { --surface-floating-strong: rgba(0, 0, 0, .75); }

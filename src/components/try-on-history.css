@@ -1,0 +1,47 @@
+/* Figma 254:7720. 5.1 Beta TagChip S and IconButton S, semantic Dark/Light colors. */
+.tryon-history-content.has-records { display: block; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 16px; border-radius: 6px; }
+.tryon-record-list { display: flex; flex-direction: column; gap: 16px; }
+.tryon-record { display: flex; flex-direction: column; gap: 16px; padding: 16px; border-radius: 16px; background: var(--surface-default); min-width: 0; }
+.tryon-record-header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.tryon-record-title { display: flex; gap: 4px; align-items: center; flex-shrink: 0; color: var(--text-secondary); font-size: 14px; line-height: 20px; }
+.tryon-record-title time { color: var(--text-tertiary); white-space: nowrap; }
+.tryon-history .tryon-record-header > .divider { height: 16px; }
+.tryon-record-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.tryon-record-tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 4px; border-radius: 6px; background: var(--state-hover); color: var(--text-secondary); font-size: 12px; line-height: 20px; font-weight: 500; white-space: nowrap; }
+.tryon-record-thumbs { display: flex; gap: 2px; }
+.tryon-record-thumbs > .progressive-image { width: 20px; height: 20px; border-radius: 4px; overflow: hidden; }
+.tryon-record-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.tryon-record-action.lc-button { width: 32px; min-width: 32px; height: 32px; padding: 0; border-radius: 8px; }
+.tryon-record-actions > .lc-button { background: var(--state-default); }
+.tryon-record-actions > .lc-button:hover { background: var(--state-hover); }
+.tryon-record-description { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.tryon-record-description p { margin: 0; font-size: 12px; line-height: 16px; color: var(--text-secondary); white-space: pre-wrap; overflow-wrap: anywhere; }
+.tryon-record-copy.lc-button { height: 24px; min-width: 24px; border-radius: 4px; padding: 0 4px; color: var(--text-brand); }
+.tryon-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.tryon-result { position: relative; min-width: 0; overflow: hidden; background: var(--surface-secondary); }
+.tryon-result-preview { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
+.tryon-result-preview > .progressive-image { display: block; width: 100%; height: 100%; }
+.tryon-result-watermark { position: absolute; right: 0; bottom: 0; width: 15.4%; height: auto; pointer-events: none; }
+.tryon-result-top, .tryon-result-bottom { position: absolute; display: flex; align-items: center; max-width: calc(100% - 16px); border-radius: 8px; background: var(--surface-floating-strong); color: var(--text-on-brand-white); opacity: 0; pointer-events: none; }
+.tryon-result-top { right: 8px; top: 8px; }
+.tryon-result-bottom { left: 8px; bottom: 8px; }
+.tryon-result-top .lc-button, .tryon-result-bottom .lc-button { color: var(--text-on-brand-white); }
+.tryon-result-top .lc-button:hover, .tryon-result-bottom .lc-button:hover { color: var(--text-on-brand-white); background: rgba(255,255,255,.15); }
+.tryon-result-top .lc-button[aria-pressed='true'] { color: var(--brand-primary); background: rgba(255,255,255,.15); }
+.tryon-result:hover .tryon-result-top, .tryon-result:hover .tryon-result-bottom, .tryon-result:focus-within .tryon-result-top, .tryon-result:focus-within .tryon-result-bottom { opacity: 1; pointer-events: auto; }
+/* Figma 254:8249: user-provided complete failure artwork, 4px gap and Body/S text. */
+.tryon-result-failure { display: flex; align-items: center; justify-content: center; height: 100%; background: var(--surface-secondary); color: var(--text-tertiary); font-size: 12px; font-weight: 400; line-height: 16px; text-align: center; }
+.tryon-failure-content { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 16px; }
+.tryon-failure-art { position: relative; display: block; width: 96px; height: 96px; flex-shrink: 0; pointer-events: none; }
+/* Match the supplied export's solid artwork to the live 96px Figma node.
+   Transparent glow extends beyond the node; it does not add layout spacing. */
+.tryon-failure-art img { position: absolute; left: -25px; top: -25px; width: calc(96px * 227 / 144); max-width: none; height: auto; }
+.tryon-clear-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+@media (min-width: 721px) and (max-width: 1200px), (max-width: 600px) { .tryon-results { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 720px) { .tryon-history:has(.has-records) { flex-basis: auto; overflow: visible; } .tryon-history-content.has-records { overflow: visible; } }
+@media (max-width: 380px) { .tryon-results { grid-template-columns: 1fr; } }
+@media (hover: none) { .tryon-result-top, .tryon-result-bottom { opacity: 1; pointer-events: auto; } }
+
+.tryon-history { container: tryon-history / inline-size; }
+@container tryon-history (max-width: 700px) { .tryon-results { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container tryon-history (max-width: 360px) { .tryon-results { grid-template-columns: 1fr; } }

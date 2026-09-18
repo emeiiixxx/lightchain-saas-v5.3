@@ -29,9 +29,9 @@
 .fusion-textarea:hover { border-color: var(--border-strong); }
 .fusion-textarea:focus-within { border-color: var(--border-brand); background: var(--control-fill-focus); }
 .fusion-textarea.has-error { border-color: var(--status-danger); }
-.fusion-textarea textarea, .fusion-expanded-input { font: inherit; font-size: 14px; line-height: 20px; color: var(--text-primary); background: transparent; resize: none; border: 0; outline: 0; width: 100%; }
+.fusion-textarea textarea { font: inherit; font-size: 14px; line-height: 20px; color: var(--text-primary); background: transparent; resize: none; border: 0; outline: 0; width: 100%; }
 .fusion-textarea textarea { flex: 1; min-height: 64px; padding: 0; }
-.fusion-textarea textarea::placeholder, .fusion-expanded-input::placeholder { color: var(--text-placeholder); }
+.fusion-textarea textarea::placeholder { color: var(--text-placeholder); }
 .fusion-textarea-footer, .fusion-prompt-actions { display: flex; align-items: center; }
 .fusion-textarea-footer { gap: 8px; height: 24px; }
 .fusion-prompt-actions { gap: 4px; }
@@ -51,12 +51,6 @@
 .generate-task-button:disabled { background: var(--brand-primary-disabled); color: var(--text-on-brand-disabled); }
 .generate-task-cost { font-size: 14px; line-height: 20px; }
 .is-dragging .fusion-position { transition-duration: 0ms; }
-.fusion-expanded-input { display: block; height: 320px; padding: 12px; border: 1px solid var(--border-weak); border-radius: 12px; }
-.fusion-expanded-input:focus { border-color: var(--border-brand); }
-.fusion-dialog-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 12px; color: var(--text-tertiary); }
-.fusion-saved-prompts { max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-.fusion-saved-prompts > button { text-align: left; font-size: 14px; padding: 12px; border-radius: 8px; background: var(--state-default); overflow-wrap: anywhere; }
-.fusion-saved-prompts > button:hover { background: var(--state-hover); }
 
 
 /* Independent graph nodes. Interactive form controls never start a drag. */
@@ -68,20 +62,6 @@
 .fusion-node, .fusion-header { cursor: grab; }
 .fusion-node textarea, .fusion-node input { cursor: text; }
 .is-dragging .fusion-node, .is-dragging .fusion-header { cursor: grabbing; }
-.fusion-connection { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; pointer-events: none; z-index: -1; }
-/* Raised related/selected nodes use layers 2/3; active edges stay above both
-   within the canvas world, below the separate toolbar and overlay layers. */
-.fusion-connection[data-active='true'] { z-index: 4; }
-.fusion-connection path { stroke: var(--border-medium); stroke-width: calc(2px * var(--canvas-inverse-scale, 1)); transition-property: d, stroke; }
-.fusion-connection[data-active='true'] .fusion-connection-line { stroke: var(--border-brand); stroke-width: calc(2px * var(--canvas-inverse-scale, 1)); stroke-dasharray: calc(8px * var(--canvas-inverse-scale, 1)) calc(6px * var(--canvas-inverse-scale, 1)); animation: fusion-ants 800ms linear infinite; }
-/* Keep the same dark underlay in both themes for contrast over imagery. */
-.fusion-connection .fusion-connection-backdrop { stroke: #111817; stroke-width: calc(4px * var(--canvas-inverse-scale, 1)); stroke-linecap: round; stroke-linejoin: round; }
-.is-dragging .fusion-connection path { transition-duration: 0ms; }
-/* Continuous flow is linear; selection color transitions retain 200ms ease-out. */
-@keyframes fusion-ants { to { stroke-dashoffset: calc(-28px * var(--canvas-inverse-scale, 1)); } }
-
-.fusion-main-empty { display: flex; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--text-placeholder); }
-
 /* Empty workflow, Figma 107:5118. */
 .fusion-add-main { width: 100%; height: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0 8px; border: 0; border-radius: 16px; background: var(--state-default); color: var(--text-primary); font-size: 12px; }
 .fusion-add-main:hover { background: var(--state-hover); }

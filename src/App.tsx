@@ -22,7 +22,7 @@ import { FusionNode } from './components/FusionNode';
 import { DirectedFusionNode } from './components/DirectedFusionNode';
 import { FlatLayNode } from './components/FlatLayNode';
 import { createWorkflowExample, workflowExampleResult } from './workflow-examples';
-import { ImageConnection } from './components/FusionConnection';
+import { ImageConnection } from './components/ImageConnection';
 import { copyCanvasSelection, pasteCanvasSelection } from './canvas-clipboard';
 import { CanvasContextMenu } from './components/CanvasContextMenu';
 import { standaloneTaskInputs } from './canvas-task-layout';
@@ -778,7 +778,7 @@ export default function App() {
               ? <FlatLayNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onChange={patch => updateFusion(n.id, patch)} onGenerate={() => generateDemo(n.id)} />
               : n.fusion?.kind === 'directed'
               ? <DirectedFusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onChoosePoint={pointId => setDirectedTarget({ editorId: n.id, pointId })} onGenerate={() => generateDemo(n.id)} onNotify={announce} />
-              : <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => generateDemo(n.id)} onNotify={announce} />}
+              : <FusionNode image={editorImage} locale={locale} onAddMain={() => setMainTarget(n.id)} onChange={patch => updateFusion(n.id, patch)} onReference={source => { if (source === 'upload') setReferenceTarget(n.id); else { setCanvasMode('select'); setCanvasReference({ target: n.id, ids: [] }); } }} onDemo={() => announce(t.noBackend)} onGenerate={() => generateDemo(n.id)} />}
           </div>
         </div>;})}
       </ReactFlowCanvas>

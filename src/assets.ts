@@ -1,5 +1,16 @@
 // Figma node 12:3127 assets; theme icons reuse the existing 5.2 TopBar artwork.
 export const assets = {
+  historyDownload: '/assets/try-on/history/download.svg',
+  historyEdit: '/assets/try-on/history/edit.svg',
+  historyRetry: '/assets/try-on/history/retry.svg',
+  historyTrash: '/assets/try-on/history/trash.svg',
+  historyFavorite: '/assets/try-on/history/favorite.svg',
+  historyModels: '/assets/try-on/history/model-library.svg',
+  historyVideo: '/assets/try-on/history/video.svg',
+  historyImageEdit: '/assets/try-on/history/image-edit.svg',
+  historySend: '/assets/try-on/history/send.svg',
+  historyCopy: '/assets/try-on/history/copy.svg',
+
   toastExclamation: '/assets/prompts/toast-exclamation.svg',
   aiTryOn: '/assets/try-on/ai-try-on.svg',
   tryOnImagePrompt: '/assets/try-on/image-to-prompt.svg',
@@ -25,8 +36,6 @@ export const assets = {
   cutoutPlus: '/assets/cutout/cutoutPlus.svg',
 
   chooseFromCanvas: '/assets/canvas/chooseFromCanvas.svg',
-  searchAssistant: '/assets/canvas/searchAssistant.svg',
-  searchDetect: '/assets/canvas/searchDetect.svg',
   fusionBrush: "/assets/fusion/fusionBrush.svg",
   fusionAddImage: "/assets/fusion/fusionAddImage.svg",
   fusionExpand: "/assets/fusion/fusionExpand.svg",
@@ -36,13 +45,11 @@ export const assets = {
   fusionHd: "/assets/fusion/fusionHd.svg",
   fusionStar: "/assets/fusion/fusionStar.svg",
   fusionTip: "/assets/fusion/fusionTip.svg",
-  fusionConnector: "/assets/fusion/fusionConnector.svg",
 
   "imgImageFill": "/assets/imgImageFill.png",
   "img": "/assets/img.png",
   "imgIcon": "/assets/imgIcon.svg",
   "imgIcon1": "/assets/imgIcon1.svg",
-  "imgIconImageEditingTool": "/assets/imgIconImageEditingTool.svg",
   "imgIconBusinessAi": "/assets/imgIconBusinessAi.svg",
   "imgIconBusinessApparelDesign": "/assets/imgIconBusinessApparelDesign.svg",
   "imgIconBusinessTryOnModel": "/assets/imgIconBusinessTryOnModel.svg",

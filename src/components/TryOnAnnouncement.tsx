@@ -41,8 +41,8 @@ export function TryOnAnnouncement({ active, anchor, locale, onTry }: { active: b
     return () => { observer.disconnect(); window.removeEventListener('resize', position); window.removeEventListener('scroll', position, true); };
   }, [shown.value, active, anchor, locale]);
   if (!shown.value) return null;
-  return createPortal(<div ref={popup} className="tryon-announcement" data-node-id="136:17833" data-phase={shown.phase} inert={shown.phase === 'exit'} role="region" aria-label={t.text} style={{ visibility: 'hidden' }}>
-    <img className="tryon-announcement-arrow" src="/assets/try-on/announcement-arrow.svg" alt="" width={8} height={24} />
+  return createPortal(<div ref={popup} className="tryon-announcement" data-node-id="136:17784" data-phase={shown.phase} inert={shown.phase === 'exit'} role="region" aria-label={t.text} style={{ visibility: 'hidden' }}>
+    <span className="tryon-announcement-arrow" aria-hidden="true"><img src="/assets/try-on/announcement-arrow.svg" alt="" /></span>
     <div className="tryon-announcement-body"><button className="tryon-announcement-message" type="button" onClick={onTry}>{t.text}</button><Button className="tryon-announcement-close" aria-label={t.close} onClick={dismiss}><Icon name="close" size={16} /></Button></div>
   </div>, document.body);
 }
