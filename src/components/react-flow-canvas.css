@@ -10,7 +10,10 @@
 .lc-react-flow .react-flow__node-lightchain { padding: 0; border: 0; background: transparent; box-shadow: none; border-radius: 16px; }
 .lc-react-flow .react-flow__node:focus { outline: none; }
 .lc-react-flow .lc-flow-handle { opacity: 0; pointer-events: none; width: 1px; height: 1px; min-width: 0; min-height: 0; border: 0; }
-.lc-react-flow .react-flow__nodesselection-rect { border: 0; background: transparent; }
+/* Keep the selection overlay visual-only. Its native drag surface otherwise
+   covers node forms after box selection or programmatic selection (e.g. merge).
+   Dragging a selected node still moves the selected group through React Flow. */
+.lc-react-flow .react-flow__nodesselection-rect { border: 0; background: transparent; pointer-events: none; }
 .lc-react-flow .react-flow__selection { transition: none; }
 .lc-react-flow .react-flow__edge { pointer-events: none; }
 .lc-flow-connection path { fill: none; transition-property: stroke; }
