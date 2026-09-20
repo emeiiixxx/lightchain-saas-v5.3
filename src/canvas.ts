@@ -9,7 +9,7 @@ export const MAX_FUSION_REFERENCES = 4;
 export type WorkflowKind = 'fusion' | 'lingerie' | 'directed' | 'flat' | 'merge';
 export type FlatRegion = 'top' | 'bottom' | 'full';
 export type FlatFace = 'front' | 'back';
-export type DirectedFusionPoint = { id: string; reference: FusionReference };
+export type DirectedFusionPoint = { id: string; reference: FusionReference; maskPreviewUrl?: string; maskSourceUrl?: string };
 export const MAX_DIRECTED_POINTS = 3;
 export type FusionSettings = { kind?: WorkflowKind; position?: { x: number; y: number }; prompt: string; ratio: string; resolution: string; reference?: FusionReference; references?: FusionReference[]; directedPoints?: DirectedFusionPoint[]; flatRegion?: FlatRegion; flatFace?: FlatFace; batchFlat?: boolean };
 export const fusionReferences = (settings?: FusionSettings): FusionReference[] => settings?.references ?? (settings?.reference ? [settings.reference] : []);

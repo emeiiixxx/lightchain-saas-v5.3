@@ -124,8 +124,8 @@ export function AiTryOnPage({ active, locale, uploads, onUpload }: { active: boo
                 <video className="tryon-example-art" src="/assets/try-on/single-item-60fps.mp4" poster="/assets/try-on/garment-example.png" aria-label={garmentText.example} autoPlay loop muted playsInline />
                 <span className="tryon-example-label">{garmentText.example}</span>
                 {reusableGarments.length > 0 && <div className="tryon-previous-garments">
-                  <div className="tryon-previous-images" data-count={reusableGarments.length} aria-label={garmentText.previous}>
-                    {reusableGarments.map(image => <ProgressiveImage key={image.id} src={image.url} alt={image.name} />)}
+                  <div className="tryon-previous-images" data-count={1} aria-label={garmentText.previous}>
+                    {reusableGarments.slice(0, 1).map(image => <ProgressiveImage key={image.id} src={image.url} alt={image.name} />)}
                   </div>
                   <Button variant="tonal" className="tryon-reuse" disabled={reading} onClick={() => update({ garments: structuredClone(reusableGarments) })}>{garmentText.reuse}</Button>
                 </div>}

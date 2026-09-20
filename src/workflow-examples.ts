@@ -12,16 +12,16 @@ const examples = {
   },
   directed: {
     title: '定向融合',
-    main: { name: '黄裙模特棚拍 · 示例主图', url: '/assets/workflow-examples/fusion-main.png' },
-    reference: { name: '蓝色碎花裹身裙 · 示例参考图', url: '/assets/workflow-examples/directed-reference.png' },
-    result: { name: '局部替换蓝色花裙 · 定向融合演示', url: '/assets/workflow-examples/directed-result.png' },
+    main: { name: '黑色无袖上衣模特 · 示例主图', url: '/assets/workflow-examples/directed-neckline-main.png' },
+    reference: { name: '细吊带弧形领口 · 示例参考图', url: '/assets/workflow-examples/directed-neckline-reference.png' },
+    result: { name: '细吊带领口局部融合 · 示例结果', url: '/assets/workflow-examples/directed-neckline-result.jpg' },
     prompt: '',
   },
   flat: {
     title: '转3D平铺',
-    main: { name: '黑白水手领连身装 · 示例主图', url: '/assets/workflow-examples/flat-main.jpg' },
+    main: { name: '蓝色条纹衬衫连衣裙 · 示例主图', url: '/assets/workflow-examples/flat-blue-stripe-main.png' },
     reference: null,
-    result: { name: '黑白连身装3D平铺 · 演示结果', url: '/assets/workflow-examples/flat-result.png' },
+    result: { name: '蓝色条纹连衣裙3D平铺 · 演示结果', url: '/assets/workflow-examples/flat-blue-stripe-result.jpg' },
     prompt: '',
   },
   lingerie: {
@@ -36,7 +36,7 @@ const examples = {
 // Preserve each supplied result image’s original aspect ratio.
 export function workflowExampleResult(kind: WorkflowKind) {
   if (kind === 'merge') return { ...examples.fusion.result, name: '合拼生图结果 · 演示', width: 360, height: 360 * 2400 / 1792 };
-  return { ...examples[kind].result, width: 360, height: kind === 'lingerie' ? 360 * 1064 / 794 : kind === 'fusion' || kind === 'flat' ? 360 * 2400 / 1792 : 540 };
+  return { ...examples[kind].result, width: 360, height: kind === 'lingerie' ? 360 * 1064 / 794 : kind === 'fusion' ? 360 * 2400 / 1792 : 540 };
 }
 
 export async function createWorkflowExample(kind: Exclude<WorkflowKind, 'merge'>): Promise<CanvasImage[]> {
@@ -52,7 +52,7 @@ export async function createWorkflowExample(kind: Exclude<WorkflowKind, 'merge'>
     ...defaultFusion(kind), prompt: example.prompt, position: { x: 440, y: 0 },
     ...(kind === 'flat' ? { flatRegion: 'full' as const } : {}),
     ...(kind === 'directed' && referenceImage
-      ? { directedPoints: [{ id: crypto.randomUUID(), reference: referenceImage }] }
+      ? { directedPoints: [{ id: crypto.randomUUID(), reference: referenceImage, maskPreviewUrl: '/assets/workflow-examples/directed-neckline-mask.png', maskSourceUrl: main.url }] }
       : { references: referenceImage ? [referenceImage] : [] }),
   };
   return [

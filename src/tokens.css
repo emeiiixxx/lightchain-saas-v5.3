@@ -168,3 +168,6 @@
 
 /* Beta Shadow/M: 0,6 / blur14 / spread-2, bound to Overlay/weak. */
 :root { --shadow-m: 0 6px 14px -2px var(--overlay-weak); }
+
+/* Beta Shadow/L, bound to Overlay/weak in both themes. */
+:root { --shadow-l: 0 12px 28px -4px var(--overlay-weak); }

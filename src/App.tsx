@@ -894,7 +894,7 @@ export default function App() {
         const points = editor.fusion.directedPoints ?? [];
         const reference = { id: item.id, name: item.name, url: item.url };
         const next = directedTarget.pointId
-          ? points.map(point => point.id === directedTarget.pointId ? { ...point, reference } : point)
+          ? points.map(point => point.id === directedTarget.pointId ? { ...point, reference, maskPreviewUrl: undefined, maskSourceUrl: undefined } : point)
           : points.length < MAX_DIRECTED_POINTS ? [...points, { id: crypto.randomUUID(), reference }] : points;
         updateFusion(editor.id, { directedPoints: next });
         setDirectedTarget(null);
