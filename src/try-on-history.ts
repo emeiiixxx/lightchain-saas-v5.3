@@ -3,10 +3,10 @@ import type { TryOnMode } from './components/TryOnModeSwitch';
 
 export type ModelSource = 'description' | 'reference' | 'set';
 export type Garment = LibraryImage & { category: string };
-export type TryOnDraft = { garments: Garment[]; flatten: boolean; task: 'single' | 'multi'; source: ModelSource; prompt: string; references: LibraryImage[]; models: LibraryImage[]; ratio: string; speed: string };
+export type TryOnDraft = { garments: Garment[]; flatten: boolean; task: 'single' | 'multi'; source: ModelSource; prompt: string; references: LibraryImage[]; poses: LibraryImage[]; backgrounds: LibraryImage[]; models: LibraryImage[]; ratio: string; speed: string };
 export type TryOnResult = { id: string; url: string; width: number; height: number; aspectRatio: string; failed?: boolean; favorite?: boolean };
 export type TryOnRecord = { id: string; createdAt: number; mode: TryOnMode; draft: TryOnDraft; results: TryOnResult[] };
-export const emptyTryOnDraft = (): TryOnDraft => ({ garments: [], flatten: false, task: 'single', source: 'description', prompt: '', references: [], models: [], ratio: 'auto', speed: 'fast' });
+export const emptyTryOnDraft = (): TryOnDraft => ({ garments: [], flatten: false, task: 'single', source: 'description', prompt: '', references: [], poses: [], backgrounds: [], models: [], ratio: 'auto', speed: 'fast' });
 const image = (name: string): LibraryImage => ({ id: `tryon-demo-${name}`, name, url: `/assets/try-on/history/${name}.png` });
 const dimensions: Record<string, [number, number]> = {
   'lingerie-purple': [793, 1062], 'lingerie-yellow': [794, 1064],

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { useLayoutEffect, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
+import { createPortal } from 'react-dom';
 import { Button, Dialog, Divider, Icon, type IconName } from './ui';
 import { ProgressiveImage } from './ProgressiveImage';
 import { FullImageViewer } from './FullImageViewer';
@@ -17,8 +18,51 @@ const copy = {
   ja: { title: '生成履歴', function: 'AI試着', retention: '生成履歴は14日後に削除されます', clear: 'すべてクリア', guide: '操作ガイド', empty: '生成履歴はありません', regular: '通常モード', lingerie: '下着モード', garments: '衣服画像', single: '単品', description: '説明から生成', reference: '参考画像', set: 'モデル画像集', auto: '自動比率', fast: '高速', quality: '高品質', downloadGroup: 'グループをダウンロード', edit: '編集', retry: '再生成', deleteGroup: 'グループを削除', download: 'ダウンロード', favorite: 'お気に入り', unfavorite: 'お気に入りを解除', delete: '削除', models: 'モデルライブラリ', video: '動画生成', imageEdit: '画像編集', send: '送信先', failed: '生成に失敗しました', copy: 'プロンプトをコピー', copied: 'コピーしました', copyError: 'コピーに失敗しました', downloadError: 'ダウンロードに失敗しました', clearTitle: '生成履歴をクリア', clearBody: 'すべての生成履歴を削除しますか？元に戻せません。', cancel: 'キャンセル', confirm: 'クリア', unavailable: 'この機能はデモに接続されていません。' },
 };
 type Props = { active: boolean; locale: Locale; records: TryOnRecord[]; onChange: Dispatch<SetStateAction<TryOnRecord[]>>; onEdit: (record: TryOnRecord) => void; onGuide: () => void };
-function ImageTag({ label, images }: { label: string; images: LibraryImage[] }) {
-  return <span className="tryon-record-tag"><span className="tryon-record-thumbs">{images.map((image, index) => <ProgressiveImage key={`${image.id}-${index}`} src={image.url} alt={image.name} />)}</span>{label}</span>;
+function ImageTag({ label, images, grouped = false, active }: { label: string; images: LibraryImage[]; grouped?: boolean; active: boolean }) {
+  const [preview, setPreview] = useState<{ images: LibraryImage[]; anchor: HTMLElement } | null>(null);
+  const shown = usePresence(active ? preview : null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const ratios = useRef<Record<string, number>>({});
+  const [position, setPosition] = useState({ left: 0, top: 0, height: 240 });
+  function keepOpen() { if (closeTimer.current) clearTimeout(closeTimer.current); }
+  function closeSoon() { keepOpen(); closeTimer.current = setTimeout(() => setPreview(null), 100); }
+  function open(anchor: HTMLElement, image?: LibraryImage) {
+    keepOpen();
+    const selected = grouped ? images.slice(0, 4) : image ? [image] : images.slice(0, 1);
+    if (selected.length) setPreview({ images: selected, anchor });
+  }
+  function place() {
+    if (!shown.value) return;
+    const rect = shown.value.anchor.getBoundingClientRect();
+    const items = shown.value.images;
+    const ratio = items.reduce((sum, image) => sum + (ratios.current[image.url] || 1), 0);
+    const gapWidth = Math.max(0, items.length - 1) * 4;
+    const below = window.innerHeight - rect.bottom - 16, above = rect.top - 16;
+    const availableHeight = Math.max(below, above) - 8;
+    const height = Math.max(1, Math.min(240, availableHeight, (window.innerWidth - 24 - gapWidth) / ratio));
+    const width = height * ratio + gapWidth + 8;
+    const top = below >= height + 8 ? rect.bottom + 4 : Math.max(8, rect.top - height - 12);
+    setPosition({ left: Math.max(8, Math.min(rect.left, window.innerWidth - width - 8)), top, height });
+  }
+  useLayoutEffect(() => { place(); }, [shown.value]);
+  useEffect(() => {
+    if (!preview) return;
+    const close = () => setPreview(null);
+    const escape = (event: globalThis.KeyboardEvent) => { if (event.key === 'Escape') close(); };
+    window.addEventListener('scroll', close, true);
+    window.addEventListener('resize', close);
+    window.addEventListener('keydown', escape);
+    return () => { window.removeEventListener('scroll', close, true); window.removeEventListener('resize', close); window.removeEventListener('keydown', escape); };
+  }, [preview]);
+  useEffect(() => { if (!active) setPreview(null); }, [active]);
+  useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
+  return <><span className="tryon-record-tag" tabIndex={grouped ? 0 : undefined} onMouseEnter={event => open(event.currentTarget)} onMouseLeave={closeSoon} onFocus={event => { if (grouped) open(event.currentTarget); }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) closeSoon(); }}>
+    <span className="tryon-record-thumbs">{images.map((image, index) => grouped
+      ? <ProgressiveImage key={`${image.id}-${index}`} src={image.url} alt={image.name} />
+      : <button type="button" key={`${image.id}-${index}`} className="tryon-tag-thumb" aria-label={`${label} · ${image.name}`} onMouseEnter={event => open(event.currentTarget, image)} onFocus={event => open(event.currentTarget, image)} onClick={event => open(event.currentTarget, image)}><ProgressiveImage src={image.url} alt={image.name} /></button>)}</span>{label}
+  </span>{shown.value && createPortal(<div className="tryon-tag-preview" data-phase={shown.phase} role="region" aria-label={label} style={{ left: position.left, top: position.top }} onMouseEnter={keepOpen} onMouseLeave={closeSoon}>
+    {shown.value.images.map((image, index) => <img key={`${image.id}-${index}`} src={image.url} alt={image.name} style={{ height: position.height }} onLoad={event => { const imageElement = event.currentTarget; ratios.current[image.url] = imageElement.naturalWidth / (imageElement.naturalHeight || 1); place(); }} />)}
+  </div>, document.body)}</>;
 }
 export function TryOnHistory({ active, locale, records, onChange, onEdit, onGuide }: Props) {
   const t = copy[locale], common = messages[locale];
@@ -52,8 +96,8 @@ export function TryOnHistory({ active, locale, records, onChange, onEdit, onGuid
     <div ref={content} className={`tryon-history-content${records.length ? ' has-records' : ''}`}>
       {records.length ? <div className="tryon-record-list" data-node-id="254:7720">{records.map(record => <article className="tryon-record" key={record.id}>
         <header className="tryon-record-header"><span className="tryon-record-title">{t.function}<time dateTime={new Date(record.createdAt).toISOString()}>{new Intl.DateTimeFormat(locale, { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(record.createdAt)}</time></span><Divider vertical />
-          <div className="tryon-record-tags"><span className="tryon-record-tag">{t[record.mode]}</span><ImageTag label={record.draft.garments.length === 1 ? t.single : t.garments} images={record.draft.garments} />
-            {record.draft.source === 'description' ? <span className="tryon-record-tag">{t.description}</span> : <ImageTag label={t[record.draft.source]} images={record.draft.source === 'reference' ? record.draft.references : record.draft.models} />}
+          <div className="tryon-record-tags"><span className="tryon-record-tag">{t[record.mode]}</span><ImageTag active={active} label={record.draft.garments.length === 1 ? t.single : t.garments} images={record.draft.garments} />
+            {record.draft.source === 'description' ? <span className="tryon-record-tag">{t.description}</span> : <ImageTag active={active} grouped={record.draft.source === 'set'} label={t[record.draft.source]} images={record.draft.source === 'reference' ? record.draft.references : record.draft.models} />}
             <span className="tryon-record-tag">{record.draft.ratio === 'auto' ? t.auto : record.draft.ratio}</span><span className="tryon-record-tag">{record.draft.speed === 'quality' ? t.quality : t.fast}</span></div>
           <div className="tryon-record-actions">{action(t.downloadGroup, 'historyDownload', () => void download(record.results, record.id), downloading || record.results.every(result => result.failed))}{action(t.edit, 'historyEdit', () => onEdit(record))}{action(t.retry, 'historyRetry', () => regenerate(record))}{action(t.deleteGroup, 'historyTrash', () => removeRecord(record.id))}</div>
         </header>

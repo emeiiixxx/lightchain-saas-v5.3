@@ -161,3 +161,10 @@
 
 /* Figma 254:7720 result-image toolbars stay dark over photography in both themes. */
 [data-theme] { --surface-floating-strong: rgba(0, 0, 0, .75); }
+
+/* Text links: Beta semantic tokens, docs/beta-tokens-live-2026-09-15.json. */
+[data-theme="dark"] { --text-link: #0BC1B8; --text-link-hover: #70EBDE; }
+[data-theme="light"] { --text-link: #069B96; --text-link-hover: #0BC1B8; }
+
+/* Beta Shadow/M: 0,6 / blur14 / spread-2, bound to Overlay/weak. */
+:root { --shadow-m: 0 6px 14px -2px var(--overlay-weak); }

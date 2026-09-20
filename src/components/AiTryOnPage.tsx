@@ -10,6 +10,8 @@ import { readImage } from '../canvas';
 import type { LibraryImage } from '../asset-library';
 import { messages, type Locale } from '../i18n';
 import { usePresence } from '../usePresence';
+import { TryOnReferenceCards, type ReferenceTarget } from './TryOnReferenceCards';
+import { TryOnModelSets } from './TryOnModelSets';
 import { TryOnHistory } from './TryOnHistory';
 import { createTryOnDemoRecord, emptyTryOnDraft, initialTryOnHistory, type TryOnDraft as Draft } from '../try-on-history';
 import '../try-on.css';
@@ -19,14 +21,32 @@ const copy = {
   en: { title: 'AI try-on', single: 'Single', multi: 'Multiple', taskMode: 'Task type', garments: 'Garment images', flatten: 'Auto-convert to flat-lay', upload: 'Upload garments', more: 'Upload more', drop: 'Click or drop here', choose: 'Select type', category: 'Garment type', categories: ['Top', 'Bottom', 'One-piece', 'Do not process'], description: 'Description', reference: 'Reference', set: 'Model set', modelSource: 'Model source', placeholder: 'Describe the model, pose and setting', expand: 'Expand prompt', expansionUnavailable: 'Prompt expansion is not connected yet', imagePrompt: 'Image to prompt', copy: 'Copy prompt', clear: 'Clear', save: 'Save prompt', library: 'Prompt library', ratio: 'Aspect ratio', smart: 'Auto', speed: 'Generation mode', fast: 'Fast', quality: 'Quality', generate: 'Generate', history: 'Generation history', clearAll: 'Clear all', guide: 'Guide', empty: 'No generations yet', retention: 'Generation records expire after 14 days', addReference: 'Add model reference', addSet: 'Add model images', remove: 'Remove image', limit: 'Choose up to 4 garment images.', modelLimit: 'Choose up to 4 model images.', needGarment: 'Add a garment image first', needCategory: 'Select a type for each garment', needPrompt: 'Enter a try-on description', needModel: 'Add a model image first', copied: 'Prompt copied', copyFailed: 'Copy failed. Select and copy the text manually.', guideSteps: ['Add up to 4 garment images and select their types.', 'Choose Regular or Lingerie and add a description or model reference.', 'Single combines garments; Multiple configures separate generations.', 'Choose your settings, then select Generate.'], backend: 'This local demo is not connected to the AI try-on service.' },
   ja: { title: 'AI 試着', single: '単一', multi: '複数', taskMode: 'タスク種別', garments: '衣服画像', flatten: '平置き画像に自動変換', upload: '衣服画像を追加', more: '追加アップロード', drop: 'クリック／ドロップ', choose: '選択してください', category: '衣服の種類', categories: ['トップス', 'ボトムス', 'ワンピース', '処理しない'], description: '説明から生成', reference: '参考画像', set: 'モデル画像集', modelSource: 'モデルの指定', placeholder: 'モデルの外見、ポーズ、シーンを入力', expand: 'プロンプトを拡張', expansionUnavailable: 'プロンプト拡張サービスは未接続です', imagePrompt: '画像からプロンプト', copy: 'プロンプトをコピー', clear: 'クリア', save: 'プロンプトを保存', library: 'プロンプト集', ratio: '画像比率', smart: '自動', speed: '生成モード', fast: '高速', quality: '高品質', generate: 'AI 生成を開始', history: '生成履歴', clearAll: 'すべてクリア', guide: '操作ガイド', empty: '生成履歴はありません', retention: '生成履歴は14日後に削除されます', addReference: 'モデル参考画像を追加', addSet: 'モデル画像集を追加', remove: '画像を削除', limit: '衣服画像は4枚までです。', modelLimit: 'モデル画像は4枚までです。', needGarment: '衣服画像を追加してください', needCategory: '衣服の種類を選択してください', needPrompt: '試着の説明を入力してください', needModel: 'モデル画像を追加してください', copied: 'コピーしました', copyFailed: 'コピーできませんでした。手動でコピーしてください。', guideSteps: ['衣服画像を4枚まで追加し、種類を選びます。', '通常または下着モードを選び、説明や参考画像を追加します。', '単一は衣服を組み合わせ、複数は個別に生成を設定します。', '画像比率とモードを選び、生成を開始します。'], backend: 'このデモはAI試着サービスに接続されていません。' },
 };
+const garmentCopy = {
+  'zh-CN': { upload: '支持上传多件穿搭', drop: '点击/拖放到此处添加单品', required: '必填', example: '示例图', previous: '上一次使用的服装图', reuse: '再次使用', mask: '涂抹蒙版', delete: '删除', maskPending: '涂抹蒙版编辑暂未接入' },
+  en: { upload: 'Upload multiple garments', drop: 'Click or drop garments here', required: 'Required', example: 'Example', previous: 'Previously used garments', reuse: 'Use again', mask: 'Paint mask', delete: 'Delete', maskPending: 'Mask editing is not connected yet.' },
+  ja: { upload: '複数の衣服をアップロード', drop: 'クリック／ドロップで追加', required: '必須', example: 'サンプル', previous: '前回使用した衣服画像', reuse: '再利用', mask: 'マスクを描画', delete: '削除', maskPending: 'マスク編集は未接続です。' },
+};
 type ModelSource = 'description' | 'reference' | 'set';
-type Picker = { mode: TryOnMode; target: 'garments' | 'references' | 'models' };
+type Picker = { mode: TryOnMode; target: 'garments' | 'models' | ReferenceTarget };
 
 export function AiTryOnPage({ active, locale, uploads, onUpload }: { active: boolean; locale: Locale; uploads: LibraryImage[]; onUpload: (image: LibraryImage) => void }) {
   const t = copy[locale], common = messages[locale];
   const [mode, setMode] = useState<TryOnMode>('regular');
   const [drafts, setDrafts] = useState<Record<TryOnMode, Draft>>(() => ({ regular: emptyTryOnDraft(), lingerie: emptyTryOnDraft() }));
-  const draft = drafts[mode];
+  const draft = drafts[mode], garmentText = garmentCopy[locale];
+  const [lastGarments, setLastGarments] = useState<Record<TryOnMode, Draft['garments']>>({ regular: [], lingerie: [] });
+  const previousGarments = useRef<Record<TryOnMode, Draft['garments']>>({ regular: [], lingerie: [] });
+  useEffect(() => {
+    const previous = previousGarments.current[mode];
+    const current = draft.garments;
+    // Removing images must not overwrite the last complete selection.
+    const removalOnly = current.length < previous.length && current.every(image => previous.some(item => item.id === image.id));
+    if (current.length && !removalOnly && current !== previous) {
+      setLastGarments(saved => ({ ...saved, [mode]: structuredClone(current) }));
+    }
+    previousGarments.current[mode] = current;
+  }, [mode, draft.garments]);
+  const reusableGarments = lastGarments[mode];
   const [history, setHistory] = useState(initialTryOnHistory);
   const [picker, setPicker] = useState<Picker | null>(null), shownPicker = usePresence(active ? picker : null);
   const [guide, setGuide] = useState(false), shownGuide = usePresence(active && guide ? true : null);
@@ -37,8 +57,9 @@ export function AiTryOnPage({ active, locale, uploads, onUpload }: { active: boo
   function add(items: LibraryImage[], target: Picker) {
     setDrafts(previous => {
       const current = previous[target.mode];
-      const all = [...current[target.target], ...items].filter((image, i, list) => list.findIndex(item => item.url === image.url) === i);
-      const limit = target.target === 'references' ? 1 : 4;
+      const single = target.target !== 'garments' && target.target !== 'models';
+      const all = [...(single ? [] : current[target.target]), ...items].filter((image, i, list) => list.findIndex(item => item.url === image.url) === i);
+      const limit = single ? 1 : 4;
       if (all.length > limit) return previous;
       return { ...previous, [target.mode]: { ...current, [target.target]: target.target === 'garments' ? all.map(item => ({ ...item, category: current.garments.find(existing => existing.id === item.id)?.category ?? '' })) : all } };
     });
@@ -68,14 +89,13 @@ export function AiTryOnPage({ active, locale, uploads, onUpload }: { active: boo
   }
   function generate() {
     if (!draft.garments.length) { notify(t.needGarment); return; }
-    if (draft.garments.some(image => !image.category)) { notify(t.needCategory); return; }
+    if (draft.flatten && draft.garments.some(image => !image.category)) { notify(t.needCategory); return; }
     if (draft.source === 'description' && !draft.prompt.trim()) { notify(t.needPrompt); prompt.current?.focus(); return; }
     if (draft.source !== 'description' && !(draft.source === 'reference' ? draft.references : draft.models).length) { notify(t.needModel); return; }
     setHistory(previous => [createTryOnDemoRecord(draft, mode), ...previous]);
   }
   const pickingDraft = shownPicker.value ? drafts[shownPicker.value.mode] : null;
   const pickedImages = shownPicker.value && pickingDraft ? pickingDraft[shownPicker.value.target] : [];
-  const modelImages = draft.source === 'reference' ? draft.references : draft.models;
   const categories = ['top', 'bottom', 'one-piece', 'skip'];
   return <section className="tryon-page" hidden={!active} inert={!active} aria-label={t.title} data-node-id="136:12198">
     <aside className="tryon-sidebar">
@@ -87,12 +107,30 @@ export function AiTryOnPage({ active, locale, uploads, onUpload }: { active: boo
       <div className="tryon-form" id="tryon-form" role="tabpanel" aria-labelledby={`tryon-mode-${mode}`}>
         <section className="tryon-garments" aria-label={t.garments}>
           <div className="tryon-garment-heading"><h2>{t.garments}（{draft.garments.length}/4）</h2><div className="tryon-flatten"><span id="tryon-flatten-label">{t.flatten}</span><button type="button" role="switch" aria-checked={draft.flatten} aria-labelledby="tryon-flatten-label" onClick={() => update({ flatten: !draft.flatten })}><span /></button></div></div>
-          <div className={`tryon-garment-grid${over ? ' is-dragging-over' : ''}`} aria-busy={reading} onDragOver={event => { if (event.dataTransfer.types.includes('Files')) { event.preventDefault(); setOver(true); } }} onDragLeave={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOver(false); }} onDrop={event => void dropFiles(event)}>
+          <div className={`tryon-garment-grid${draft.garments.length === 0 ? ' is-empty' : ''}${draft.flatten ? ' has-garment-types' : ''}${over ? ' is-dragging-over' : ''}`} aria-busy={reading} onDragOver={event => { if (event.dataTransfer.types.includes('Files')) { event.preventDefault(); setOver(true); } }} onDragLeave={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOver(false); }} onDrop={event => void dropFiles(event)}>
             {draft.garments.map(image => <div className="tryon-garment-card" key={image.id}>
-              <div className="tryon-garment-image"><ProgressiveImage src={image.url} alt={image.name} /><Button variant="tonal" className="tryon-remove" aria-label={`${t.remove} · ${image.name}`} onClick={() => update({ garments: draft.garments.filter(item => item.id !== image.id) })}><Icon name="close" size={16} /></Button></div>
-              <SettingSelect label={`${t.category} · ${image.name}`} value={image.category} placeholder={t.choose} options={categories.map((value, index) => ({ value, label: t.categories[index] }))} onChange={category => update({ garments: draft.garments.map(item => item.id === image.id ? { ...item, category } : item) })} />
+              <div className="tryon-garment-image"><ProgressiveImage src={image.url} alt={image.name} />
+                <div className="tryon-garment-actions">
+                  <Button variant="tonal" aria-label={garmentText.mask} onClick={() => notify(garmentText.maskPending)}><Icon name="fusionBrush" size={20} /></Button>
+                  <Button variant="tonal" aria-label={garmentText.delete} onClick={() => update({ garments: draft.garments.filter(item => item.id !== image.id) })}><Icon name="contextTrash" size={20} /></Button>
+                </div>
+              </div>
+              {draft.flatten && <SettingSelect label={`${t.category} · ${image.name}`} value={image.category} placeholder={t.choose} options={categories.map((value, index) => ({ value, label: t.categories[index] }))} onChange={category => update({ garments: draft.garments.map(item => item.id === image.id ? { ...item, category } : item) })} />}
             </div>)}
-            {draft.garments.length < 4 && <button type="button" className="tryon-upload" disabled={reading} onClick={() => setPicker({ mode, target: 'garments' })}><Icon name="fusionAddImage" size={32} /><strong>{reading ? common.reading : draft.garments.length ? t.more : t.upload}</strong><span>{t.drop}</span></button>}
+            {draft.garments.length < 4 && <button type="button" className="tryon-upload" disabled={reading} onClick={() => setPicker({ mode, target: 'garments' })}><Icon name="fusionAddImage" size={32} /><strong>{reading ? common.reading : draft.garments.length ? t.more : garmentText.upload}</strong><span>{draft.garments.length ? t.drop : garmentText.drop}</span>{!draft.garments.length && <span className="tryon-required">{garmentText.required}</span>}</button>}
+            {!draft.garments.length && <>
+              <Divider vertical />
+              <div className={`tryon-garment-example${reusableGarments.length ? ' has-previous' : ''}`}>
+                <video className="tryon-example-art" src="/assets/try-on/single-item-60fps.mp4" poster="/assets/try-on/garment-example.png" aria-label={garmentText.example} autoPlay loop muted playsInline />
+                <span className="tryon-example-label">{garmentText.example}</span>
+                {reusableGarments.length > 0 && <div className="tryon-previous-garments">
+                  <div className="tryon-previous-images" data-count={reusableGarments.length} aria-label={garmentText.previous}>
+                    {reusableGarments.map(image => <ProgressiveImage key={image.id} src={image.url} alt={image.name} />)}
+                  </div>
+                  <Button variant="tonal" className="tryon-reuse" disabled={reading} onClick={() => update({ garments: structuredClone(reusableGarments) })}>{garmentText.reuse}</Button>
+                </div>}
+              </div>
+            </>}
           </div>
         </section>
         <Divider />
@@ -104,10 +142,7 @@ export function AiTryOnPage({ active, locale, uploads, onUpload }: { active: boo
             {draft.source === 'description' ? <div className="tryon-description">
               <textarea ref={prompt} aria-label={t.description} placeholder={t.placeholder} value={draft.prompt} maxLength={2000} onChange={event => update({ prompt: event.target.value })} />
               <footer className="tryon-prompt-footer"><div className="tryon-prompt-actions"><Button aria-label={t.expand} disabled={!draft.prompt.trim()} onClick={() => notify(t.expansionUnavailable)}><Icon name="promptEdit" size={20} /></Button><Button aria-label={t.imagePrompt} onClick={() => notify(t.backend)}><Icon name="tryOnImagePrompt" size={20} /></Button><Button aria-label={t.copy} onClick={() => void copyPrompt()}><Icon name="tryOnCopyPrompt" size={20} /></Button></div><Divider vertical /><span className="tryon-counter">{draft.prompt.length}/2000</span><Button className="tryon-clear" aria-label={t.clear} disabled={!draft.prompt} onClick={() => update({ prompt: '' })}><Icon name="cutoutClear" size={16} /></Button></footer>
-            </div> : <div className="tryon-model-images">
-              {modelImages.map(image => <div key={image.id} className="tryon-model-image"><ProgressiveImage src={image.url} alt={image.name} /><Button variant="tonal" className="tryon-remove" aria-label={`${t.remove} · ${image.name}`} onClick={() => update(draft.source === 'reference' ? { references: [] } : { models: draft.models.filter(item => item.id !== image.id) })}><Icon name="close" size={16} /></Button></div>)}
-              {modelImages.length < (draft.source === 'reference' ? 1 : 4) && <button type="button" className="tryon-upload" onClick={() => setPicker({ mode, target: draft.source === 'reference' ? 'references' : 'models' })}><Icon name="fusionAddImage" size={32} /><strong>{draft.source === 'reference' ? t.addReference : t.addSet}</strong></button>}
-            </div>}
+            </div> : draft.source === 'reference' ? <TryOnReferenceCards key={mode} locale={locale} images={{ references: draft.references, poses: draft.poses ?? [], backgrounds: draft.backgrounds ?? [] }} onUpload={onUpload} onPick={target => setPicker({ mode, target })} onChange={(target, images) => update({ [target]: images })} /> : <TryOnModelSets active={active} key={mode} locale={locale} selected={draft.models} onSelect={models => update({ models })} />}
           </div>
         </section>
       </div>
@@ -117,7 +152,7 @@ export function AiTryOnPage({ active, locale, uploads, onUpload }: { active: boo
       setMode(record.mode); setDrafts(previous => ({ ...previous, [record.mode]: structuredClone(record.draft) }));
       document.getElementById('tryon-form')?.scrollTo({ top: 0 });
     }} />
-    {shownPicker.value && <AssetPicker key={`${shownPicker.value.mode}:${shownPicker.value.target}`} locale={locale} phase={shownPicker.phase} uploads={uploads} onUpload={onUpload} maxCount={(shownPicker.value.target === 'references' ? 1 : 4) - pickedImages.length} excludedUrls={pickedImages.map(image => image.url)} limitMessage={shownPicker.value.target === 'garments' ? t.limit : t.modelLimit} onClose={() => setPicker(null)} onConfirm={image => { add([image], shownPicker.value!); setPicker(null); }} onConfirmBatch={shownPicker.value.target === 'references' ? undefined : items => { add(items, shownPicker.value!); setPicker(null); }} />}
+    {shownPicker.value && <AssetPicker key={`${shownPicker.value.mode}:${shownPicker.value.target}`} locale={locale} phase={shownPicker.phase} uploads={uploads} onUpload={onUpload} maxCount={shownPicker.value.target === 'garments' || shownPicker.value.target === 'models' ? 4 - pickedImages.length : 1} excludedUrls={pickedImages.map(image => image.url)} limitMessage={shownPicker.value.target === 'garments' ? t.limit : t.modelLimit} onClose={() => setPicker(null)} onConfirm={image => { add([image], shownPicker.value!); setPicker(null); }} onConfirmBatch={shownPicker.value.target !== 'garments' && shownPicker.value.target !== 'models' ? undefined : items => { add(items, shownPicker.value!); setPicker(null); }} />}
     {shownGuide.value && <Dialog title={t.guide} closeLabel={common.close} phase={shownGuide.phase} onClose={() => setGuide(false)}><ol className="tryon-guide-steps">{t.guideSteps.map(step => <li key={step}>{step}</li>)}</ol><p className="tryon-guide-note">{t.backend}</p></Dialog>}
   </section>;
 }

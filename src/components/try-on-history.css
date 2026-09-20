@@ -7,7 +7,7 @@
 .tryon-record-title time { color: var(--text-tertiary); white-space: nowrap; }
 .tryon-history .tryon-record-header > .divider { height: 16px; }
 .tryon-record-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
-.tryon-record-tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 4px; border-radius: 6px; background: var(--state-hover); color: var(--text-secondary); font-size: 12px; line-height: 20px; font-weight: 500; white-space: nowrap; }
+.tryon-record-tag { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding-block: 0; padding-inline: 4px; border-radius: 6px; background: var(--state-hover); color: var(--text-secondary); font-size: 12px; line-height: 20px; font-weight: 500; white-space: nowrap; }
 .tryon-record-thumbs { display: flex; gap: 2px; }
 .tryon-record-thumbs > .progressive-image { width: 20px; height: 20px; border-radius: 4px; overflow: hidden; }
 .tryon-record-actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
@@ -16,7 +16,7 @@
 .tryon-record-actions > .lc-button:hover { background: var(--state-hover); }
 .tryon-record-description { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
 .tryon-record-description p { margin: 0; font-size: 12px; line-height: 16px; color: var(--text-secondary); white-space: pre-wrap; overflow-wrap: anywhere; }
-.tryon-record-copy.lc-button { height: 24px; min-width: 24px; border-radius: 4px; padding: 0 4px; color: var(--text-brand); }
+.tryon-record-copy.lc-button { height: 24px; min-width: 24px; border-radius: 4px; padding: 0 4px; color: var(--text-tertiary); }
 .tryon-results { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .tryon-result { position: relative; min-width: 0; overflow: hidden; background: var(--surface-secondary); }
 .tryon-result-preview { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; }
@@ -45,3 +45,10 @@
 .tryon-history { container: tryon-history / inline-size; }
 @container tryon-history (max-width: 700px) { .tryon-results { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @container tryon-history (max-width: 360px) { .tryon-results { grid-template-columns: 1fr; } }
+
+.tryon-tag-thumb { display: block; flex-shrink: 0; width: 20px; height: 20px; padding: 0; border: 0; border-radius: 4px; overflow: hidden; background: transparent; cursor: default; }
+.tryon-tag-thumb > .progressive-image { width: 100%; height: 100%; }
+.tryon-tag-preview { position: fixed; z-index: 1000; display: flex; flex-wrap: nowrap; gap: 4px; padding: 4px; border-radius: 8px; background: var(--surface-floating); box-shadow: 0 8px 24px var(--overlay-weak), 0 0 0 1px var(--border-weak); }
+.tryon-tag-preview > img { display: block; flex: none; width: auto; max-width: none; max-height: 240px; border-radius: 4px; object-fit: contain; }
+
+.tryon-record-tag:has(.tryon-record-thumbs) { padding-left: 2px; padding-right: 4px; }
